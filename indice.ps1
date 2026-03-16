@@ -23,7 +23,7 @@ switch ($respuesta) {
     "4" {Write-Host "rutascript4"}
     "5" {Write-Host "Saliendo, gracias..."
     break}
-    default {Write-Host "Opcion no válida"}
+    default {Write-Host "Opción no válida"}
 
 }
 
