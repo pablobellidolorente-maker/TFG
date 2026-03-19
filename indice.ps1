@@ -20,14 +20,17 @@ Write-Host "5) Salir"
 $respuesta = Read-Host
 
 switch ($respuesta) {
-    "1" { .\opciones_dpt.ps1
+    "1" { & "opcionesones_dpt.ps1"
              Write-Host "rutascript1"}
     
-    "2" {Write-Host "rutascript2"}
+    "2" { &".\modulos\configuracion_basica\conf_basica.ps1"
+        Write-Host "rutascript2"}
     
-    "3" {Write-Host "rutascript3"}
+    "3" { & ".\modulos\software\software.ps1"
+        Write-Host "rutascript3"}
     
-    "4" {Write-Host "rutascript4"}
+    "4" { & ".\modulos\seguridad\seguridad.ps1"
+        Write-Host "rutascript4"}
     
     "5" {Write-Host "Saliendo, gracias..."}
     default {Write-Host "Opción no válida, introduzca los parámetros: 1 , 2 , 3 , 4 o 5"}
