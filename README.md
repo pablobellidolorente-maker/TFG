@@ -8,3 +8,45 @@ Por lo que, habia pensado crear un script segun el dpto para el cual se vaya a u
 Por cierto, puedes ejecutar copiando y pegando en powershell lo que he hecho para verlo en el ordenador de la empresa, y te deja porque realmente no hace nada, si no para que veas la presentación, ya que creo que la ejecucion de scripts en lo que es el equipo de kyndril no deja.
 
 :)
+
+Esta es la estructura sugerida por COPI y me parece bien
+
+/TFG-AutoDeploy/
+│
+├── launcher.sh
+├── README.md
+│
+├── modulos/
+│   ├── config_basica/
+│   │   ├── hostname.sh
+│   │   ├── red.sh
+│   │   ├── usuarios.sh
+│   │   └── permisos.sh
+│   │
+│   ├── seguridad/
+│   │   ├── firewall.sh
+│   │   ├── hardening.sh
+│   │   ├── auditoria.sh
+│   │   └── antivirus.sh
+│   │
+│   ├── software/
+│   │   ├── instalar_chrome.sh
+│   │   ├── instalar_vscode.sh
+│   │   ├── instalar_7zip.sh
+│   │   ├── instalar_ofimatica.sh
+│   │   └── instalar_paquetes.sh
+│   │
+│   └── departamentos/
+│       ├── dpto_informatica.sh
+│       ├── dpto_administracion.sh
+│       ├── dpto_rrhh.sh
+│       └── dpto_marketing.sh
+│
+├── data/
+│   ├── paquetes_informatica.txt
+│   ├── paquetes_admin.txt
+│   ├── firewall_rules.conf
+│   └── hardening.conf
+│
+└── logs/
+    └── (se generan automáticamente)
