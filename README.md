@@ -11,6 +11,10 @@ Por cierto, puedes ejecutar copiando y pegando en powershell lo que he hecho par
 
 Esta es la estructura sugerida por COPI y me parece bien
 
+Metete al VS del github para verlo Bien
+
+
+
 /TFG-AutoDeploy/
 │
 ├── launcher.sh
