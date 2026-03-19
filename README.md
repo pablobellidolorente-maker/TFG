@@ -54,3 +54,10 @@ Metete al VS del github para verlo Bien
 │
 └── logs/
     └── (se generan automáticamente)
+
+
+Perfecto bro, lo de compartimentarlo por departamentos me parece de puta madre, entiendo que te refieres a lo de dentro de un menú general nada mas entres, puedas tu eleguir que departamento es y según el que elija, tengo unos procesos automatizados u otros (me refiero a permisos, aplicaciones, puertos...) (bueno me acabo de fijar en el arbol y es asi jajajajjaja). Vale pues este finde me pongo a tope con algo de prueba para que luego lo veamos juntos y vayamos avanzando a la par y que cada paso este censado por lo dos, lo cual que me parce de puta madre.
+
+Y si bro, me parece que este trabajo la presentación y la manera en lo que hayamos hecho detrás (organización, forma de trabajo y calendarios...) va a importar incluso un poco más que la automatización en si. 
+
+Asique cojonudo bro, por ahora vamos mirando hacia la misma dirección. Y tio entre semana estoy yendo muy pillado de tiempo porque en las practicas ya estoy "trabajando" royo que ya me dejan tareas y todo el royo asique cuando este activo realmente para el TFG va a ser los findes, que no queiro que tengas la sensación de que estoy sudando ni nada que queiro hacer algo que este chulo. <3
