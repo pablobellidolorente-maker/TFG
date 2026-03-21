@@ -1,3 +1,15 @@
+Con esto en el log tendremos:
+
+- "Write Logs --> que se encarga de parametrizar el log, dandole los niveles de error, donde se va a encontrar, el nombre que va a tener, fecha....
+- "Test-IsAdmin" / "Requiere-Admin" --> Estas estan puestas para la configuración (creo que tendremos que quitarlo pero que por ahora este no me parece mal) obliga que se este ejecutando con permisos de administrador, esto es
+para saltarse firewall
+- "Invoke-Safely" --> Este comando nos indica que se ha iniciado la ejecución y si el sresultado es correcto, en caso de serlo genial, y si no con el "catch" nos devuelve el error y nos dice que tipo.
+- "Import-ConfigFile" --> Esto lo que hace es indicarnos que si el archivo existe o no, en caso de no exisitir así podremos saber que no se esta ejectuando sobre nada, y si si existe nos idicara que efectivamente se ha 
+procedido con la ejecución. Y por último manda los resultados a la ruta que le indiquemos.
+
+
+
+
 <#
 .SYNOPSIS
     Módulo de utilidades para TFG-AutoDeploy.
