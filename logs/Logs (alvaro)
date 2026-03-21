@@ -1,0 +1,105 @@
+<#
+.SYNOPSIS
+    Módulo de utilidades para TFG-AutoDeploy.
+
+.DESCRIPTION
+    Contiene funciones comunes para logging, comprobación de permisos,
+    ejecución segura e importación de configuraciones.
+#>
+
+# ============================
+#   CONFIGURACIÓN GENERAL
+# ============================
+
+# Ruta base del proyecto (carpeta donde está launcher.ps1)
+$Global:ProjectRoot = Split-Path -Parent $PSScriptRoot
+
+# Carpeta de logs
+$Global:LogPath = Join-Path $ProjectRoot "logs"
+
+# Crear carpeta de logs si no existe
+if (-not (Test-Path $LogPath)) {
+    New-Item -Path $LogPath -ItemType Directory | Out-Null
+}
+
+# ============================
+#   FUNCIÓN: Write-Log
+# ============================
+function Write-Log {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Message,
+
+        [ValidateSet("INFO","WARN","ERROR")]
+        [string]$Level = "INFO"
+    )
+
+    $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+    $logFile = Join-Path $LogPath "$(Get-Date -Format 'yyyy-MM-dd').log"
+
+    $entry = "[$timestamp] [$Level] $Message"
+
+    Add-Content -Path $logFile -Value $entry
+}
+
+# ============================
+#   FUNCIÓN: Test-IsAdmin
+# ============================
+function Test-IsAdmin {
+    $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+# ============================
+#   FUNCIÓN: Require-Admin
+# ============================
+function Require-Admin {
+    if (-not (Test-IsAdmin)) {
+        Write-Log -Message "El script requiere privilegios de administrador." -Level "ERROR"
+        Write-Host "❌ Este script debe ejecutarse como administrador."
+        exit 1
+    }
+}
+
+# ============================
+#   FUNCIÓN: Invoke-Safely
+# ============================
+function Invoke-Safely {
+    param(
+        [Parameter(Mandatory=$true)]
+        [scriptblock]$Action,
+
+        [string]$Description = "Acción sin descripción"
+    )
+
+    try {
+        Write-Log -Message "Iniciando: $Description"
+        & $Action
+        Write-Log -Message "Completado: $Description"
+    }
+    catch {
+        Write-Log -Message "ERROR en '$Description': $_" -Level "ERROR"
+        Write-Host "❌ Error ejecutando: $Description"
+    }
+}
+
+# ============================
+#   FUNCIÓN: Import-ConfigFile
+# ============================
+function Import-ConfigFile {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Path
+    )
+
+    if (-not (Test-Path $Path)) {
+        Write-Log -Message "Archivo de configuración no encontrado: $Path" -Level "ERROR"
+        throw "No se encontró el archivo de configuración: $Path"
+    }
+
+    Write-Log -Message "Cargando archivo de configuración: $Path"
+    return Get-Content -Path $Path
+}
+
+Export-ModuleMember -Function * -Variable ProjectRoot,LogPath
