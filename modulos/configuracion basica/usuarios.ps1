@@ -41,14 +41,15 @@ do {
     #IMPORTANTE!!! Al convertir las contraseñas a SecureString, dejan de ser texto plano,
     #Por ello las dos siguientes lineas lo transforman de nuevoa a texto plano para asi poder compararlas
 
-    $plain1 = [Runtime.InteropServices.Marshall]::PtrToStringAuto ([Runtime.InteropServices.Marshall]::SecureStringToBSTR(pass1))
-    $plain2 = [Runtime.InteropServices.Marshall]::PtrToStringAuto ([Runtime.InteropServices.Marshall]::SecureStringToBSTR(pass2))
+    $plain1 = ConvertFrom-SecureString $pass1 -AsPlainText
+    $plain2 = ConvertFrom-SecureString $pass2 -AsPlainText
 
-    if (plain1 -ne $plain2){
-        Write-Host "Las contraseñas no coinciden"
-    }
+if ($plain1 -ne $plain2) {
+    Write-Host "Las contraseñas no coinciden."
+}
 
-} (while plain1 -ne plain2)
+
+} while ($plain1 -ne $plain2)
 
 #Al llegar aquí tenemos ya el nombre y las credenciales del usuario, ahora con esos datos en la variable, creamos el usuario
 
@@ -90,7 +91,7 @@ function Crear-Grupo {
 #--------------------------------------------------------------------------
 #AÑADIR USUARIOS A UN GRUPO
 
-function Anadir-Usuario-Grupo{
+function Anadir-Usuario-Grupo {
     Write-Host " "
     Write-Host "--- Añadir usuario a grupo ---"
 
@@ -172,7 +173,7 @@ do {
     switch ($opcion) {
         "1" { Crear-Usuario }
         "2" { Crear-Grupo }
-        "3" { Anadir_Usuario-Grupo }
+        "3" { Anadir-Usuario-Grupo }
         "4" { Ver-Usuarios }
         "5" { Ver-Grupos }
         "6" { Write-Host "Saliendo del menu de usuarios"}
