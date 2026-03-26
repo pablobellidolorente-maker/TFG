@@ -41,8 +41,8 @@ do {
     #IMPORTANTE!!! Al convertir las contraseñas a SecureString, dejan de ser texto plano,
     #Por ello las dos siguientes lineas lo transforman de nuevoa a texto plano para asi poder compararlas
 
-    $plain1 = [Runtime.InterpopServices.Marshall]::PtrToStringAuto ([Runtime.InterpopServices.Marshall]::SecureStringToBSTR(pass1))
-    $plain2 = [Runtime.InterpopServices.Marshall]::PtrToStringAuto ([Runtime.InterpopServices.Marshall]::SecureStringToBSTR(pass2))
+    $plain1 = [Runtime.InteropServices.Marshall]::PtrToStringAuto ([Runtime.InteropServices.Marshall]::SecureStringToBSTR(pass1))
+    $plain2 = [Runtime.InteropServices.Marshall]::PtrToStringAuto ([Runtime.InteropServices.Marshall]::SecureStringToBSTR(pass2))
 
     if (plain1 -ne $plain2){
         Write-Host "Las contraseñas no coinciden"
