@@ -3,6 +3,8 @@ Write-Host "========= GESTIÓN DE USUARIOS Y GRUPOS ========="
 
 #Declaramos funciones para que así se las pueda llamar desde el menu interactivo creado abajo del todo
 
+
+#------------------------------------------------------------------------------
 #CREAR USUARIO
 
 function Crear-Usuario {
@@ -55,6 +57,7 @@ Write-Host "Usuario '$nombre' creado correctamente"
 
 }
 
+#---------------------------------------------------------------------------
 #CREAR GRUPO
 
 function Crear-Grupo {
@@ -84,6 +87,7 @@ function Crear-Grupo {
     Write-Host "Grupo '$grupo' creado correctamente"
 }
 
+#--------------------------------------------------------------------------
 #AÑADIR USUARIOS A UN GRUPO
 
 function Anadir-Usuario-Grupo{
@@ -115,6 +119,9 @@ function Anadir-Usuario-Grupo{
 
 }
 
+#--------------------------------------------------------------------------------
+#FUNCION PARA VER LOS USUARIOS EXISTENTES
+
 function Ver-Usuarios {
         #Las siguientes lineas hacen que el host vea que usuarios existen
 
@@ -126,6 +133,9 @@ function Ver-Usuarios {
 
 }
 
+#--------------------------------------------------------------------------------
+#FUNCION PARA VER LOS GRUPOS EXISTENTES
+
 function Ver-Grupos {
         #Las siguientes lineas hacen que el host vea que usuarios existen
 
@@ -135,6 +145,8 @@ function Ver-Grupos {
     
     Get-LocalGroup | Format-Table Name
 }
+
+#------------------------------------------------------------------------------------
 
 
 #=========== MENÚ QUE VERÁ EL USUARIO ============
