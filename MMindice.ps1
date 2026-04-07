@@ -1,6 +1,13 @@
 <#Código básico del menu, en el que se le dan las opciones a elegir al usuario, que,
 llamaran a los demas scripts para ejecutar la configuracion elegida#>
 
+
+#Vamos a tener que ejecutar este script usando esto:
+
+# powershell -ExecutionPolicy Bypass -File .\MMindice.ps1 ya que si no, las politicas de windows no dejan ejecutar scripts
+
+
+
 do {
 Write-Host ""
 Write-Host "========BIENVENIDO========"
