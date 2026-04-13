@@ -20,7 +20,7 @@ function Ver-Adaptadores {
     
     $contador = 1
     $adaptadores | ForEach-Object {
-        Write-Host "$contador) Nombre: $($_.Name)"
+        Write-Host "($contador) Nombre: $($_.Name)"
         Write-Host "   Estado: $($_.Status)"
         Write-Host "   Descripción: $($_.InterfaceDescription)"
         Write-Host "   Tipo: $($_.MediaConnectionState)"

@@ -1,4 +1,4 @@
-Con esto en el log tendremos:
+<#Con esto en el log tendremos:
 
 - "Write Logs --> que se encarga de parametrizar el log, dandole los niveles de error, donde se va a encontrar, el nombre que va a tener, fecha....
 - "Test-IsAdmin" / "Requiere-Admin" --> Estas estan puestas para la configuración (creo que tendremos que quitarlo pero que por ahora este no me parece mal) obliga que se este ejecutando con permisos de administrador, esto es
@@ -9,7 +9,7 @@ procedido con la ejecución. Y por último manda los resultados a la ruta que le
 
 
 
-
+#>
 <#
 .SYNOPSIS
     Módulo de utilidades para TFG-AutoDeploy.
