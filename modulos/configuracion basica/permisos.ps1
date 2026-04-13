@@ -34,7 +34,7 @@ switch ($opcion) {
 
 #FUNCION CAMBIAR UAC (Es el contro de cuentas de usuario, para cambios no autorizados etc.)
 
-function UAC {
+function Configurar-UAC {
 
     Write-Host "`n--- Configurar UAC (Control de Cuentas de Usuario) ---"
     Write-Host "1) Máxima seguridad (notificar siempre)"
@@ -62,13 +62,13 @@ function UAC {
 
 
     switch ($opcion) {
-        "1" { Set-ItemPorperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
+        "1" { Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
         -Name "ConsentPromptBehaviorAdmin" -Value 2 }
-        "2" {Set-ItemPorperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
-        -Name "ConsentPomptBehaviorAdmin" -Value 5}
-        "3" {Set-ItemPorperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
+        "2" {Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
+        -Name "ConsentPromptBehaviorAdmin" -Value 5}
+        "3" {Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
         -Name "ConsentPromptBehaviorAdmin" -Value 0}
-        "4" {Set-ItemPorperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
+        "4" {Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System `
         -Name "EnableLUA" -Value 0}
 
         default { Write-Host "Opción no válida" }
@@ -144,7 +144,7 @@ function Gestionar-Privilegios {
 #FUNCION PARA ACTIVAR O DESACTIVAR ADMIN (ROOT)
 
 
-function ActRoot {
+function Gestionar-Root {
 
     Write-Host "`n--- Gestión del usuario Administrador ---"
     Write-Host "1) Activar Administrador"
@@ -161,8 +161,56 @@ function ActRoot {
 
 #================================
 #FUNCION PERMISOS DE CARPETA 
-#TE DEJO ESTA A TI O PARA HACERLA LOS DOS, QUE ESTOY HASTA LA POLLA JAJAJAJAJA
+#El comando icacls es el que se usa para gestionar todos los comandos de gestion de permisos de carpetas y demas en Windows por defecto
 
+
+function Permisos-Carpetas {
+
+    $ruta = Read-Host "Introduzca la ruta completa de la carpeta qu quiere gestionar"
+    if ( -not (Test-Path $ruta ) ) {
+        Write-Host "La ruta no existe o no la ha escrito correctamente"
+        return
+    }
+
+    Write-Host " 1) Dar control a los admin"
+    Write-Host " 2) Dar lectura a los usuarios"
+    Write-Host " 3) Quitar permisos heredados ( Recomendado si hay subcarpetas importantes dentro de la ruta escrita)"
+    Write-Host " 4) Listar las carpetas dentro de la ruta"
+
+    $opcion = Read-Host "Seleccione una opción"
+
+    switch ($opcion) {
+
+        "1" {
+        icacls $ruta /grant Administrators:F /T
+            Write-Host "Permisos aplicados correctamente"
+
+        }
+        
+        "2" {
+            icacls $ruta /grant Users:R /T
+                Write-Host "Permisos aplicados correctamente"
+    
+        }
+
+        "3" {
+            icacls $ruta /inheritance:d
+                Write-Host "La herencia ha sido desactivada correctamente"
+        
+        }
+
+        "4" {
+            Write-Host "Carpetas dentro de $ruta "
+
+            Get-ChildItem -Path $ruta -Directory | Select-Object Name, Fullname
+        }
+
+        default {
+            Write-Host "Opcion no valida"
+            }
+    }
+
+}
 
 
 
@@ -181,11 +229,11 @@ do {
     $opcion = Read-Host "Opción"
 
     switch ($opcion) {
-        "1" { Cambiar-ExecutionPolicy }
+        "1" { Configurar-ExPolicy } 
         "2" { Configurar-UAC }
-        "3" { Gestionar-Administrador }
-        "4" { Permisos-Carpeta }
-        "5" { Gestionar-Privilegios }
+        "3" { Gestionar-Root } 
+        "4" { Permisos-carpetas } 
+        "5" { Gestionar-Privilegios } 
         "6" { Write-Host "Saliendo del módulo de permisos..." }
         default { Write-Host "ERROR: Seleccione una opción válida (1-6)" }
     }
