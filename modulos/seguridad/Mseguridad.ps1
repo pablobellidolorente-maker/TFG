@@ -1,7 +1,7 @@
 ##Aquí lo mismo, las politicas de seguridad de cada equipo dependiendo de sus necesidades
 
 
-ORDEN OPTIMO DE EJECUCION
+<#ORDEN OPTIMO DE EJECUCION
 
 1) FIREWALL.ps1
 
@@ -10,3 +10,4 @@ ORDEN OPTIMO DE EJECUCION
 3) AUDITORIA.ps1
 
 4) HARDENING.ps1
+#>

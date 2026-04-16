@@ -30,13 +30,13 @@ switch ($respuesta) {
     "1" { & "opcionesones_dpt.ps1"
              Write-Host "rutascript1"}
     
-    "2" { &".\modulos\configuracion_basica\conf_basica.ps1"
+    "2" { &".\modulos\configuracion_basica\Mconf_basica.ps1"
         Write-Host "rutascript2"}
     
-    "3" { & ".\modulos\software\software.ps1"
+    "3" { & ".\modulos\software\Msoftware.ps1"
         Write-Host "rutascript3"}
     
-    "4" { & ".\modulos\seguridad\seguridad.ps1"
+    "4" { & ".\modulos\seguridad\Mseguridad.ps1"
         Write-Host "rutascript4"}
     
     "5" {Write-Host "Saliendo, gracias..."}
