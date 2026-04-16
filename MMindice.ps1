@@ -12,7 +12,7 @@ do {
 Write-Host ""
 Write-Host "========BIENVENIDO========"
 Write-Host ""
-Write-Host "Bienvenido al menú de configuración, por favor, seleccione la opción para configurar su equipo"
+Write-Host "Bienvenido al menú de configuración, por favor, seleccione la opción para configurar su equipo:"
 Write-Host ""
 Write-Host "1) Configuración completa del equipo" -ForegroundColor Magenta
 Write-Host ""

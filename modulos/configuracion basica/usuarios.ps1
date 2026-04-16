@@ -17,7 +17,7 @@ function Crear-Usuario {
     #Comprobacion de nombre no en blanco
 
     if ([string]::IsNullOrWhiteSpace($nombre)) {
-        Write-Host "ERROR: El nombre no puede estar vacío"
+        Write-Host "ERROR: El nombre no puede estar vacío" -ForegroundColor Red
         return
 }
 
