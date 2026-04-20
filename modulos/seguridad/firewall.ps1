@@ -1,35 +1,3 @@
-do {
-    Write-Host " =================== CONFIGURACION DE SEGURIDAD ==================="
-    Write-Host "`nSeleccione una opción:"
-    Write-Host "1) Activar Firewall"
-    Write-Host "2) Desactivar Firewall"
-    Write-Host "3) Resetear Firewall"
-    Write-Host "4) Bloquear Aplicacion"
-    Write-Host "5) Permitir Aplicacion"
-    Write-Host "6) Abrir Puerto"
-    Write-Host "7) Bloquear Puerto"
-    Write-Host "8) Listar reglas del Firewall"
-    Write-Host "9) Salir" -ForegroundColor Cyan
-
-
-    $opcion = Read-Host "Opción"
-
-    switch ($opcion) {
-        "1" { activar-firewall } 
-        "2" { desactivar-firewall }
-        "3" { default-firewall } 
-        "4" { bloquear-apps } 
-        "5" { permitir-apps } 
-        "6" { abrir-puertos }
-        "7" { bloquear-puertos}
-        "8" { listar-reglas}
-        "9" { Write-Host "Saliendo de la configuración de firewall..." -ForegroundColor Green}
-        default { Write-Host "ERROR: Seleccione una opción válida (1-9)"  -ForegroundColor Red}
-    }
-} while ($opcion -ne "9")
-
-
-
 
 #=============================== AÑADIR COMPROBACION DE ADMIN
 
@@ -144,13 +112,69 @@ function desactivar-firewall {
 
 #========================== FUNCION APERTURA DE PUERTOS ==========================
 
+function abrir-puertos {
+    Write-Host "`nApertura de puertos"
+
+    do {
+        $puerto = Read-Host "Introduzca el número de puerto que desea abrir"
+
+        if ($puerto -notmatch '^\d+$') {
+            Write-Host "ERROR: Introduzca un número de puerto válido" -ForegroundColor Red
+        }
+    } until ($puerto -match '^\d+$')
+
+    do {
+        $protocolo = Read-Host "Introduzca el protocolo (UDP/TCP)"
+
+        if ($protocolo -notin @("TCP","UDP")) {
+            Write-Host "ERROR: Introduzca TCP o UDP" -ForegroundColor Red
+        }
+    } until ($protocolo -in @("TCP","UDP"))
+
+    $nombre = "Puerto_$puerto `_$protocolo`_Allow"
+
+    New-NetFirewallRule -DisplayName $nombre -Direction Inbound -Protocol $protocolo
+
+    Write-Host "Puerto $puerto/$protocolo abierto correctamente" -ForegroundColor Green
+}
 
 
 
 
 
+#================================================ Bloquear puertos
 
-#================================================
+
+function bloquear-puertos {
+
+    Write-Host "`nBloqueo de puertos" 
+
+    do {
+        $puerto = Read-Host "Introduzca el número de puerto que desea bloquear"
+
+        if ($puerto -notmatch '^\d+$') {
+            Write-Host "ERROR: Introduzca un número de puerto válido" -ForegroundColor Red
+        }
+
+    } until ($puerto -match '^\d+$')
+
+    do {
+        $protocolo = Read-Host "Protocolo (TCP/UDP)"
+
+        if ($protocolo -notin @("TCP","UDP")) {
+            Write-Host "ERROR: Introduzca TCP o UDP" -ForegroundColor Red
+        }
+
+    } until ($protocolo -in @("TCP","UDP"))
+
+    $nombre = "Puerto_$puerto`_$protocolo`_Block"
+
+    New-NetFirewallRule -DisplayName $nombre -Direction Inbound -Protocol $protocolo -LocalPort $puerto -Action Block
+
+    Write-Host "Puerto $puerto/$protocolo bloqueado correctamente" -ForegroundColor Green
+}
+
+
 
 
 
@@ -159,7 +183,7 @@ function desactivar-firewall {
 
 function bloquear-apps {
 
- do {   $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere bloquear ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)" -ForegroundColor Green
+ do {   $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere bloquear ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)" 
 
 
     # SE COMPRUEBA QUE LA RUTA EXISTE
@@ -246,3 +270,36 @@ function listar-reglas {
     Where-Object { $_.DisplayName -match "Block-|Allow-" } |
     Format-Table DisplayName, Direction, Action, Program, Enabled -AutoSize
 }
+
+
+#=================================== MENU PRINCIPAL ============================
+
+do {
+    Write-Host " =================== CONFIGURACION DE SEGURIDAD ==================="
+    Write-Host "`nSeleccione una opción:"
+    Write-Host "1) Activar Firewall"
+    Write-Host "2) Desactivar Firewall"
+    Write-Host "3) Resetear Firewall"
+    Write-Host "4) Bloquear Aplicacion"
+    Write-Host "5) Permitir Aplicacion"
+    Write-Host "6) Abrir Puerto"
+    Write-Host "7) Bloquear Puerto"
+    Write-Host "8) Listar reglas del Firewall"
+    Write-Host "9) Salir" -ForegroundColor Cyan
+
+
+    $opcion = Read-Host "Opción"
+
+    switch ($opcion) {
+        "1" { activar-firewall } 
+        "2" { desactivar-firewall }
+        "3" { default-firewall } 
+        "4" { bloquear-apps } 
+        "5" { permitir-apps } 
+        "6" { abrir-puertos }
+        "7" { bloquear-puertos}
+        "8" { listar-reglas}
+        "9" { Write-Host "Saliendo de la configuración de firewall..." -ForegroundColor Green}
+        default { Write-Host "ERROR: Seleccione una opción válida (1-9)"  -ForegroundColor Red}
+    }
+} while ($opcion -ne "9")
