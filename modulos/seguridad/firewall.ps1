@@ -1,4 +1,33 @@
-Write-Host " =================== CONFIGURACION DE SEGURIDAD ==================="
+do {
+    Write-Host " =================== CONFIGURACION DE SEGURIDAD ==================="
+    Write-Host "`nSeleccione una opción:"
+    Write-Host "1) Activar Firewall"
+    Write-Host "2) Desactivar Firewall"
+    Write-Host "3) Resetear Firewall"
+    Write-Host "4) Bloquear Aplicacion"
+    Write-Host "5) Permitir Aplicacion"
+    Write-Host "6) Abrir Puerto"
+    Write-Host "7) Bloquear Puerto"
+    Write-Host "8) Listar reglas del Firewall"
+    Write-Host "9) Salir" -ForegroundColor Cyan
+
+
+    $opcion = Read-Host "Opción"
+
+    switch ($opcion) {
+        "1" { activar-firewall } 
+        "2" { desactivar-firewall }
+        "3" { default-firewall } 
+        "4" { bloquear-apps } 
+        "5" { permitir-apps } 
+        "6" { abrir-puertos }
+        "7" { bloquear-puertos}
+        "8" { listar-reglas}
+        "9" { Write-Host "Saliendo de la configuración de firewall..." -ForegroundColor Green}
+        default { Write-Host "ERROR: Seleccione una opción válida (1-9)"  -ForegroundColor Red}
+    }
+} while ($opcion -ne "9")
+
 
 
 
@@ -21,7 +50,7 @@ function activar-firewall {
         Write-Host " 2) Public"
         Write-Host " 3) Private"
         Write-Host " 4) Todas"
-        Write-Host " 5) Volver"
+        Write-Host " 5) Volver" -ForegroundColor Cyan
 
 
         $opcion = Read-Host "Opcion"
@@ -48,11 +77,11 @@ function activar-firewall {
                 break
                 }
 
-            "5" { Write-Host "Volviendo al menú"
+            "5" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
                 break
-                }
+                } 
         
-            default { Write-Host "ERROR: ELIJA UN NUMERO DEL 1-5"}
+            default { Write-Host "ERROR: ELIJA UN NUMERO DEL 1-5" -ForegroundColor Red}
         } 
 
     } while ( $opcion -ne "5" )
@@ -72,7 +101,7 @@ function desactivar-firewall {
         Write-Host " 2) Public"
         Write-Host " 3) Private"
         Write-Host " 4) Todas"
-        Write-Host " 5) Volver"
+        Write-Host " 5) Volver" -ForegroundColor Cyan
 
 
         $opcion = Read-Host "Opcion"
@@ -99,11 +128,11 @@ function desactivar-firewall {
                 break
                 }
 
-            "5" { Write-Host "Volviendo al menú"
+            "5" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
                 break
-                }
+                } 
         
-            default { Write-Host "ERROR: ELIJA UN NUMERO DEL 1-5"}
+            default { Write-Host "ERROR: ELIJA UN NUMERO DEL 1-5" -ForegroundColor Red}
         } 
 
     } while ( $opcion -ne "5" )
@@ -130,14 +159,14 @@ function desactivar-firewall {
 
 function bloquear-apps {
 
- do {   $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere bloquear ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)"
+ do {   $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere bloquear ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)" -ForegroundColor Green
 
 
     # SE COMPRUEBA QUE LA RUTA EXISTE
 
         if ( -not (Test-Path $programa) ) {
 
-            Write-Host "ERROR: La ruta no existe"
+            Write-Host "ERROR: La ruta no existe" -ForegroundColor Red
         } 
         
 } until ( Test-Path $programa)
@@ -154,20 +183,20 @@ function bloquear-apps {
 
 function permitir-apps {
 
- do {   $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere bloquear ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)"
+ do {   $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere permitir ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)"
 
 
     # SE COMPRUEBA QUE LA RUTA EXISTE
 
         if ( -not (Test-Path $programa) ) {
 
-            Write-Host "ERROR: La ruta no existe"
-        } 
+            Write-Host "ERROR: La ruta no existe"  -ForegroundColor Red
+        }
         
 } until ( Test-Path $programa)
 
         $app = Split-Path $programa -Leaf #Lo que hace esto es reducir el nombre al (x.exe)
-        $nombreregla = "$app Block"
+        $nombreregla = "$app Allow"
             
             
         New-NetFirewallRule -DisplayName "$nombreregla" -Direction Inbound,Outbound -Program "$programa" -Action Allow 
@@ -181,7 +210,7 @@ function permitir-apps {
 
 #=========================== FUNCION RESTAURAR EL FIREWALL ===============================
 
-function reset-firewall {
+function default-firewall {
     do { $opcion = Read-Host "`n¿Está seguro de querer restablecer el firewall? s/n"
     
     switch ($opcion) {
@@ -195,6 +224,8 @@ function reset-firewall {
          
             break
         }
+
+        default {Write-Host 'ERROR: Introduzca  "s" o "n"'  -ForegroundColor Red }
     }
 
 
@@ -202,4 +233,16 @@ function reset-firewall {
 
 
      
+}
+#=====================================
+
+
+
+#======================= FUNCION DE LISTAR REGLAS (CON FILTRO PARA LAS NUESTRAS)
+
+
+function listar-reglas {
+    Get-NetFirewallRule |
+    Where-Object { $_.DisplayName -match "Block-|Allow-" } |
+    Format-Table DisplayName, Direction, Action, Program, Enabled -AutoSize
 }
