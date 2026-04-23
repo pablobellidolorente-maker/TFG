@@ -22,7 +22,7 @@ Write-Host "3) Configuración de instalación de software" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "4) Configuración de seguridad del sistema" -ForegroundColor Green
 Write-Host ""
-Write-Host "5) Salir"
+Write-Host "5) Salir" -ForegroundColor Cyan
 
 $respuesta = Read-Host
 
@@ -40,7 +40,7 @@ switch ($respuesta) {
         Write-Host "rutascript4"}
     
     "5" {Write-Host "Saliendo, gracias..."}
-    default {Write-Host "Opción no válida, introduzca los parámetros: 1 , 2 , 3 , 4 o 5"}
+    default {Write-Host "ERROR: Opción no válida, introduzca los parámetros: 1 , 2 , 3 , 4 o 5" -ForegroundColor Red }
 
 }
 
