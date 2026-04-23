@@ -14,7 +14,7 @@ function Ver-Adaptadores {
     $adaptadores = Get-NetAdapter
     
     if ($adaptadores.Count -eq 0) {
-        Write-Host "ERROR: No se encontraron adaptadores de red"
+        Write-Host "ERROR: No se encontraron adaptadores de red" -ForegroundColor Red
         return
     }
     
@@ -44,7 +44,7 @@ function Configurar-IPEstatica {
     
     # Validación del número de adaptador
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Número de adaptador no válido"
+        Write-Host "ERROR: Número de adaptador no válido" -ForegroundColor Red
         return
     }
     
@@ -68,13 +68,13 @@ function Configurar-IPEstatica {
         $nuevaIP = Read-Host "Introduzca la nueva dirección IP"
         
         if ([string]::IsNullOrWhiteSpace($nuevaIP)) {
-            Write-Host "ERROR: La IP no puede estar vacía"
+            Write-Host "ERROR: La IP no puede estar vacía" -ForegroundColor Red
             continue
         }
         
         # Validar formato de IP
         if ($nuevaIP -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-            Write-Host "ERROR: Formato de IP inválido (use formato XXX.XXX.XXX.XXX)"
+            Write-Host "ERROR: Formato de IP inválido (use formato XXX.XXX.XXX.XXX)" -ForegroundColor Red
             continue
         }
         
@@ -82,7 +82,7 @@ function Configurar-IPEstatica {
         $valida = $true
         foreach ($parte in $partes) {
             if ([int]$parte -gt 255) {
-                Write-Host "ERROR: Cada octeto debe ser menor o igual a 255"
+                Write-Host "ERROR: Cada octeto debe ser menor o igual a 255" -ForegroundColor Red
                 $valida = $false
                 break
             }
@@ -98,12 +98,12 @@ function Configurar-IPEstatica {
         $prefixLength = Read-Host "Introduzca la máscara de red en CIDR (normalmente 24)"
         
         if ([string]::IsNullOrWhiteSpace($prefixLength)) {
-            Write-Host "ERROR: La máscara no puede estar vacía"
+            Write-Host "ERROR: La máscara no puede estar vacía" -ForegroundColor Red
             continue
         }
         
         if ($prefixLength -notmatch '^\d+$' -or [int]$prefixLength -lt 1 -or [int]$prefixLength -gt 32) {
-            Write-Host "ERROR: Introduzca un valor entre 1 y 32"
+            Write-Host "ERROR: Introduzca un valor entre 1 y 32" -ForegroundColor Red
             continue
         }
         
@@ -115,12 +115,12 @@ function Configurar-IPEstatica {
         $gateway = Read-Host "Introduzca la puerta de enlace (gateway)"
         
         if ([string]::IsNullOrWhiteSpace($gateway)) {
-            Write-Host "ERROR: El gateway no puede estar vacío"
+            Write-Host "ERROR: El gateway no puede estar vacío" -ForegroundColor Red
             continue
         }
         
         if ($gateway -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-            Write-Host "ERROR: Formato de gateway inválido"
+            Write-Host "ERROR: Formato de gateway inválido" -ForegroundColor Red
             continue
         }
         
@@ -128,7 +128,7 @@ function Configurar-IPEstatica {
         $valida = $true
         foreach ($parte in $partes) {
             if ([int]$parte -gt 255) {
-                Write-Host "ERROR: Cada octeto debe ser menor o igual a 255"
+                Write-Host "ERROR: Cada octeto debe ser menor o igual a 255" -ForegroundColor Red
                 $valida = $false
                 break
             }
@@ -162,7 +162,7 @@ function Configurar-IPEstatica {
         
         Write-Host "✓ IP estática configurada correctamente"
     } catch {
-        Write-Host "ERROR: No se pudo aplicar la configuración"
+        Write-Host "ERROR: No se pudo aplicar la configuración" -ForegroundColor Red
         Write-Host "Detalles: $_"
     }
 }
@@ -181,7 +181,7 @@ function Configurar-DHCP {
     $adaptadores = Get-NetAdapter
     
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Número de adaptador no válido"
+        Write-Host "ERROR: Número de adaptador no válido" -ForegroundColor Red
         return
     }
     
@@ -268,12 +268,12 @@ function Configurar-DNS {
                 $dns1 = Read-Host "Introduzca el primer servidor DNS"
                 
                 if ([string]::IsNullOrWhiteSpace($dns1)) {
-                    Write-Host "ERROR: DNS no puede estar vacío"
+                    Write-Host "ERROR: DNS no puede estar vacío" -ForegroundColor Red
                     continue
                 }
                 
                 if ($dns1 -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-                    Write-Host "ERROR: Formato de DNS inválido"
+                    Write-Host "ERROR: Formato de DNS inválido" -ForegroundColor Red
                     continue
                 }
                 
@@ -289,7 +289,7 @@ function Configurar-DNS {
                 }
                 
                 if ($dns2 -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-                    Write-Host "ERROR: Formato de DNS inválido"
+                    Write-Host "ERROR: Formato de DNS inválido" -ForegroundColor Red
                     continue
                 }
                 
@@ -327,7 +327,7 @@ function Configurar-DNS {
         Write-Host "Configuración aplicada:"
         Get-DnsClientServerAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4
     } catch {
-        Write-Host "ERROR: No se pudo configurar el DNS"
+        Write-Host "ERROR: No se pudo configurar el DNS" -ForegroundColor Red
         Write-Host "Detalles: $_"
     }
 }
@@ -346,7 +346,7 @@ function Renombrar-Adaptador {
     $adaptadores = Get-NetAdapter
     
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Número de adaptador no válido"
+        Write-Host "ERROR: Número de adaptador no válido" -ForegroundColor Red
         return
     }
     
@@ -360,12 +360,12 @@ function Renombrar-Adaptador {
         $nombreNuevo = Read-Host "Introduzca el nuevo nombre para el adaptador"
         
         if ([string]::IsNullOrWhiteSpace($nombreNuevo)) {
-            Write-Host "ERROR: El nombre no puede estar vacío"
+            Write-Host "ERROR: El nombre no puede estar vacío" -ForegroundColor Red
             continue
         }
         
         if ($nombreNuevo -eq $nombreActual) {
-            Write-Host "ERROR: El nuevo nombre no puede ser igual al anterior"
+            Write-Host "ERROR: El nuevo nombre no puede ser igual al anterior" -ForegroundColor Red
             continue
         }
         
@@ -386,7 +386,7 @@ function Renombrar-Adaptador {
         Write-Host "Nombre anterior: $nombreActual"
         Write-Host "Nombre nuevo: $nombreNuevo"
     } catch {
-        Write-Host "ERROR: No se pudo renombrar el adaptador"
+        Write-Host "ERROR: No se pudo renombrar el adaptador" -ForegroundColor Red
         Write-Host "Detalles: $_"
     }
 }
@@ -450,7 +450,7 @@ do {
     Write-Host "4) Configurar DHCP (IP automática)"
     Write-Host "5) Configurar DNS"
     Write-Host "6) Renombrar adaptador de red"
-    Write-Host "7) Salir"
+    Write-Host "7) Salir" -ForegroundColor Cyan
     
     $opcion = Read-Host "Opción"
     
@@ -462,6 +462,6 @@ do {
         "5" { Configurar-DNS }
         "6" { Renombrar-Adaptador }
         "7" { Write-Host "Saliendo del módulo de configuración de red..." }
-        default { Write-Host "ERROR: Seleccione una opción válida (1-7)" }
+        default { Write-Host "ERROR: Seleccione una opción válida (1-7)" -ForegroundColor Red}
     }
 } while ($opcion -ne "7")

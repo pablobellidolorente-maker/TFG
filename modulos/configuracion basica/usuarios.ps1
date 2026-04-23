@@ -24,7 +24,7 @@ function Crear-Usuario {
 #Comprobacion de si el nombre existe
 
 if (Get-LocalUser -Name $nombre -ErrorAction SilentrlyContinue){
-    Write-Host "ERROR: El usuario ya existe"
+    Write-Host "ERROR: El usuario ya existe"  -ForegroundColor Red
     return
 }
 
@@ -45,7 +45,7 @@ do {
     $plain2 = ConvertFrom-SecureString $pass2 -AsPlainText
 
 if ($plain1 -ne $plain2) {
-    Write-Host "Las contraseñas no coinciden."
+    Write-Host "ERROR: Las contraseñas no coinciden."  -ForegroundColor Red
 }
 
 
@@ -71,14 +71,14 @@ function Crear-Grupo {
         #Comprobacion de nombre no en blanco
 
     if ([string]::IsNullOrWhiteSpace($grupo)) {
-        Write-Host "ERROR: El nombre no puede estar vacío."
+        Write-Host "ERROR: El nombre no puede estar vacío."  -ForegroundColor Red
         return
     }
 
         #Comprobacion de si el nombre existe
 
     if (Get-LocalGroup -Name $grupo -ErrorAction SilentrlyContinue){
-        Write-Host "ERROR: El grupo '$grupo' ya existe"
+        Write-Host "ERROR: El grupo '$grupo' ya existe"  -ForegroundColor Red
         return    
     }
     
@@ -104,12 +104,12 @@ function Anadir-Usuario-Grupo {
     #Al igual que antes, validamos si el usuario y grupo existen
 
      if (-not (Get-LocalUser -Name $usuario -ErrorAction SilentlyContinue)) {
-        Write-Host "ERROR: El usuario '$usuario' no existe."
+        Write-Host "ERROR: El usuario '$usuario' no existe."  -ForegroundColor Red
         return
     }
 
     if (-not (Get-LocalGroup -Name $grupo -ErrorAction SilentlyContinue)) {
-        Write-Host "ERROR: El grupo '$grupo' no existe."
+        Write-Host "ERROR: El grupo '$grupo' no existe."  -ForegroundColor Red
         return
     }
 
@@ -162,7 +162,7 @@ do {
     Write-Host "3) Añadir un usuario a un grupo existente"
     Write-Host "4) Ver usuarios existentes"
     Write-Host "5) Ver grupos existentes"
-    Write-Host "6) Salir"
+    Write-Host "6) Salir"  -ForegroundColor Cyan
 
     #variable de la respuesta
 
@@ -178,7 +178,7 @@ do {
         "5" { Ver-Grupos }
         "6" { Write-Host "Saliendo del menu de usuarios"}
 
-        default { Write-Host "ERROR: Recuerde, debe de elegir un valor entre (1-6)"}    
+        default { Write-Host "ERROR: Recuerde, debe de elegir un valor entre (1-6)"  -ForegroundColor Red }    
     }
 
 } while ($opcion -ne "6")

@@ -17,26 +17,26 @@ $Nombre_nuevo= Read-Host "Introduzca el nuevo nombre de su equipo,tenga en cuent
     #Nombre en blanco
 
 if ([string]::IsNullOrWhiteSpace($Nombre_nuevo))
-    {Write-Host "ERROR: Recuerde,no puede dejar el campo en blanco"
+    {Write-Host "ERROR: Recuerde,no puede dejar el campo en blanco" -ForegroundColor Red
     continue
 }
 
     #Nuevo nombre no es igual al anterior
 
 if ($Nombre_nuevo -eq $Nombre_actual) {
-    Write-Host "El nuevo nombre, no puede ser igual al anterior"
+    Write-Host "ERROR: El nuevo nombre, no puede ser igual al anterior" -ForegroundColor Red
     continue
 }
 
     #Comprobacion de los caracteres utilizados
 
 if ($Nombre_nuevo -notmatch '^[a-zA-Z0-9_-]+$') {
-    Write-host "ERROR: El nuevo nombre solo puede contener letras, números, y guiones"
+    Write-host "ERROR: El nuevo nombre solo puede contener letras, números, y guiones" -ForegroundColor Red
     continue
 }
 
 if ($Nombre_nuevo.Length -gt 10) {
-    Write-Host "ADVERTENCIA: El nombre del equipo supera los 10 caracteres, esto puede suponer un problema en el futuro en el trabajo diario,"
+    Write-Host "!!!ADVERTENCIA: El nombre del equipo supera los 10 caracteres, esto puede suponer un problema en el futuro en el trabajo diario" -ForegroundColor Yellow
 
     do{
         $Confirmacion = Read-Host "¿Quiere continuar? (s/n)"

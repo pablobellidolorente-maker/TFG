@@ -224,7 +224,7 @@ do {
     Write-Host "3) Activar/Desactivar Administrador"
     Write-Host "4) Gestionar permisos NTFS (carpetas )"
     Write-Host "5) Gestionar privilegios de usuarios"
-    Write-Host "6) Salir"
+    Write-Host "6) Salir" -ForegroundColor Cyan
 
     $opcion = Read-Host "Opción"
 
@@ -235,6 +235,6 @@ do {
         "4" { Permisos-carpetas } 
         "5" { Gestionar-Privilegios } 
         "6" { Write-Host "Saliendo del módulo de permisos..." }
-        default { Write-Host "ERROR: Seleccione una opción válida (1-6)" }
+        default { Write-Host "ERROR: Seleccione una opción válida (1-6)" -ForegroundColor Red}
     }
 } while ($opcion -ne "6")

@@ -44,7 +44,7 @@ function Configurar-ZonaHoraria {
             Write-Host ""
             Get-TimeZone -ListAvailable | Format-Table -Property ID, DisplayName -AutoSize
         }
-        default { Write-Host "ERROR: Opción no válida" }
+        default { Write-Host "ERROR: Opción no válida"  -ForegroundColor Red }
     }
 }
 
@@ -75,33 +75,33 @@ function Configurar-Idioma {
     switch ($opcion) {
         "1" { 
             Set-WinUILanguageOverride -Language es-ES
-            Write-Host "ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"
+            Write-Host "!!!ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"  -ForegroundColor Yellow
         }
         "2" { 
             Set-WinUILanguageOverride -Language es-MX
-            Write-Host "ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"
+            Write-Host "!!!ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"  -ForegroundColor Yellow
         }
         "3" { 
             Set-WinUILanguageOverride -Language en-US
-            Write-Host "ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"
+            Write-Host "!!!ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"  -ForegroundColor Yellow
         }
         "4" { 
             Set-WinUILanguageOverride -Language en-GB
-            Write-Host "ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"
+            Write-Host "!!!ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"  -ForegroundColor Yellow
         }
         "5" { 
             Set-WinUILanguageOverride -Language fr-FR
-            Write-Host "ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"
+            Write-Host "!!!ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"  -ForegroundColor Yellow
         }
         "6" { 
             Set-WinUILanguageOverride -Language de-DE
-            Write-Host "ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"
+            Write-Host "!!!ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"  -ForegroundColor Yellow
         }
         "7" { 
             Set-WinUILanguageOverride -Language it-IT
-            Write-Host "ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"
+            Write-Host "!!!ADVERTENCIA: El cambio de idioma requiere reinicio del sistema"  -ForegroundColor Yellow
         }
-        default { Write-Host "ERROR: Opción no válida" }
+        default { Write-Host "ERROR: Opción no válida"  -ForegroundColor Red }
     }
 }
 
@@ -161,7 +161,7 @@ function Configurar-Teclado {
             Set-WinUserLanguageList $userLanguageList -Force
             Write-Host "Teclado cambiado a: Alemán (Alemania)"
         }
-        default { Write-Host "ERROR: Opción no válida" }
+        default { Write-Host "ERROR: Opción no válida"  -ForegroundColor Red }
     }
 }
 
@@ -173,8 +173,8 @@ function Actualizar-Sistema {
     Write-Host "`n--- Actualizar Sistema Operativo ---"
     Write-Host ""
     
-    Write-Host "ADVERTENCIA: Este proceso puede tardar bastante tiempo"
-    Write-Host "ADVERTENCIA: El sistema podría reiniciarse durante las actualizaciones"
+    Write-Host "!!!ADVERTENCIA: Este proceso puede tardar bastante tiempo"  -ForegroundColor Yellow
+    Write-Host "!!!ADVERTENCIA: El sistema podría reiniciarse durante las actualizaciones"  -ForegroundColor Yellow
     Write-Host ""
     
     $confirmacion = Read-Host "¿Desea continuar con la actualización? (s/n)"
@@ -233,7 +233,7 @@ function Actualizar-Sistema {
         
         if ($InstallationResult.Rebootrequired) {
             Write-Host "✓ Actualizaciones instaladas correctamente"
-            Write-Host "ADVERTENCIA: El sistema requiere reinicio para completar las actualizaciones"
+            Write-Host "!!!ADVERTENCIA: El sistema requiere reinicio para completar las actualizaciones"  -ForegroundColor Yellow
             
             $reinicio = Read-Host "¿Desea reiniciar ahora? (s/n)"
             
@@ -247,7 +247,7 @@ function Actualizar-Sistema {
         }
         
     } catch {
-        Write-Host "ERROR: No se pudo acceder a Windows Update"
+        Write-Host "ERROR: No se pudo acceder a Windows Update" -ForegroundColor Red
         Write-Host "Asegúrese de ejecutar el script como administrador"
     }
 }
@@ -310,7 +310,7 @@ do {
     Write-Host "3) Configurar Distribución de Teclado"
     Write-Host "4) Actualizar Sistema Operativo"
     Write-Host "5) Ver Información del Sistema"
-    Write-Host "6) Salir"
+    Write-Host "6) Salir" -ForegroundColor Cyan
     
     $opcion = Read-Host "Opción"
     
@@ -321,6 +321,6 @@ do {
         "4" { Actualizar-Sistema }
         "5" { Ver-InfoSistema }
         "6" { Write-Host "Saliendo del módulo de configuración del sistema..." }
-        default { Write-Host "ERROR: Seleccione una opción válida (1-6)" }
+        default { Write-Host "ERROR: Seleccione una opción válida (1-6)" -ForegroundColor Red }
     }
 } while ($opcion -ne "6")
