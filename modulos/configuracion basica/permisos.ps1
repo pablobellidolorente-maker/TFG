@@ -119,19 +119,31 @@ function Gestionar-Privilegios {
     switch ($opcion) {
         "1" { 
             $usuario = Read-Host "Nombre del usuario"
+
+             if (-not (Get-LocalUser -Name $usuario -ErrorAction SilentlyContinue)) {
+                Write-Host "ERROR: El usuario '$usuario' no existe." -ForegroundColor Red
+                return
+            }
+
             Add-LocalGroupMember -Group "Administrators" -Member $usuario
             Write-Host "Usuario añadido."
         }
 
         "2" { 
             $usuario = Read-Host "Nombre del usuario"
+
+             if (-not (Get-LocalUser -Name $usuario -ErrorAction SilentlyContinue)) {
+                Write-Host "ERROR: El usuario '$usuario' no existe." -ForegroundColor Red
+                return
+            }
+            
             Remove-LocalGroupMember -Group "Administrators" -Member $usuario
             Write-Host "Usuario eliminado."
         }
 
         "3" { VerUsuarios }
 
-        default { Write-Host "Opción no válida." }
+        default { Write-Host "ERROR: Opción no válida." -ForegroundColor Red }
     }
 }
 

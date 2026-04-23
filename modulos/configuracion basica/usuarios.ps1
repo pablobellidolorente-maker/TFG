@@ -23,9 +23,10 @@ function Crear-Usuario {
 
 #Comprobacion de si el nombre existe
 
-if (Get-LocalUser -Name $nombre -ErrorAction SilentrlyContinue){
+if (Get-LocalUser -Name $nombre -ErrorAction SilentlyContinue){
     Write-Host "ERROR: El usuario ya existe"  -ForegroundColor Red
     return
+    }
 }
 
 #Descripcion para el usuario (no es obligatoria)
@@ -38,18 +39,16 @@ do {
     $pass1 = Read-Host "Introduzca la contraseña" -AsSecureString
     $pass2 = Read-Host "Repita la contraseña" -AsSecureString
 
-    #IMPORTANTE!!! Al convertir las contraseñas a SecureString, dejan de ser texto plano,
-    #Por ello las dos siguientes lineas lo transforman de nuevoa a texto plano para asi poder compararlas
+    # Convertimos ambos SecureString a un formato comparable
+    $hash1 = $pass1 | ConvertFrom-SecureString
+    $hash2 = $pass2 | ConvertFrom-SecureString
 
-    $plain1 = ConvertFrom-SecureString $pass1 -AsPlainText
-    $plain2 = ConvertFrom-SecureString $pass2 -AsPlainText
+    if ($hash1 -ne $hash2) {
+        Write-Host "ERROR: Las contraseñas no coinciden." -ForegroundColor Red
+    }
 
-if ($plain1 -ne $plain2) {
-    Write-Host "ERROR: Las contraseñas no coinciden."  -ForegroundColor Red
-}
+} while ($hash1 -ne $hash2)
 
-
-} while ($plain1 -ne $plain2)
 
 #Al llegar aquí tenemos ya el nombre y las credenciales del usuario, ahora con esos datos en la variable, creamos el usuario
 
@@ -77,7 +76,7 @@ function Crear-Grupo {
 
         #Comprobacion de si el nombre existe
 
-    if (Get-LocalGroup -Name $grupo -ErrorAction SilentrlyContinue){
+    if (Get-LocalGroup -Name $grupo -ErrorAction SilentlyContinue){
         Write-Host "ERROR: El grupo '$grupo' ya existe"  -ForegroundColor Red
         return    
     }

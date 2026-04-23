@@ -42,7 +42,7 @@ if ($Nombre_nuevo.Length -gt 10) {
         $Confirmacion = Read-Host "¿Quiere continuar? (s/n)"
 
         if ($Confirmacion -notmatch "^[sn]$"){
-        Write-Host "Debe introducir los caracteres 's' o 'n'"
+        Write-Host "ERROR: Debe introducir los caracteres 's' o 'n'" -ForegroundColor Red
      }
         } while ($Confirmacion -notmatch "^[sn]$")
 
@@ -65,7 +65,7 @@ do{
 $reinicio = Read-Host "Para efectuar el cambio, se requiere reiniciar, ¿quiere reiniciar ahora? (s/n)" 
 
 if ($reinicio -notmatch "^[sn]$"){
-     Write-Host "Debe introducir los caracteres 's' o 'n'"
+     Write-Host "ERROR: Debe introducir los caracteres 's' o 'n'" -ForegroundColor Red
     }
     
 }while ($reinicio -notmatch "^[sn]$")
