@@ -1,5 +1,5 @@
 # TFG
-TFG ASIR 2º Alvaro y Pablo
+TFG ASIR 2º Álvaro y Pablo
 
 He pensado que los scripts que vamos a hacer si te paras a pensar, creo que son muy básicos, podemos tocar y complicarlos un poco pero quizá, debido a esto, es más importante como lo compartamentemos , la organizacion y la presentacion.
 
