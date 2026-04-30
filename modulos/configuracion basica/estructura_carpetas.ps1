@@ -1,7 +1,7 @@
 #Crearemos las carpetas necesarias para una empresa promedio, y así despues dar permisos a los usuarios pertinentes
 
 
-Write-Host "========= CREACIÓN DE ESTRUCTURA DE CARPETAS ========="
+Write-Host "========= CREACION DE ESTRUCTURA DE CARPETAS ========="
 
 #Array lista de carpetas a crear
 
@@ -24,6 +24,5 @@ foreach ($carpeta in $carpetas) {
         Write-Host "La carpeta ya existe: $carpeta"    
     }
 }
-Write-Host " "
-
+Write-Host ""
 Write-Host "Estructura creada correctamente"

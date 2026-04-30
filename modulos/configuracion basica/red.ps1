@@ -1,17 +1,19 @@
 
-Write-Host "========== CONFIGURACIÓN DE RED =========="
+Write-Host "========== CONFIGURACION DE RED =========="
 
-#Declaramos funciones para que así se las pueda llamar desde el menú interactivo
+#Declaramos funciones para que asi se las pueda llamar desde el menu interactivo
 
 #------------------------------------------------------------------------------
-#FUNCIÓN PARA VER ADAPTADORES DE RED
+#FUNCION PARA VER ADAPTADORES DE RED
 
 function Ver-Adaptadores {
     
     Write-Host "`n--- Adaptadores de Red Disponibles ---"
     Write-Host ""
     
-    $adaptadores = Get-NetAdapter
+    $adaptadores = @(Get-NetAdapter | Where-Object { $_.Status -ne "Not Present" })
+
+
     
     if ($adaptadores.Count -eq 0) {
         Write-Host "ERROR: No se encontraron adaptadores de red" -ForegroundColor Red
@@ -22,7 +24,7 @@ function Ver-Adaptadores {
     $adaptadores | ForEach-Object {
         Write-Host "($contador) Nombre: $($_.Name)"
         Write-Host "   Estado: $($_.Status)"
-        Write-Host "   Descripción: $($_.InterfaceDescription)"
+        Write-Host "   Descripcion: $($_.InterfaceDescription)"
         Write-Host "   Tipo: $($_.MediaConnectionState)"
         Write-Host ""
         $contador++
@@ -30,51 +32,53 @@ function Ver-Adaptadores {
 }
 
 #------------------------------------------------------------------------------
-#FUNCIÓN PARA CONFIGURAR IP ESTÁTICA
+#FUNCION PARA CONFIGURAR IP ESTATICA
 
 function Configurar-IPEstatica {
     
-    Write-Host "`n--- Configurar IP Estática ---"
+    Write-Host "`n--- Configurar IP Estatica ---"
     Write-Host ""
     
     Ver-Adaptadores
     
-    $numeroAdaptador = Read-Host "Seleccione el número del adaptador a configurar"
-    $adaptadores = Get-NetAdapter
+    $numeroAdaptador = Read-Host "Seleccione el numero del adaptador a configurar"
+    $adaptadores = @(Get-NetAdapter | Where-Object { $_.Status -ne "Not Present" })
+
+
     
-    # Validación del número de adaptador
+    # Validacion del numero de adaptador
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Número de adaptador no válido" -ForegroundColor Red
+        Write-Host "ERROR: Numero de adaptador no valido" -ForegroundColor Red
         return
     }
     
     $adaptadorSeleccionado = $adaptadores[[int]$numeroAdaptador - 1]
     $nombreAdaptador = $adaptadorSeleccionado.Name
     
-    Write-Host "`nConfiguración actual de $nombreAdaptador:"
+    Write-Host "`nConfiguracion actual de ${nombreAdaptador}:"
     $ipActual = Get-NetIPAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4 -ErrorAction SilentlyContinue
     
     if ($ipActual) {
         Write-Host "IP actual: $($ipActual.IPAddress)"
-        Write-Host "Máscara de red: $($ipActual.PrefixLength)"
+        Write-Host "Mascara de red: $($ipActual.PrefixLength)"
     } else {
-        Write-Host "Sin configuración de IP estática"
+        Write-Host "Sin configuracion de IP estatica"
     }
     
     Write-Host ""
     
     # Solicitar nueva IP (con validaciones)
     do {
-        $nuevaIP = Read-Host "Introduzca la nueva dirección IP"
+        $nuevaIP = Read-Host "Introduzca la nueva direccion IP"
         
         if ([string]::IsNullOrWhiteSpace($nuevaIP)) {
-            Write-Host "ERROR: La IP no puede estar vacía" -ForegroundColor Red
+            Write-Host "ERROR: La IP no puede estar vacia" -ForegroundColor Red
             continue
         }
         
         # Validar formato de IP
         if ($nuevaIP -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-            Write-Host "ERROR: Formato de IP inválido (use formato XXX.XXX.XXX.XXX)" -ForegroundColor Red
+            Write-Host "ERROR: Formato de IP invalido (use formato XXX.XXX.XXX.XXX)" -ForegroundColor Red
             continue
         }
         
@@ -93,12 +97,12 @@ function Configurar-IPEstatica {
         }
     } while ($true)
     
-    # Solicitar máscara de red (CIDR)
+    # Solicitar mascara de red (CIDR)
     do {
-        $prefixLength = Read-Host "Introduzca la máscara de red en CIDR (normalmente 24)"
+        $prefixLength = Read-Host "Introduzca la mascara de red en CIDR (normalmente 24)"
         
         if ([string]::IsNullOrWhiteSpace($prefixLength)) {
-            Write-Host "ERROR: La máscara no puede estar vacía" -ForegroundColor Red
+            Write-Host "ERROR: La mascara no puede estar vacia" -ForegroundColor Red
             continue
         }
         
@@ -115,12 +119,12 @@ function Configurar-IPEstatica {
         $gateway = Read-Host "Introduzca la puerta de enlace (gateway)"
         
         if ([string]::IsNullOrWhiteSpace($gateway)) {
-            Write-Host "ERROR: El gateway no puede estar vacío" -ForegroundColor Red
+            Write-Host "ERROR: El gateway no puede estar vacio" -ForegroundColor Red
             continue
         }
         
         if ($gateway -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-            Write-Host "ERROR: Formato de gateway inválido" -ForegroundColor Red
+            Write-Host "ERROR: Formato de gateway invalido" -ForegroundColor Red
             continue
         }
         
@@ -140,17 +144,17 @@ function Configurar-IPEstatica {
     } while ($true)
     
     Write-Host ""
-    Write-Host "Resumen de configuración:"
+    Write-Host "Resumen de configuracion:"
     Write-Host "Adaptador: $nombreAdaptador"
     Write-Host "IP: $nuevaIP"
-    Write-Host "Máscara (CIDR): /$prefixLength"
+    Write-Host "Mascara (CIDR): /$prefixLength"
     Write-Host "Gateway: $gateway"
     Write-Host ""
     
-    $confirmacion = Read-Host "¿Desea aplicar esta configuración? (s/n)"
+    $confirmacion = Read-Host "Desea aplicar esta configuracion? (s/n)"
     
     if ($confirmacion -ne "s") {
-        Write-Host "Configuración cancelada"
+        Write-Host "Configuracion cancelada"
         return
     }
     
@@ -160,64 +164,66 @@ function Configurar-IPEstatica {
         
         New-NetIPAddress -InterfaceAlias $nombreAdaptador -IPAddress $nuevaIP -PrefixLength $prefixLength -DefaultGateway $gateway | Out-Null
         
-        Write-Host "✓ IP estática configurada correctamente"
+        Write-Host "✓ IP estatica configurada correctamente"
     } catch {
-        Write-Host "ERROR: No se pudo aplicar la configuración" -ForegroundColor Red
+        Write-Host "ERROR: No se pudo aplicar la configuracion" -ForegroundColor Red
         Write-Host "Detalles: $_"
     }
 }
 
 #------------------------------------------------------------------------------
-#FUNCIÓN PARA CONFIGURAR DHCP
+#FUNCION PARA CONFIGURAR DHCP
 
-function Configurar-DHCP {
-    
-    Write-Host "`n--- Configurar DHCP ---"
+function Prueba {
+
+    Write-Host "`n--- Configurar DHCP (IP Automatica) ---"
     Write-Host ""
-    
+
     Ver-Adaptadores
-    
-    $numeroAdaptador = Read-Host "Seleccione el número del adaptador a configurar"
-    $adaptadores = Get-NetAdapter
-    
+
+    $numeroAdaptador = Read-Host "Seleccione el numero del adaptador"
+    $adaptadores = @(Get-NetAdapter | Where-Object { $_.Status -ne "Not Present" })
+
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Número de adaptador no válido" -ForegroundColor Red
+        Write-Host "ERROR: Numero de adaptador no valido" -ForegroundColor Red
         return
     }
-    
+
     $adaptadorSeleccionado = $adaptadores[[int]$numeroAdaptador - 1]
     $nombreAdaptador = $adaptadorSeleccionado.Name
-    
-    Write-Host ""
-    $confirmacion = Read-Host "¿Desea configurar $nombreAdaptador para obtener IP automáticamente (DHCP)? (s/n)"
-    
+
+    $confirmacion = Read-Host "Desea activar DHCP en el adaptador '$nombreAdaptador'? (s/n)"
     if ($confirmacion -ne "s") {
-        Write-Host "Configuración cancelada"
+        Write-Host "Operacion cancelada"
         return
     }
-    
+
     try {
         Remove-NetIPAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4 -Confirm:$false -ErrorAction SilentlyContinue
         Remove-NetRoute -InterfaceAlias $nombreAdaptador -Confirm:$false -ErrorAction SilentlyContinue
-        
+
         Set-NetIPInterface -InterfaceAlias $nombreAdaptador -Dhcp Enabled
-        
-        Write-Host "✓ DHCP configurado correctamente en $nombreAdaptador"
-        Write-Host "ADVERTENCIA: Espere unos segundos a que el adaptador obtenga IP..."
+        Set-DnsClientServerAddress -InterfaceAlias $nombreAdaptador -ResetServerAddresses
+
+        Write-Host " DHCP activado correctamente en $nombreAdaptador"
         Start-Sleep -Seconds 3
-        
+
         $ipDHCP = Get-NetIPAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4 -ErrorAction SilentlyContinue
         if ($ipDHCP) {
             Write-Host "IP asignada: $($ipDHCP.IPAddress)"
+        } else {
+            Write-Host "Aun no se ha asignado una IP via DHCP"
         }
-    } catch {
-        Write-Host "ERROR: No se pudo configurar DHCP"
+    }
+    catch {
+        Write-Host "ERROR: No se pudo configurar DHCP" -ForegroundColor Red
         Write-Host "Detalles: $_"
     }
 }
 
+
 #------------------------------------------------------------------------------
-#FUNCIÓN PARA CONFIGURAR DNS
+#FUNCION PARA CONFIGURAR DNS
 
 function Configurar-DNS {
     
@@ -226,11 +232,13 @@ function Configurar-DNS {
     
     Ver-Adaptadores
     
-    $numeroAdaptador = Read-Host "Seleccione el número del adaptador a configurar DNS"
-    $adaptadores = Get-NetAdapter
+    $numeroAdaptador = Read-Host "Seleccione el numero del adaptador a configurar DNS"
+    $adaptadores = @(Get-NetAdapter | Where-Object { $_.Status -ne "Not Present" })
+
+
     
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Número de adaptador no válido"
+        Write-Host "ERROR: Numero de adaptador no valido"
         return
     }
     
@@ -245,7 +253,7 @@ function Configurar-DNS {
     Write-Host "4) Configurar DNS personalizados"
     Write-Host "5) Ver DNS actual"
     
-    $opcion = Read-Host "Seleccione una opción"
+    $opcion = Read-Host "Seleccione una opcion"
     
     switch ($opcion) {
         "1" { 
@@ -268,12 +276,12 @@ function Configurar-DNS {
                 $dns1 = Read-Host "Introduzca el primer servidor DNS"
                 
                 if ([string]::IsNullOrWhiteSpace($dns1)) {
-                    Write-Host "ERROR: DNS no puede estar vacío" -ForegroundColor Red
+                    Write-Host "ERROR: DNS no puede estar vacio" -ForegroundColor Red
                     continue
                 }
                 
                 if ($dns1 -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-                    Write-Host "ERROR: Formato de DNS inválido" -ForegroundColor Red
+                    Write-Host "ERROR: Formato de DNS invalido" -ForegroundColor Red
                     continue
                 }
                 
@@ -289,7 +297,7 @@ function Configurar-DNS {
                 }
                 
                 if ($dns2 -notmatch '^(\d{1,3}\.){3}\d{1,3}$') {
-                    Write-Host "ERROR: Formato de DNS inválido" -ForegroundColor Red
+                    Write-Host "ERROR: Formato de DNS invalido" -ForegroundColor Red
                     continue
                 }
                 
@@ -298,20 +306,20 @@ function Configurar-DNS {
         }
         "5" {
             Write-Host ""
-            Write-Host "DNS actual para $nombreAdaptador:"
+            Write-Host "DNS actual para ${nombreAdaptador}:"
             Get-DnsClientServerAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4
             return
         }
         default { 
-            Write-Host "ERROR: Opción no válida"
+            Write-Host "ERROR: Opcion no valida"
             return
         }
     }
     
-    $confirmacion = Read-Host "¿Desea aplicar estos cambios de DNS? (s/n)"
+    $confirmacion = Read-Host "Desea aplicar estos cambios de DNS? (s/n)"
     
     if ($confirmacion -ne "s") {
-        Write-Host "Configuración cancelada"
+        Write-Host "Configuracion cancelada"
         return
     }
     
@@ -324,7 +332,7 @@ function Configurar-DNS {
         
         Write-Host "✓ DNS configurado correctamente"
         Write-Host ""
-        Write-Host "Configuración aplicada:"
+        Write-Host "Configuracion aplicada:"
         Get-DnsClientServerAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4
     } catch {
         Write-Host "ERROR: No se pudo configurar el DNS" -ForegroundColor Red
@@ -333,89 +341,98 @@ function Configurar-DNS {
 }
 
 #------------------------------------------------------------------------------
-#FUNCIÓN PARA RENOMBRAR ADAPTADOR DE RED
+#FUNCION PARA RENOMBRAR ADAPTADOR DE RED
 
 function Renombrar-Adaptador {
-    
-    Write-Host "`n--- Renombrar Adaptador de Red ---"
-    Write-Host ""
-    
+
+    Write-Host "`n--- Renombrar Adaptador de Red ---`n"
+
     Ver-Adaptadores
-    
-    $numeroAdaptador = Read-Host "Seleccione el número del adaptador a renombrar"
-    $adaptadores = Get-NetAdapter
-    
+
+    $numeroAdaptador = Read-Host "Seleccione el numero del adaptador a renombrar"
+    $adaptadores = @(Get-NetAdapter | Where-Object { $_.Status -ne "Not Present" })
+
+    # Validación
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Número de adaptador no válido" -ForegroundColor Red
+        Write-Host "ERROR: Numero de adaptador no valido" -ForegroundColor Red
         return
     }
-    
+
+    # Adaptador seleccionado
     $adaptadorSeleccionado = $adaptadores[[int]$numeroAdaptador - 1]
     $nombreActual = $adaptadorSeleccionado.Name
-    
+
     Write-Host ""
-    Write-Host "Nombre actual: $nombreActual"
-    
+    Write-Host "Nombre actual del adaptador: $nombreActual"
+
+    # Solicitar nuevo nombre
     do {
         $nombreNuevo = Read-Host "Introduzca el nuevo nombre para el adaptador"
-        
+
         if ([string]::IsNullOrWhiteSpace($nombreNuevo)) {
-            Write-Host "ERROR: El nombre no puede estar vacío" -ForegroundColor Red
+            Write-Host "ERROR: El nombre no puede estar vacio" -ForegroundColor Red
             continue
         }
-        
+
         if ($nombreNuevo -eq $nombreActual) {
             Write-Host "ERROR: El nuevo nombre no puede ser igual al anterior" -ForegroundColor Red
             continue
         }
-        
+
         break
     } while ($true)
-    
+
     Write-Host ""
-    $confirmacion = Read-Host "¿Desea renombrar $nombreActual a $nombreNuevo? (s/n)"
-    
+
+    # Mensaje de confirmación con variables FORZADAS
+    $mensaje = "Desea renombrar '$nombreActual' a '$nombreNuevo'? (s/n)"
+    $confirmacion = Read-Host $mensaje
+
     if ($confirmacion -ne "s") {
-        Write-Host "Operación cancelada"
+        Write-Host "Operacion cancelada"
         return
     }
-    
+
+    # Renombrar adaptador
     try {
         Rename-NetAdapter -Name $nombreActual -NewName $nombreNuevo
-        Write-Host "✓ Adaptador renombrado correctamente"
+        Write-Host " Adaptador renombrado correctamente"
         Write-Host "Nombre anterior: $nombreActual"
         Write-Host "Nombre nuevo: $nombreNuevo"
-    } catch {
+    }
+    catch {
         Write-Host "ERROR: No se pudo renombrar el adaptador" -ForegroundColor Red
         Write-Host "Detalles: $_"
     }
 }
 
 #------------------------------------------------------------------------------
-#FUNCIÓN PARA VER CONFIGURACIÓN DE RED ACTUAL
+#FUNCION PARA VER CONFIGURACION DE RED ACTUAL
 
 function Ver-ConfiguracionRed {
     
-    Write-Host "`n--- Configuración de Red Actual ---"
+    Write-Host "`n--- Configuracion de Red Actual ---"
     Write-Host ""
     
-    $adaptadores = Get-NetAdapter
-    
+    $adaptadores = @(Get-NetAdapter | Where-Object { $_.Status -ne "Not Present" })
+
+
+
     foreach ($adaptador in $adaptadores) {
         Write-Host "=== Adaptador: $($adaptador.Name) ==="
         Write-Host "Estado: $($adaptador.Status)"
-        Write-Host "Descripción: $($adaptador.InterfaceDescription)"
-        Write-Host "Dirección MAC: $($adaptador.MacAddress)"
+        Write-Host "Descripcion: $($adaptador.InterfaceDescription)"
+        Write-Host "Direccion MAC: $($adaptador.MacAddress)"
         Write-Host ""
         
         # IP Configuration
-        Write-Host "Configuración IPv4:"
+        Write-Host "Configuracion IPv4:"
         $ipConfig = Get-NetIPAddress -InterfaceAlias $adaptador.Name -AddressFamily IPv4 -ErrorAction SilentlyContinue
         if ($ipConfig) {
             Write-Host "  IP: $($ipConfig.IPAddress)"
-            Write-Host "  Máscara (CIDR): /$($ipConfig.PrefixLength)"
+            Write-Host "  Mascara (CIDR): /$($ipConfig.PrefixLength)"
         } else {
-            Write-Host "  Sin configuración IPv4"
+            Write-Host "  Sin configuracion IPv4"
         }
         
         # Gateway
@@ -440,28 +457,28 @@ function Ver-ConfiguracionRed {
 }
 
 #=============================================
-#MENÚ PRINCIPAL
+#MENU PRINCIPAL
 
 do {
-    Write-Host "`nSeleccione una opción:"
+    Write-Host "`nSeleccione una opcion:"
     Write-Host "1) Ver adaptadores de red disponibles"
-    Write-Host "2) Ver configuración de red actual"
-    Write-Host "3) Configurar IP estática"
-    Write-Host "4) Configurar DHCP (IP automática)"
+    Write-Host "2) Ver configuracion de red actual"
+    Write-Host "3) Configurar IP estatica"
+    Write-Host "4) Configurar DHCP (IP automatica)"
     Write-Host "5) Configurar DNS"
     Write-Host "6) Renombrar adaptador de red"
     Write-Host "7) Salir" -ForegroundColor Cyan
     
-    $opcion = Read-Host "Opción"
+    $opcion = Read-Host "Opcion"
     
     switch ($opcion) {
         "1" { Ver-Adaptadores }
         "2" { Ver-ConfiguracionRed }
         "3" { Configurar-IPEstatica }
-        "4" { Configurar-DHCP }
+        "4" { Prueba }
         "5" { Configurar-DNS }
         "6" { Renombrar-Adaptador }
-        "7" { Write-Host "Saliendo del módulo de configuración de red..." }
-        default { Write-Host "ERROR: Seleccione una opción válida (1-7)" -ForegroundColor Red}
+        "7" { Write-Host "Saliendo del modulo de configuracion de red..." }
+        default { Write-Host "ERROR: Seleccione una opcion valida (1-7)" -ForegroundColor Red}
     }
 } while ($opcion -ne "7")

@@ -1,6 +1,6 @@
 Write-Host "=========HOSTNAME========="
 
-# A continuación se muestra el nombre actual del equipo
+# A continuacion se muestra el nombre actual del equipo
 
 $Nombre_actual= $env:COMPUTERNAME
 
@@ -31,7 +31,7 @@ if ($Nombre_nuevo -eq $Nombre_actual) {
     #Comprobacion de los caracteres utilizados
 
 if ($Nombre_nuevo -notmatch '^[a-zA-Z0-9_-]+$') {
-    Write-host "ERROR: El nuevo nombre solo puede contener letras, números, y guiones" -ForegroundColor Red
+    Write-host "ERROR: El nuevo nombre solo puede contener letras, numeros, y guiones" -ForegroundColor Red
     continue
 }
 
@@ -39,7 +39,7 @@ if ($Nombre_nuevo.Length -gt 10) {
     Write-Host "!!!ADVERTENCIA: El nombre del equipo supera los 10 caracteres, esto puede suponer un problema en el futuro en el trabajo diario" -ForegroundColor Yellow
 
     do{
-        $Confirmacion = Read-Host "¿Quiere continuar? (s/n)"
+        $Confirmacion = Read-Host "Quiere continuar? (s/n)"
 
         if ($Confirmacion -notmatch "^[sn]$"){
         Write-Host "ERROR: Debe introducir los caracteres 's' o 'n'" -ForegroundColor Red
@@ -52,7 +52,7 @@ if ($Nombre_nuevo.Length -gt 10) {
     }
 }
 
-#Una vez pasa aquí, significa que el nombre es valido, por lo que comienza el cambio
+#Una vez pasa aqui, significa que el nombre es valido, por lo que comienza el cambio
 
 Write-Host "Cambiando nombre del equipo a $Nombre_nuevo"
 
@@ -62,7 +62,7 @@ Rename-Computer -NewName $Nombre_nuevo -Force
 
 do{
 
-$reinicio = Read-Host "Para efectuar el cambio, se requiere reiniciar, ¿quiere reiniciar ahora? (s/n)" 
+$reinicio = Read-Host "Para efectuar el cambio, se requiere reiniciar, quiere reiniciar ahora? (s/n)" 
 
 if ($reinicio -notmatch "^[sn]$"){
      Write-Host "ERROR: Debe introducir los caracteres 's' o 'n'" -ForegroundColor Red
@@ -73,11 +73,9 @@ if ($reinicio -notmatch "^[sn]$"){
 if ($reinicio -eq "s") {
     Restart-Computer
 } else {
-    Write-Host "El cambio se aplicará cuando el ordenador se reinicie"
+    Write-Host "El cambio se aplicara cuando el ordenador se reinicie"
 }
-
-
 
 break
 
-
+}
