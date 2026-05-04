@@ -425,7 +425,7 @@ function Ver-ConfiguracionRed {
         Write-Host "Direccion MAC: $($adaptador.MacAddress)"
         Write-Host ""
         
-        # IP Configuration
+        # IP Configuracion
         Write-Host "Configuracion IPv4:"
         $ipConfig = Get-NetIPAddress -InterfaceAlias $adaptador.Name -AddressFamily IPv4 -ErrorAction SilentlyContinue
         if ($ipConfig) {
