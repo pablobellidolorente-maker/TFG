@@ -159,7 +159,7 @@ function Actualizar-Sistema {
             $r = Read-Host "Reiniciar ahora? (s/n)"
             if ($r -eq "s") { Restart-Computer -Force }
         } else {
-            Write-Host "Actualizaciones instaladas correctamente"
+            Write-Host "Actualizaciones instaladas correctamente" -ForegroundColor Green
         }
 
     } catch {

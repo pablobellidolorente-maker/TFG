@@ -54,5 +54,5 @@ Write-Host "`nEjecutando red.ps1"
 Write-Host "`nEjecutando sistema.ps1"
 & "$PSScriptRoot\sistema.ps1"
 
-Write-Host "`n================= CONFIGURACION BASICA COMPLETADA ================="
+Write-Host "`n================= CONFIGURACION BASICA COMPLETADA =================" -ForegroundColor Green
 

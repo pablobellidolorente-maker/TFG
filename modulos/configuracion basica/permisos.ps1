@@ -84,7 +84,7 @@ function Configurar-UAC {
         default { Write-Host "Opcion no valida" }
     }
 
-    Write-Host "UAC configurado correctamente"
+    Write-Host "UAC configurado correctamente" -ForegroundColor Green
 }
 
 #=====================================================
@@ -183,7 +183,7 @@ function Permisos-Carpetas {
 
     $ruta = Read-Host "Introduzca la ruta completa de la carpeta que quiere gestionar"
     if (-not (Test-Path $ruta)) {
-        Write-Host "La ruta no existe o no la ha escrito correctamente"
+        Write-Host "ERROR: La ruta no existe o no la ha escrito correctamente" -ForegroundColor Red
         return
     }
 
@@ -198,17 +198,17 @@ function Permisos-Carpetas {
 
         "1" {
             icacls $ruta /grant Administrators:F /T
-            Write-Host "Permisos aplicados correctamente"
+            Write-Host "Permisos aplicados correctamente" -ForegroundColor Green
         }
         
         "2" {
             icacls $ruta /grant Users:R /T
-            Write-Host "Permisos aplicados correctamente"
+            Write-Host "Permisos aplicados correctamente" -ForegroundColor Green
         }
 
         "3" {
             icacls $ruta /inheritance:d
-            Write-Host "La herencia ha sido desactivada correctamente"
+            Write-Host "La herencia ha sido desactivada correctamente" -ForegroundColor Green
         }
 
         "4" {

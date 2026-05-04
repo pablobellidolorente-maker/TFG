@@ -25,4 +25,4 @@ foreach ($carpeta in $carpetas) {
     }
 }
 Write-Host ""
-Write-Host "Estructura creada correctamente"
+Write-Host "Estructura creada correctamente" -ForegroundColor Green

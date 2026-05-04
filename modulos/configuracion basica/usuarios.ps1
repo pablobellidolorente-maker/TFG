@@ -37,7 +37,7 @@ function Crear-Usuario {
     $securePass = ConvertTo-SecureString $p1 -AsPlainText -Force
 
     New-LocalUser -Name $nombre -Password $securePass -Description $descripcion
-    Write-Host "Usuario '$nombre' creado correctamente"
+    Write-Host "Usuario '$nombre' creado correctamente" -ForegroundColor Green
 }
 
 #------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ function Crear-Grupo {
     }
 
     New-LocalGroup -Name $grupo
-    Write-Host "Grupo '$grupo' creado correctamente"
+    Write-Host "Grupo '$grupo' creado correctamente" -ForegroundColor Green
 }
 
 #------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ function Anadir-Usuario-Grupo {
     }
 
     Add-LocalGroupMember -Group $grupo -Member $usuario -ErrorAction Stop
-    Write-Host "Usuario anadido correctamente"
+    Write-Host "Usuario anadido correctamente" -ForegroundColor Green
 }
 
 #------------------------------------------------------------------------------

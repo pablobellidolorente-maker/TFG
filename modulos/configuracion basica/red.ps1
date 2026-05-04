@@ -164,7 +164,7 @@ function Configurar-IPEstatica {
         
         New-NetIPAddress -InterfaceAlias $nombreAdaptador -IPAddress $nuevaIP -PrefixLength $prefixLength -DefaultGateway $gateway | Out-Null
         
-        Write-Host "✓ IP estatica configurada correctamente"
+        Write-Host "✓ IP estatica configurada correctamente" -ForegroundColor Green
     } catch {
         Write-Host "ERROR: No se pudo aplicar la configuracion" -ForegroundColor Red
         Write-Host "Detalles: $_"
@@ -205,7 +205,7 @@ function Prueba {
         Set-NetIPInterface -InterfaceAlias $nombreAdaptador -Dhcp Enabled
         Set-DnsClientServerAddress -InterfaceAlias $nombreAdaptador -ResetServerAddresses
 
-        Write-Host " DHCP activado correctamente en $nombreAdaptador"
+        Write-Host " DHCP activado correctamente en $nombreAdaptador" -ForegroundColor Green
         Start-Sleep -Seconds 3
 
         $ipDHCP = Get-NetIPAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4 -ErrorAction SilentlyContinue
@@ -238,7 +238,7 @@ function Configurar-DNS {
 
     
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
-        Write-Host "ERROR: Numero de adaptador no valido"
+        Write-Host "ERROR: Numero de adaptador no valido" -ForegroundColor Red
         return
     }
     
@@ -311,7 +311,7 @@ function Configurar-DNS {
             return
         }
         default { 
-            Write-Host "ERROR: Opcion no valida"
+            Write-Host "ERROR: Opcion no valida" -ForegroundColor Red
             return
         }
     }
@@ -330,7 +330,7 @@ function Configurar-DNS {
             Set-DnsClientServerAddress -InterfaceAlias $nombreAdaptador -ServerAddresses $dns1, $dns2
         }
         
-        Write-Host "✓ DNS configurado correctamente"
+        Write-Host "✓ DNS configurado correctamente" -ForegroundColor Green
         Write-Host ""
         Write-Host "Configuracion aplicada:"
         Get-DnsClientServerAddress -InterfaceAlias $nombreAdaptador -AddressFamily IPv4
@@ -396,7 +396,7 @@ function Renombrar-Adaptador {
     # Renombrar adaptador
     try {
         Rename-NetAdapter -Name $nombreActual -NewName $nombreNuevo
-        Write-Host " Adaptador renombrado correctamente"
+        Write-Host " Adaptador renombrado correctamente" -ForegroundColor Green
         Write-Host "Nombre anterior: $nombreActual"
         Write-Host "Nombre nuevo: $nombreNuevo"
     }
