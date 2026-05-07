@@ -1,0 +1,4 @@
+GIMP.GIMP
+Inkscape.Inkscape
+OBSProject.OBSStudio
+BlenderFoundation.Blender

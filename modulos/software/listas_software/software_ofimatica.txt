@@ -1,0 +1,3 @@
+Microsoft.Office
+LibreOffice.LibreOffice
+OnlyOffice.DesktopEditors

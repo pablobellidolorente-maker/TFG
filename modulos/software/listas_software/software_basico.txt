@@ -1,0 +1,5 @@
+Google.Chrome
+7zip.7zip
+Notepad++.Notepad++
+Adobe.Acrobat.Reader.64-bit
+Microsoft.PowerShell

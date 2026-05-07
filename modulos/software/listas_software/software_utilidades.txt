@@ -1,0 +1,4 @@
+Rufus.Rufus
+TeamViewer.TeamViewer
+AnyDeskSoftware.AnyDesk
+WinRAR.WinRAR

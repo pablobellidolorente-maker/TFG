@@ -1,0 +1,4 @@
+WiresharkFoundation.Wireshark
+Git.Git
+Python.Python.3
+VMware.WorkstationPlayer
