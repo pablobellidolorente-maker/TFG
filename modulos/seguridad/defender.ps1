@@ -9,6 +9,8 @@
 
 #================================= FUNCION ACTIVAR DEFENDER =============================
 
+#Activa las distintas capas de protección de Microsoft Defender para reforzar la detección de amenazas
+
 function activar-defender {
     
     do{
@@ -60,6 +62,7 @@ function activar-defender {
 
 #================================= FUNCION DESACTIVAR DEFENDER =============================
 
+#Desactiva temporalmente las protecciones de Defender cuando sea necesario realizar
 
 function desactivar-defender { 
     
@@ -114,6 +117,8 @@ function desactivar-defender {
 
 #========================== FUNCION VER ESTADO DE DEFENDER ==========================
 
+#Muestra el estado actual de las protecciones, firmas y componentes de seguridad de Microsoft Defender 
+
 function ver-estado-defender {
     Write-Host "`nEstado de Windows Defender:"
     Write-Host "`n================================"
@@ -133,6 +138,7 @@ function ver-estado-defender {
 
 #================================================ ESCANEO RAPIDO
 
+#Realiza un análisis rápido de las áreas más vulnerables del sistema para detectar amenazas activas de forma inmediata
 
 function escaneo-rapido {
 
@@ -148,6 +154,7 @@ function escaneo-rapido {
 
 #================================================ ESCANEO COMPLETO
 
+#análisis exhaustivo de todos los archivos y unidades del sistema para identificar malware oculto o persistente
 
 function escaneo-completo {
 
@@ -181,6 +188,8 @@ function escaneo-completo {
 
 #========================== ESCANEO PERSONALIZADO ==========================
 
+#Permite analizar una carpeta o ruta específica elegida por el usuario para revisar ubicaciones concretas 
+
 function escaneo-personalizado {
     
     do {   $ruta = Read-Host "Introduzca la ruta de la carpeta que desea escanear ej.(C:\Users\admin\Desktop)"
@@ -204,6 +213,7 @@ function escaneo-personalizado {
 
 #================================================ ACTUALIZAR DEFINICIONES
 
+#Actualiza Microsoft Defender para garantizar la detección de las amenazas más recientes.
 
 function actualizar-definiciones {
 
@@ -219,6 +229,7 @@ function actualizar-definiciones {
 
 #================================================ AGREGAR EXCLUSION
 
+#Añade archivos o extensiones a la lista de exclusiones para evitar que Defender analice elementos que puedan generar falsos positivos.
 
 function agregar-exclusion {
 
@@ -284,6 +295,8 @@ function agregar-exclusion {
 
 
 #================================================ LISTAR EXCLUSIONES
+
+
 
 
 function listar-exclusiones {
@@ -371,6 +384,8 @@ function eliminar-exclusion {
 
 
 #================================================ VER AMENAZAS DETECTADAS
+
+#Muestra las amenazas detectadas por Defender, incluyendo nombre, gravedad y fecha de detección
 
 
 function ver-amenazas {

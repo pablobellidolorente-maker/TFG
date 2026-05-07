@@ -1,21 +1,14 @@
-# ================================
-#   hardening.ps1
-#   Módulo de seguridad: Hardening del sistema
-#   Requisitos: Ejecutar como administrador
-# ================================
 
-# --- Comprobación de permisos ---
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-    [Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Host "Este script debe ejecutarse como administrador." -ForegroundColor Red
-    exit
-}
+# ==================================================
 
-# ================================
 #   FUNCIONES
-# ================================
+
+# ==================================================================
 
 # --- Deshabilitar servicios inseguros ---
+
+#deshabilita servicios antiguos o inseguros para reducir la superficie de riesgo de atauqe del sistema
+
 function deshabilitar-servicios {
     Clear-Host
     Write-Host "=== DESHABILITANDO SERVICIOS INSEGUROS ===" -ForegroundColor Cyan
@@ -35,7 +28,12 @@ function deshabilitar-servicios {
     Pause
 }
 
+#=======================================================================================
+
 # --- Configurar políticas de contraseñas --- (politicas basicas basadas en los estandares recomendados por micrososft)
+
+#aplica políticas de contraseña más estrictas para reforzar la seguridad de las cuentas locales del sistema
+
 function politicas-contraseña {
     Clear-Host
     Write-Host "=== CONFIGURANDO POLÍTICAS DE CONTRASEÑA ===" -ForegroundColor Cyan
@@ -57,7 +55,12 @@ function politicas-contraseña {
     Pause
 }
 
+#=======================================================================================
+
 # --- Deshabilitar protocolos inseguros ---
+
+#Esta función deshabilita protocolos de autenticación y cifrado obsoletos para evitar ataques basados en credenciales débiles o cifrado inseguro
+
 function deshabilitar-protocolos {
     Clear-Host
     Write-Host "=== DESHABILITANDO PROTOCOLOS INSEGUROS ===" -ForegroundColor Cyan
@@ -77,7 +80,11 @@ function deshabilitar-protocolos {
     Pause
 }
 
+#=======================================================================================
+
 # --- Configurar RDP ---
+#permite deshabilitar RDP o habilitarlo con autenticación a nivel de red para proteger el acceso remoto frente a ataques de fuerza bruta
+
 function configurar-rdp {
     Clear-Host
     Write-Host "=== CONFIGURACIÓN DE RDP ===" -ForegroundColor Cyan
@@ -104,7 +111,10 @@ function configurar-rdp {
     Pause
 }
 
+#===========================================================================================
+
 # --- Deshabilitar AutoRun --- (Hace que se ejecute un USB o disco sin interaccion del usuario)
+
 function deshabilitar-autorun {
     Clear-Host
     Write-Host "=== DESHABILITANDO AUTORUN ===" -ForegroundColor Cyan
