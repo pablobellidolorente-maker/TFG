@@ -352,7 +352,7 @@ function Renombrar-Adaptador {
     $numeroAdaptador = Read-Host "Seleccione el numero del adaptador a renombrar"
     $adaptadores = @(Get-NetAdapter | Where-Object { $_.Status -ne "Not Present" })
 
-    # Validación
+    # Validacion
     if ([int]$numeroAdaptador -lt 1 -or [int]$numeroAdaptador -gt $adaptadores.Count) {
         Write-Host "ERROR: Numero de adaptador no valido" -ForegroundColor Red
         return
@@ -384,7 +384,7 @@ function Renombrar-Adaptador {
 
     Write-Host ""
 
-    # Mensaje de confirmación con variables FORZADAS
+    # Mensaje de confirmacion con variables FORZADAS
     $mensaje = "Desea renombrar '$nombreActual' a '$nombreNuevo'? (s/n)"
     $confirmacion = Read-Host $mensaje
 

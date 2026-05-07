@@ -1,4 +1,4 @@
-#Crearemos las carpetas necesarias para una empresa promedio, y así despues dar permisos a los usuarios pertinentes
+#Crearemos las carpetas necesarias para una empresa promedio, y asi despues dar permisos a los usuarios pertinentes
 
 
 Write-Host "========= CREACION DE ESTRUCTURA DE CARPETAS ========="

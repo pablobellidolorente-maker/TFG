@@ -3,18 +3,18 @@
 #   FUNCIONES
 # ================================
 
-# --- Ver auditorías configuradas ---
+# --- Ver auditorias configuradas ---
 function ver-auditorias {
     Clear-Host
-    Write-Host "=== ESTADO DE LAS POLÍTICAS DE AUDITORÍA ===" -ForegroundColor Cyan
+    Write-Host "=== ESTADO DE LAS POLiTICAS DE AUDITORiA ===" -ForegroundColor Cyan
     auditpol.exe /get /category:* 
     Pause
 }
 
-# --- Activar auditorías recomendadas ---
+# --- Activar auditorias recomendadas ---
 function activar-auditorias {
     Clear-Host
-    Write-Host "=== ACTIVAR AUDITORÍAS IMPORTANTES ===" -ForegroundColor Cyan
+    Write-Host "=== ACTIVAR AUDITORiAS IMPORTANTES ===" -ForegroundColor Cyan
 
     auditpol /set /subcategory:"Logon" /success:enable /failure:enable
     auditpol /set /subcategory:"Logoff" /success:enable /failure:disable
@@ -23,14 +23,14 @@ function activar-auditorias {
     auditpol /set /subcategory:"Policy Change" /success:enable /failure:enable
     auditpol /set /subcategory:"Privilege Use" /success:enable /failure:disable
 
-    Write-Host "Auditorías activadas correctamente." -ForegroundColor Green
+    Write-Host "Auditorias activadas correctamente." -ForegroundColor Green
     Pause
 }
 
-# --- Desactivar auditorías ---
+# --- Desactivar auditorias ---
 function desactivar-auditorias {
     Clear-Host
-    Write-Host "=== DESACTIVAR AUDITORÍAS ===" -ForegroundColor Cyan
+    Write-Host "=== DESACTIVAR AUDITORiAS ===" -ForegroundColor Cyan
 
     auditpol /set /subcategory:"Logon" /success:disable /failure:disable
     auditpol /set /subcategory:"Logoff" /success:disable /failure:disable
@@ -39,35 +39,35 @@ function desactivar-auditorias {
     auditpol /set /subcategory:"Policy Change" /success:disable /failure:disable
     auditpol /set /subcategory:"Privilege Use" /success:disable /failure:disable
 
-    Write-Host "Auditorías desactivadas." -ForegroundColor Yellow
+    Write-Host "Auditorias desactivadas." -ForegroundColor Yellow
     Pause
 }
 
-# --- Exportar auditorías a archivo ---
+# --- Exportar auditorias a archivo ---
 function exportar-auditorias {
     Clear-Host
-    Write-Host "=== EXPORTAR CONFIGURACIÓN DE AUDITORÍA ===" -ForegroundColor Cyan
+    Write-Host "=== EXPORTAR CONFIGURACIoN DE AUDITORiA ===" -ForegroundColor Cyan
 
     $ruta = Read-Host "Introduce la ruta donde guardar el archivo (ej: C:\auditoria.txt)"
 
     auditpol /get /category:* > $ruta
 
-    Write-Host "Auditorías exportadas correctamente a: $ruta" -ForegroundColor Green
+    Write-Host "Auditorias exportadas correctamente a: $ruta" -ForegroundColor Green
     Pause
 }
 
 # ================================
-#   MENÚ PRINCIPAL
+#   MENu PRINCIPAL
 # ================================
 do {
     Clear-Host
-    Write-Host "===== AUDITORÍA DEL SISTEMA =====" -ForegroundColor Cyan
-    Write-Host "1. Ver auditorías configuradas"
-    Write-Host "2. Activar auditorías recomendadas"
-    Write-Host "3. Desactivar auditorías"
-    Write-Host "4. Exportar auditorías a archivo"
+    Write-Host "===== AUDITORiA DEL SISTEMA =====" -ForegroundColor Cyan
+    Write-Host "1. Ver auditorias configuradas"
+    Write-Host "2. Activar auditorias recomendadas"
+    Write-Host "3. Desactivar auditorias"
+    Write-Host "4. Exportar auditorias a archivo"
     Write-Host "0. Salir"
-    $opcion = Read-Host "Selecciona una opción"
+    $opcion = Read-Host "Selecciona una opcion"
 
     switch ($opcion) {
         "1" { ver-auditorias }
@@ -75,7 +75,7 @@ do {
         "3" { desactivar-auditorias }
         "4" { exportar-auditorias }
         "0" { break }
-        default { Write-Host "Opción no válida." -ForegroundColor Red; Pause }
+        default { Write-Host "Opcion no valida." -ForegroundColor Red; Pause }
     }
 
 } while ($opcion -ne "0")

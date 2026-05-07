@@ -13,7 +13,7 @@ function deshabilitar-servicios {
     Clear-Host
     Write-Host "=== DESHABILITANDO SERVICIOS INSEGUROS ===" -ForegroundColor Cyan
 
-    # SMBv1 (Servicio de comparticion de archivos de los años 90 sin cifrado integridad ni nada , y por lo visto muy vulnerable, se deshabilita)
+    # SMBv1 (Servicio de comparticion de archivos de los anos 90 sin cifrado integridad ni nada , y por lo visto muy vulnerable, se deshabilita)
     Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
     Write-Host "SMBv1 deshabilitado." -ForegroundColor Green
 
@@ -30,13 +30,13 @@ function deshabilitar-servicios {
 
 #=======================================================================================
 
-# --- Configurar políticas de contraseñas --- (politicas basicas basadas en los estandares recomendados por micrososft)
+# --- Configurar politicas de contrasenas --- (politicas basicas basadas en los estandares recomendados por micrososft)
 
-#aplica políticas de contraseña más estrictas para reforzar la seguridad de las cuentas locales del sistema
+#aplica politicas de contrasena mas estrictas para reforzar la seguridad de las cuentas locales del sistema
 
-function politicas-contraseña {
+function politicas-contrasena {
     Clear-Host
-    Write-Host "=== CONFIGURANDO POLÍTICAS DE CONTRASEÑA ===" -ForegroundColor Cyan
+    Write-Host "=== CONFIGURANDO POLiTICAS DE CONTRASEnA ===" -ForegroundColor Cyan
 
     secedit /export /cfg C:\secpol.cfg | Out-Null
 
@@ -51,7 +51,7 @@ function politicas-contraseña {
 
     secedit /configure /db C:\Windows\security\local.sdb /cfg C:\secpol.cfg /quiet
 
-    Write-Host "Políticas de contraseña aplicadas." -ForegroundColor Green
+    Write-Host "Politicas de contrasena aplicadas." -ForegroundColor Green
     Pause
 }
 
@@ -59,7 +59,7 @@ function politicas-contraseña {
 
 # --- Deshabilitar protocolos inseguros ---
 
-#Esta función deshabilita protocolos de autenticación y cifrado obsoletos para evitar ataques basados en credenciales débiles o cifrado inseguro
+#Esta funcion deshabilita protocolos de autenticacion y cifrado obsoletos para evitar ataques basados en credenciales debiles o cifrado inseguro
 
 function deshabilitar-protocolos {
     Clear-Host
@@ -83,17 +83,17 @@ function deshabilitar-protocolos {
 #=======================================================================================
 
 # --- Configurar RDP ---
-#permite deshabilitar RDP o habilitarlo con autenticación a nivel de red para proteger el acceso remoto frente a ataques de fuerza bruta
+#permite deshabilitar RDP o habilitarlo con autenticacion a nivel de red para proteger el acceso remoto frente a ataques de fuerza bruta
 
 function configurar-rdp {
     Clear-Host
-    Write-Host "=== CONFIGURACIÓN DE RDP ===" -ForegroundColor Cyan
+    Write-Host "=== CONFIGURACIoN DE RDP ===" -ForegroundColor Cyan
 
     Write-Host "1) Deshabilitar RDP"
     Write-Host "2) Habilitar RDP con seguridad reforzada"
     Write-Host "3) Volver"
 
-    $op = Read-Host "Opción"
+    $op = Read-Host "Opcion"
 
     switch ($op) {
         "1" {
@@ -127,28 +127,28 @@ function deshabilitar-autorun {
 }
 
 # ================================
-#   MENÚ PRINCIPAL
+#   MENu PRINCIPAL
 # ================================
 do {
     Clear-Host
     Write-Host "===== HARDENING DEL SISTEMA =====" -ForegroundColor Cyan
     Write-Host "1. Deshabilitar servicios inseguros"
-    Write-Host "2. Configurar políticas de contraseña"
+    Write-Host "2. Configurar politicas de contrasena"
     Write-Host "3. Deshabilitar protocolos inseguros"
     Write-Host "4. Configurar RDP"
     Write-Host "5. Deshabilitar AutoRun"
     Write-Host "0. Salir"
 
-    $opcion = Read-Host "Selecciona una opción"
+    $opcion = Read-Host "Selecciona una opcion"
 
     switch ($opcion) {
         "1" { deshabilitar-servicios }
-        "2" { politicas-contraseña }
+        "2" { politicas-contrasena }
         "3" { deshabilitar-protocolos }
         "4" { configurar-rdp }
         "5" { deshabilitar-autorun }
         "0" { break }
-        default { Write-Host "Opción no válida." -ForegroundColor Red; Pause }
+        default { Write-Host "Opcion no valida." -ForegroundColor Red; Pause }
     }
 
 } while ($opcion -ne "0")

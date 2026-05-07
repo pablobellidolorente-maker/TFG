@@ -1,5 +1,5 @@
 
-#=============================== AÑADIR COMPROBACION DE ADMIN
+#=============================== AnADIR COMPROBACION DE ADMIN
 
 
 
@@ -9,15 +9,15 @@
 
 #================================= FUNCION ACTIVAR DEFENDER =============================
 
-#Activa las distintas capas de protección de Microsoft Defender para reforzar la detección de amenazas
+#Activa las distintas capas de proteccion de Microsoft Defender para reforzar la deteccion de amenazas
 
 function activar-defender {
     
     do{
-        Write-Host "`nElija la protección que desea activar"
-        Write-Host "`n 1) Protección en tiempo real"
-        Write-Host " 2) Protección basada en la nube"
-        Write-Host " 3) Envío automático de muestras"
+        Write-Host "`nElija la proteccion que desea activar"
+        Write-Host "`n 1) Proteccion en tiempo real"
+        Write-Host " 2) Proteccion basada en la nube"
+        Write-Host " 3) Envio automatico de muestras"
         Write-Host " 4) Todas"
         Write-Host " 5) Volver" -ForegroundColor Cyan
 
@@ -26,17 +26,17 @@ function activar-defender {
         switch ($opcion) {
 
             "1" {Set-MpPreference -DisableRealtimeMonitoring $false
-                Write-Host "Activada la protección en tiempo real"
+                Write-Host "Activada la proteccion en tiempo real"
                 break
             }
 
             "2" {Set-MpPreference -MAPSReporting Advanced
-                Write-Host "Activada la protección basada en la nube"
+                Write-Host "Activada la proteccion basada en la nube"
                 break
                 }
 
             "3" {Set-MpPreference -SubmitSamplesConsent Always
-                Write-Host "Activado el envío automático de muestras"
+                Write-Host "Activado el envio automatico de muestras"
                 break
                 }
 
@@ -47,7 +47,7 @@ function activar-defender {
                 break
                 }
 
-            "5" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
+            "5" { Write-Host "Volviendo al menu" -ForegroundColor Cyan
                 break
                 } 
         
@@ -67,10 +67,10 @@ function activar-defender {
 function desactivar-defender { 
     
     do{
-        Write-Host "`nElija la protección que desea desactivar"
-        Write-Host "`n 1) Protección en tiempo real"
-        Write-Host " 2) Protección basada en la nube"
-        Write-Host " 3) Envío automático de muestras"
+        Write-Host "`nElija la proteccion que desea desactivar"
+        Write-Host "`n 1) Proteccion en tiempo real"
+        Write-Host " 2) Proteccion basada en la nube"
+        Write-Host " 3) Envio automatico de muestras"
         Write-Host " 4) Todas"
         Write-Host " 5) Volver" -ForegroundColor Cyan
 
@@ -80,17 +80,17 @@ function desactivar-defender {
         switch ($opcion) {
 
             "1" {Set-MpPreference -DisableRealtimeMonitoring $true
-                Write-Host "Desactivada la protección en tiempo real"
+                Write-Host "Desactivada la proteccion en tiempo real"
                 break
             }
 
             "2" {Set-MpPreference -MAPSReporting Disabled
-                Write-Host "Desactivada la protección basada en la nube"
+                Write-Host "Desactivada la proteccion basada en la nube"
                 break
                 }
 
             "3" {Set-MpPreference -SubmitSamplesConsent Never
-                Write-Host "Desactivado el envío automático de muestras"
+                Write-Host "Desactivado el envio automatico de muestras"
                 break
                 }
 
@@ -101,7 +101,7 @@ function desactivar-defender {
                 break
                 }
 
-            "5" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
+            "5" { Write-Host "Volviendo al menu" -ForegroundColor Cyan
                 break
                 } 
         
@@ -125,11 +125,11 @@ function ver-estado-defender {
     
     $estado = Get-MpComputerStatus
     
-    Write-Host "Protección en tiempo real: $(if ($estado.RealTimeProtectionEnabled) { 'Activada' } else { 'Desactivada' })" -ForegroundColor Green
-    Write-Host "Protección basada en nube: $(if ($estado.IsTamperProtected) { 'Activa' } else { 'Inactiva' })" -ForegroundColor Green
-    Write-Host "Protección de exploración: $(if ($estado.BehaviorMonitoringEnabled) { 'Activada' } else { 'Desactivada' })" -ForegroundColor Green
-    Write-Host "Actualizado: $(if ($estado.AntivirusSignatureLastUpdated -gt (Get-Date).AddDays(-7)) { 'Sí' } else { 'No' })" -ForegroundColor Green
-    Write-Host "Última actualización: $($estado.AntivirusSignatureLastUpdated)" -ForegroundColor Green
+    Write-Host "Proteccion en tiempo real: $(if ($estado.RealTimeProtectionEnabled) { 'Activada' } else { 'Desactivada' })" -ForegroundColor Green
+    Write-Host "Proteccion basada en nube: $(if ($estado.IsTamperProtected) { 'Activa' } else { 'Inactiva' })" -ForegroundColor Green
+    Write-Host "Proteccion de exploracion: $(if ($estado.BehaviorMonitoringEnabled) { 'Activada' } else { 'Desactivada' })" -ForegroundColor Green
+    Write-Host "Actualizado: $(if ($estado.AntivirusSignatureLastUpdated -gt (Get-Date).AddDays(-7)) { 'Si' } else { 'No' })" -ForegroundColor Green
+    Write-Host "ultima actualizacion: $($estado.AntivirusSignatureLastUpdated)" -ForegroundColor Green
     Write-Host "`n================================"
 }
 
@@ -138,15 +138,15 @@ function ver-estado-defender {
 
 #================================================ ESCANEO RAPIDO
 
-#Realiza un análisis rápido de las áreas más vulnerables del sistema para detectar amenazas activas de forma inmediata
+#Realiza un analisis rapido de las areas mas vulnerables del sistema para detectar amenazas activas de forma inmediata
 
 function escaneo-rapido {
 
-    Write-Host "`nIniciando escaneo rápido..." -ForegroundColor Yellow
+    Write-Host "`nIniciando escaneo rapido..." -ForegroundColor Yellow
     
     Start-MpScan -ScanType QuickScan
     
-    Write-Host "Escaneo rápido completado" -ForegroundColor Green
+    Write-Host "Escaneo rapido completado" -ForegroundColor Green
 }
 
 
@@ -154,11 +154,11 @@ function escaneo-rapido {
 
 #================================================ ESCANEO COMPLETO
 
-#análisis exhaustivo de todos los archivos y unidades del sistema para identificar malware oculto o persistente
+#analisis exhaustivo de todos los archivos y unidades del sistema para identificar malware oculto o persistente
 
 function escaneo-completo {
 
-    Write-Host "`n¿Está seguro de que desea realizar un escaneo completo? Puede tardar varias horas" -ForegroundColor Yellow
+    Write-Host "`n¿Esta seguro de que desea realizar un escaneo completo? Puede tardar varias horas" -ForegroundColor Yellow
     
     do { $opcion = Read-Host "¿Continuar? s/n"
     
@@ -170,7 +170,7 @@ function escaneo-completo {
             break
         }
 
-        "n" {Write-Host "`nOperación cancelada" -ForegroundColor Cyan
+        "n" {Write-Host "`nOperacion cancelada" -ForegroundColor Cyan
          
             break
         }
@@ -188,7 +188,7 @@ function escaneo-completo {
 
 #========================== ESCANEO PERSONALIZADO ==========================
 
-#Permite analizar una carpeta o ruta específica elegida por el usuario para revisar ubicaciones concretas 
+#Permite analizar una carpeta o ruta especifica elegida por el usuario para revisar ubicaciones concretas 
 
 function escaneo-personalizado {
     
@@ -213,7 +213,7 @@ function escaneo-personalizado {
 
 #================================================ ACTUALIZAR DEFINICIONES
 
-#Actualiza Microsoft Defender para garantizar la detección de las amenazas más recientes.
+#Actualiza Microsoft Defender para garantizar la deteccion de las amenazas mas recientes.
 
 function actualizar-definiciones {
 
@@ -229,15 +229,15 @@ function actualizar-definiciones {
 
 #================================================ AGREGAR EXCLUSION
 
-#Añade archivos o extensiones a la lista de exclusiones para evitar que Defender analice elementos que puedan generar falsos positivos.
+#Anade archivos o extensiones a la lista de exclusiones para evitar que Defender analice elementos que puedan generar falsos positivos.
 
 function agregar-exclusion {
 
     do{
-        Write-Host "`nElija el tipo de exclusión:"
+        Write-Host "`nElija el tipo de exclusion:"
         Write-Host "`n 1) Carpeta completa"
-        Write-Host " 2) Archivo específico"
-        Write-Host " 3) Extensión de archivo"
+        Write-Host " 2) Archivo especifico"
+        Write-Host " 3) Extension de archivo"
         Write-Host " 4) Volver" -ForegroundColor Cyan
 
         $opcion = Read-Host "Opcion"
@@ -275,13 +275,13 @@ function agregar-exclusion {
                 }
 
             "3" {
-                $extension = Read-Host "Introduzca la extensión ej.(.txt, .exe, .pdf)"
+                $extension = Read-Host "Introduzca la extension ej.(.txt, .exe, .pdf)"
                 Add-MpPreference -ExclusionExtension $extension
-                Write-Host "Extensión excluida correctamente: $extension" -ForegroundColor Green
+                Write-Host "Extension excluida correctamente: $extension" -ForegroundColor Green
                 break
                 }
 
-            "4" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
+            "4" { Write-Host "Volviendo al menu" -ForegroundColor Cyan
                 break
                 } 
         
@@ -339,10 +339,10 @@ function listar-exclusiones {
 function eliminar-exclusion {
 
     do{
-        Write-Host "`nElija el tipo de exclusión a eliminar:"
+        Write-Host "`nElija el tipo de exclusion a eliminar:"
         Write-Host "`n 1) Carpeta"
         Write-Host " 2) Archivo"
-        Write-Host " 3) Extensión"
+        Write-Host " 3) Extension"
         Write-Host " 4) Volver" -ForegroundColor Cyan
 
         $opcion = Read-Host "Opcion"
@@ -352,25 +352,25 @@ function eliminar-exclusion {
             "1" {
                 $carpeta = Read-Host "Introduzca la ruta de la carpeta a eliminar"
                 Remove-MpPreference -ExclusionPath $carpeta
-                Write-Host "Exclusión de carpeta eliminada correctamente" -ForegroundColor Green
+                Write-Host "Exclusion de carpeta eliminada correctamente" -ForegroundColor Green
                 break
             }
 
             "2" {
                 $archivo = Read-Host "Introduzca la ruta del archivo a eliminar"
                 Remove-MpPreference -ExclusionPath $archivo
-                Write-Host "Exclusión de archivo eliminada correctamente" -ForegroundColor Green
+                Write-Host "Exclusion de archivo eliminada correctamente" -ForegroundColor Green
                 break
                 }
 
             "3" {
-                $extension = Read-Host "Introduzca la extensión a eliminar"
+                $extension = Read-Host "Introduzca la extension a eliminar"
                 Remove-MpPreference -ExclusionExtension $extension
-                Write-Host "Exclusión de extensión eliminada correctamente" -ForegroundColor Green
+                Write-Host "Exclusion de extension eliminada correctamente" -ForegroundColor Green
                 break
                 }
 
-            "4" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
+            "4" { Write-Host "Volviendo al menu" -ForegroundColor Cyan
                 break
                 } 
         
@@ -385,7 +385,7 @@ function eliminar-exclusion {
 
 #================================================ VER AMENAZAS DETECTADAS
 
-#Muestra las amenazas detectadas por Defender, incluyendo nombre, gravedad y fecha de detección
+#Muestra las amenazas detectadas por Defender, incluyendo nombre, gravedad y fecha de deteccion
 
 
 function ver-amenazas {
@@ -411,22 +411,22 @@ function ver-amenazas {
 
 do {
     Write-Host " =================== CONFIGURACION DE DEFENDER ==================="
-    Write-Host "`nSeleccione una opción:"
+    Write-Host "`nSeleccione una opcion:"
     Write-Host "1) Activar protecciones"
     Write-Host "2) Desactivar protecciones"
     Write-Host "3) Ver estado de Defender"
-    Write-Host "4) Escaneo rápido"
+    Write-Host "4) Escaneo rapido"
     Write-Host "5) Escaneo completo"
     Write-Host "6) Escaneo personalizado"
     Write-Host "7) Actualizar definiciones de virus"
-    Write-Host "8) Agregar exclusión"
+    Write-Host "8) Agregar exclusion"
     Write-Host "9) Listar exclusiones"
-    Write-Host "10) Eliminar exclusión"
+    Write-Host "10) Eliminar exclusion"
     Write-Host "11) Ver amenazas detectadas"
     Write-Host "12) Salir" -ForegroundColor Cyan
 
 
-    $opcion = Read-Host "Opción"
+    $opcion = Read-Host "Opcion"
 
     switch ($opcion) {
         "1" { activar-defender } 
@@ -440,8 +440,8 @@ do {
         "9" { listar-exclusiones }
         "10" { eliminar-exclusion }
         "11" { ver-amenazas }
-        "12" { Write-Host "Saliendo de la configuración de Defender..." -ForegroundColor Green}
-        default { Write-Host "ERROR: Seleccione una opción válida (1-12)"  -ForegroundColor Red}
+        "12" { Write-Host "Saliendo de la configuracion de Defender..." -ForegroundColor Green}
+        default { Write-Host "ERROR: Seleccione una opcion valida (1-12)"  -ForegroundColor Red}
     }
 } while ($opcion -ne "12")
 
