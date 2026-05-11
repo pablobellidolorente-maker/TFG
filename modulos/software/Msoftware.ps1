@@ -9,8 +9,8 @@
 
 
 
-$listaPath = ".\listas\"
-$logPath = ".\logs\software.log"
+$listaPath = "$PSScriptRoot\listas_software\"
+$logPath = "$PSScriptRoot\logs\software.log"
 
 if (!(Test-Path ".\logs")) { New-Item -ItemType Directory -Path ".\logs" | Out-Null }
 

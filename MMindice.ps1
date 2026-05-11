@@ -27,10 +27,10 @@ Write-Host "5) Salir" -ForegroundColor Cyan
 $respuesta = Read-Host
 
 switch ($respuesta) {
-    "1" { & "opcionesones_dpt.ps1"
+    "1" { & ".\modulos\opciones_dpt.ps1"
              Write-Host "rutascript1"}
     
-    "2" { &".\modulos\configuracion_basica\Mconf_basica.ps1"
+    "2" { & ".\modulos\configuracion basica\Mconf_basica.ps1"
         Write-Host "rutascript2"}
     
     "3" { & ".\modulos\software\Msoftware.ps1"
