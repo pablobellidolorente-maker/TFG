@@ -11,6 +11,14 @@
 
 #Activa las distintas capas de proteccion de Microsoft Defender para reforzar la deteccion de amenazas
 
+# ========================= DETECCIÓN DE TAMPER PROTECTION =========================
+function tamper-activo {
+    $estado = Get-MpComputerStatus
+    return $estado.IsTamperProtected
+}
+
+#Activa las distintas capas de proteccion de Microsoft Defender para reforzar la deteccion de amenazas
+
 function activar-defender {
     
     do{
@@ -65,7 +73,22 @@ function activar-defender {
 #Desactiva temporalmente las protecciones de Defender cuando sea necesario realizar
 
 function desactivar-defender { 
-    
+
+    # *** CORRECCIÓN IMPORTANTE ***
+    # Si Tamper Protection está activado, Windows NO permite desactivar protecciones críticas.
+    # Solo permite modificar el envío automático de muestras.
+    if (tamper-activo) {
+        Write-Host "`nERROR: Tamper Protection está ACTIVADO." -ForegroundColor Red
+        Write-Host "Windows bloquea la desactivacion de:" -ForegroundColor Yellow
+        Write-Host " - Proteccion en tiempo real"
+        Write-Host " - Proteccion basada en la nube"
+        Write-Host " - Otras protecciones criticas"
+        Write-Host "`nSOLO se puede modificar el envio automatico de muestras." -ForegroundColor Yellow
+        Write-Host "Para desactivar el resto, hágalo manualmente en:" -ForegroundColor Cyan
+        Write-Host "Configuración → Seguridad de Windows → Protección contra virus y amenazas → Protección contra alteraciones"
+        return
+    }
+
     do{
         Write-Host "`nElija la proteccion que desea desactivar"
         Write-Host "`n 1) Proteccion en tiempo real"
@@ -126,14 +149,13 @@ function ver-estado-defender {
     $estado = Get-MpComputerStatus
     
     Write-Host "Proteccion en tiempo real: $(if ($estado.RealTimeProtectionEnabled) { 'Activada' } else { 'Desactivada' })" -ForegroundColor Green
-    Write-Host "Proteccion basada en nube: $(if ($estado.IsTamperProtected) { 'Activa' } else { 'Inactiva' })" -ForegroundColor Green
-    Write-Host "Proteccion de exploracion: $(if ($estado.BehaviorMonitoringEnabled) { 'Activada' } else { 'Desactivada' })" -ForegroundColor Green
+    Write-Host "Proteccion basada en nube: $(if ($estado.CloudProtectionEnabled) { 'Activa' } else { 'Inactiva' })" -ForegroundColor Green
+    Write-Host "Envio automatico de muestras: $($estado.SubmitSamplesConsent)" -ForegroundColor Green
+    Write-Host "Tamper Protection: $(if ($estado.IsTamperProtected) { 'Activada' } else { 'Desactivada' })" -ForegroundColor Green
     Write-Host "Actualizado: $(if ($estado.AntivirusSignatureLastUpdated -gt (Get-Date).AddDays(-7)) { 'Si' } else { 'No' })" -ForegroundColor Green
     Write-Host "Ultima actualizacion: $($estado.AntivirusSignatureLastUpdated)" -ForegroundColor Green
     Write-Host "`n================================"
 }
-
-
 
 
 #================================================ ESCANEO RAPIDO

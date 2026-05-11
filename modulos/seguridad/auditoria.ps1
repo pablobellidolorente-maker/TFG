@@ -6,7 +6,11 @@
 function ver-auditorias {
     Clear-Host
     Write-Host "=== ESTADO DE LAS POLITICAS DE AUDITORIA ===" -ForegroundColor Cyan
+    
     auditpol.exe /get /category:* 
+
+    Write-Host ""
+    Pause   # Evita que desaparezca la pantalla
 }
 
 # --- Activar auditorias recomendadas ---
@@ -22,6 +26,7 @@ function activar-auditorias {
     auditpol.exe /set /subcategory:"Privilege Use" /success:enable /failure:disable
 
     Write-Host "Auditorias activadas correctamente." -ForegroundColor Green
+    Pause
 }
 
 # --- Desactivar auditorias ---
@@ -37,6 +42,7 @@ function desactivar-auditorias {
     auditpol.exe /set /subcategory:"Privilege Use" /success:disable /failure:disable
 
     Write-Host "Auditorias desactivadas." -ForegroundColor Yellow
+    Pause
 }
 
 # --- Exportar auditorias a archivo ---
@@ -46,9 +52,16 @@ function exportar-auditorias {
 
     $ruta = Read-Host "Introduce la ruta donde guardar el archivo (ej: C:\auditoria.txt)"
 
+    # Si el archivo NO existe, lo crea automáticamente
+    if (-not (Test-Path $ruta)) {
+        New-Item -ItemType File -Path $ruta -Force | Out-Null
+        Write-Host "Archivo creado: $ruta" -ForegroundColor Yellow
+    }
+
     auditpol.exe /get /category:* > $ruta
 
     Write-Host "Auditorias exportadas correctamente a: $ruta" -ForegroundColor Green
+    Pause
 }
 
 # ================================
@@ -70,7 +83,7 @@ do {
         "3" { desactivar-auditorias }
         "4" { exportar-auditorias }
         "0" { break }
-        default { Write-Host "Opcion no valida." -ForegroundColor Red }
+        default { Write-Host "Opcion no valida." -ForegroundColor Red; Pause }
     }
 
 } while ($opcion -ne "0")
