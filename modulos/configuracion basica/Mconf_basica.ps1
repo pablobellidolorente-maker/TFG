@@ -13,7 +13,7 @@
 
 5.red.ps1
 
-6.sistema.ps1
+6.sistema.ps1x 
 #>
 
 
