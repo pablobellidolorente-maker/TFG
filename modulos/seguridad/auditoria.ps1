@@ -82,7 +82,7 @@ do {
         "2" { activar-auditorias }
         "3" { desactivar-auditorias }
         "4" { exportar-auditorias }
-        "0" { break }
+        "0" { Clear-Host }
         default { Write-Host "Opcion no valida." -ForegroundColor Red; Pause }
     }
 

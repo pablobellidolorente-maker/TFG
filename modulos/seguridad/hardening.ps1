@@ -124,7 +124,6 @@ function deshabilitar-autorun {
 #   MENU PRINCIPAL
 # ================================
 do {
-    Clear-Host
     Write-Host "===== HARDENING DEL SISTEMA =====" -ForegroundColor Cyan
     Write-Host "1. Deshabilitar servicios inseguros"
     Write-Host "2. Configurar politicas de contrasena"
