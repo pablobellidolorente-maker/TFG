@@ -1,5 +1,5 @@
 
-#=============================== AnADIR COMPROBACION DE ADMIN
+#=============================== AÑADIR COMPROBACION DE ADMIN
 
 
 
@@ -45,7 +45,7 @@ function activar-firewall {
                 break
                 }
 
-            "5" { Write-Host "Volviendo al menu" -ForegroundColor Cyan
+            "5" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
                 break
                 } 
         
@@ -96,7 +96,7 @@ function desactivar-firewall {
                 break
                 }
 
-            "5" { Write-Host "Volviendo al menu" -ForegroundColor Cyan
+            "5" { Write-Host "Volviendo al menú" -ForegroundColor Cyan
                 break
                 } 
         
@@ -116,10 +116,10 @@ function abrir-puertos {
     Write-Host "`nApertura de puertos"
 
     do {
-        $puerto = Read-Host "Introduzca el numero de puerto que desea abrir"
+        $puerto = Read-Host "Introduzca el número de puerto que desea abrir"
 
         if ($puerto -notmatch '^\d+$') {
-            Write-Host "ERROR: Introduzca un numero de puerto valido" -ForegroundColor Red
+            Write-Host "ERROR: Introduzca un número de puerto válido" -ForegroundColor Red
         }
     } until ($puerto -match '^\d+$')
 
@@ -150,10 +150,10 @@ function bloquear-puertos {
     Write-Host "`nBloqueo de puertos" 
 
     do {
-        $puerto = Read-Host "Introduzca el numero de puerto que desea bloquear"
+        $puerto = Read-Host "Introduzca el número de puerto que desea bloquear"
 
         if ($puerto -notmatch '^\d+$') {
-            Write-Host "ERROR: Introduzca un numero de puerto valido" -ForegroundColor Red
+            Write-Host "ERROR: Introduzca un número de puerto válido" -ForegroundColor Red
         }
 
     } until ($puerto -match '^\d+$')
@@ -200,7 +200,7 @@ function bloquear-apps {
             
             
         New-NetFirewallRule -DisplayName "$nombreregla" -Direction Inbound,Outbound -Program "$programa" -Action Block 
-        Write-Host "Aplicacion bloqueada correctamente: $app"
+        Write-Host "Aplicación bloqueada correctamente: $app"
 
 }
 
@@ -224,7 +224,7 @@ function permitir-apps {
             
             
         New-NetFirewallRule -DisplayName "$nombreregla" -Direction Inbound,Outbound -Program "$programa" -Action Allow 
-        Write-Host "Aplicacion permitida correctamente: $app"
+        Write-Host "Aplicación permitida correctamente: $app"
 
 }
 
@@ -235,7 +235,7 @@ function permitir-apps {
 #=========================== FUNCION RESTAURAR EL FIREWALL ===============================
 
 function default-firewall {
-    do { $opcion = Read-Host "`n¿Esta seguro de querer restablecer el firewall? s/n"
+    do { $opcion = Read-Host "`n¿Está seguro de querer restablecer el firewall? s/n"
     
     switch ($opcion) {
 
@@ -244,7 +244,7 @@ function default-firewall {
             break
         }
 
-        "n" {Write-Host "`n Operacion cancelada"
+        "n" {Write-Host "`n Operación cancelada"
          
             break
         }
@@ -276,7 +276,7 @@ function listar-reglas {
 
 do {
     Write-Host " =================== CONFIGURACION DE SEGURIDAD ==================="
-    Write-Host "`nSeleccione una opcion:"
+    Write-Host "`nSeleccione una opción:"
     Write-Host "1) Activar Firewall"
     Write-Host "2) Desactivar Firewall"
     Write-Host "3) Resetear Firewall"
@@ -288,7 +288,7 @@ do {
     Write-Host "9) Salir" -ForegroundColor Cyan
 
 
-    $opcion = Read-Host "Opcion"
+    $opcion = Read-Host "Opción"
 
     switch ($opcion) {
         "1" { activar-firewall } 
@@ -299,8 +299,8 @@ do {
         "6" { abrir-puertos }
         "7" { bloquear-puertos}
         "8" { listar-reglas}
-        "9" { Write-Host "Saliendo de la configuracion de firewall..." -ForegroundColor Green}
-        default { Write-Host "ERROR: Seleccione una opcion valida (1-9)"  -ForegroundColor Red}
+        "9" { Write-Host "Saliendo de la configuración de firewall..." -ForegroundColor Green}
+        default { Write-Host "ERROR: Seleccione una opción válida (1-9)"  -ForegroundColor Red}
     }
 } while ($opcion -ne "9")
 

@@ -2,7 +2,7 @@ do {
 Write-Host ""
 Write-Host "========BIENVENIDO========"
 Write-Host ""
-Write-Host "Ha seleccionado la configuracion completa, por favor, elija el departamento para el que se va a utilizar 
+Write-Host "Ha seleccionado la configuración completa, por favor, elija el departamento para el que se va a utilizar 
             su equipo"
 Write-Host ""
 Write-Host "1) Departamento de base de datos" -ForegroundColor Magenta
@@ -23,7 +23,7 @@ switch ($respuesta) {
     "3" {Write-Host "rutascript3 (apps y secc redes)" -ForegroundColor Cyan}
     "4" {Write-Host "rutascript4 (apps y secc ventas)" -ForegroundColor Green}
     "5" {Write-Host "Saliendo, gracias..."}
-    default {Write-Host "Opcion no valida, introduzca los parametros: 1 , 2 , 3 , 4 o 5"}
+    default {Write-Host "Opción no válida, introduzca los parámetros: 1 , 2 , 3 , 4 o 5"}
 
 }
 
