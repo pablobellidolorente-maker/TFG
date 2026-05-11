@@ -1,29 +1,29 @@
 <#Con esto en el log tendremos:
 
 - "Write Logs --> que se encarga de parametrizar el log, dandole los niveles de error, donde se va a encontrar, el nombre que va a tener, fecha....
-- "Test-IsAdmin" / "Requiere-Admin" --> Estas estan puestas para la configuración (creo que tendremos que quitarlo pero que por ahora este no me parece mal) obliga que se este ejecutando con permisos de administrador, esto es
+- "Test-IsAdmin" / "Requiere-Admin" --> Estas estan puestas para la configuracion (creo que tendremos que quitarlo pero que por ahora este no me parece mal) obliga que se este ejecutando con permisos de administrador, esto es
 para saltarse firewall
-- "Invoke-Safely" --> Este comando nos indica que se ha iniciado la ejecución y si el sresultado es correcto, en caso de serlo genial, y si no con el "catch" nos devuelve el error y nos dice que tipo.
-- "Import-ConfigFile" --> Esto lo que hace es indicarnos que si el archivo existe o no, en caso de no exisitir así podremos saber que no se esta ejectuando sobre nada, y si si existe nos idicara que efectivamente se ha 
-procedido con la ejecución. Y por último manda los resultados a la ruta que le indiquemos.
+- "Invoke-Safely" --> Este comando nos indica que se ha iniciado la ejecucion y si el sresultado es correcto, en caso de serlo genial, y si no con el "catch" nos devuelve el error y nos dice que tipo.
+- "Import-ConfigFile" --> Esto lo que hace es indicarnos que si el archivo existe o no, en caso de no exisitir asi podremos saber que no se esta ejectuando sobre nada, y si si existe nos idicara que efectivamente se ha 
+procedido con la ejecucion. Y por ultimo manda los resultados a la ruta que le indiquemos.
 
 
 
 #>
 <#
 .SYNOPSIS
-    Módulo de utilidades para TFG-AutoDeploy.
+    Modulo de utilidades para TFG-AutoDeploy.
 
 .DESCRIPTION
-    Contiene funciones comunes para logging, comprobación de permisos,
-    ejecución segura e importación de configuraciones.
+    Contiene funciones comunes para logging, comprobacion de permisos,
+    ejecucion segura e importacion de configuraciones.
 #>
 
 # ============================
-#   CONFIGURACIÓN GENERAL
+#   CONFIGURACION GENERAL
 # ============================
 
-# Ruta base del proyecto (carpeta donde está launcher.ps1)
+# Ruta base del proyecto (carpeta donde esta launcher.ps1)
 $Global:ProjectRoot = Split-Path -Parent $PSScriptRoot
 
 # Carpeta de logs
@@ -35,7 +35,7 @@ if (-not (Test-Path $LogPath)) {
 }
 
 # ============================
-#   FUNCIÓN: Write-Log
+#   FUNCION: Write-Log
 # ============================
 function Write-Log {
     param(
@@ -55,7 +55,7 @@ function Write-Log {
 }
 
 # ============================
-#   FUNCIÓN: Test-IsAdmin
+#   FUNCION: Test-IsAdmin
 # ============================
 function Test-IsAdmin {
     $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -64,7 +64,7 @@ function Test-IsAdmin {
 }
 
 # ============================
-#   FUNCIÓN: Require-Admin
+#   FUNCION: Require-Admin
 # ============================
 function Require-Admin {
     if (-not (Test-IsAdmin)) {
@@ -75,14 +75,14 @@ function Require-Admin {
 }
 
 # ============================
-#   FUNCIÓN: Invoke-Safely
+#   FUNCION: Invoke-Safely
 # ============================
 function Invoke-Safely {
     param(
         [Parameter(Mandatory=$true)]
         [scriptblock]$Action,
 
-        [string]$Description = "Acción sin descripción"
+        [string]$Description = "Accion sin descripcion"
     )
 
     try {
@@ -97,7 +97,7 @@ function Invoke-Safely {
 }
 
 # ============================
-#   FUNCIÓN: Import-ConfigFile
+#   FUNCION: Import-ConfigFile
 # ============================
 function Import-ConfigFile {
     param(
@@ -106,11 +106,11 @@ function Import-ConfigFile {
     )
 
     if (-not (Test-Path $Path)) {
-        Write-Log -Message "Archivo de configuración no encontrado: $Path" -Level "ERROR"
-        throw "No se encontró el archivo de configuración: $Path"
+        Write-Log -Message "Archivo de configuracion no encontrado: $Path" -Level "ERROR"
+        throw "No se encontro el archivo de configuracion: $Path"
     }
 
-    Write-Log -Message "Cargando archivo de configuración: $Path"
+    Write-Log -Message "Cargando archivo de configuracion: $Path"
     return Get-Content -Path $Path
 }
 

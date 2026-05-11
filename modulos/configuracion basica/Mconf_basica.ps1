@@ -1,4 +1,4 @@
-##Aquí pondría yo todo lo de ajustar la hora, idioma, teclado etc
+##Aqui pondria yo todo lo de ajustar la hora, idioma, teclado etc
 
 
 <#ORDEN DE EJECUCION OPTIMA DE LOS SCRIPTS
