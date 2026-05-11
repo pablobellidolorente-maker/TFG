@@ -267,7 +267,7 @@ function default-firewall {
 
 function listar-reglas {
     Get-NetFirewallRule |
-    Where-Object { $_.DisplayName -match "Block-|Allow-" } |
+    Where-Object { $_.DisplayName -match "Block|Allow" } |
     Format-Table DisplayName, Direction, Action, Program, Enabled -AutoSize
 }
 
