@@ -7,16 +7,38 @@
 
 #VARIABLES QUE SE VAN A USAR CONSTANTEMENTE LOGS Y LA RUTA DE LOS ARCHIVOS TXT QUE CONTIENEN LOS ID DE LAS APPS PARA WINGET
 
-
-
 $listaPath = "$PSScriptRoot\listas_software\"
 $logPath = "$PSScriptRoot\logs\software.log"
+$numJobsMaximos = [Math]::Min([Environment]::ProcessorCount, 4)  # Limitar a 4 jobs máximo para no saturar
 
 if (!(Test-Path ".\logs")) { New-Item -ItemType Directory -Path ".\logs" | Out-Null }
 
-# --- Instalar software por departamento ---
+# --- Función auxiliar para instalar una app (usada en jobs) ---
+function Instalar-Aplicacion {
+    param(
+        [string]$AppId,
+        [string]$LogPath
+    )
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $timestamp | Out-File -Append -FilePath $LogPath -Encoding UTF8
+    "[INICIO] Instalando: $AppId" | Out-File -Append -FilePath $LogPath -Encoding UTF8
+    
+    $resultado = & {
+        winget install $AppId --silent --accept-source-agreements --accept-package-agreements 2>&1
+    } | Out-String
+    
+    $resultado | Out-File -Append -FilePath $LogPath -Encoding UTF8
+    "[FIN] $AppId" | Out-File -Append -FilePath $LogPath -Encoding UTF8
+    
+    return @{
+        App = $AppId
+        Resultado = $resultado
+        Exitoso = $LASTEXITCODE -eq 0
+    }
+}
 
-#ATENCION AL TOCAR ESTA FUNCION (TIENE CHICHA) EXPLICACION:
+# --- Instalar software por departamento (OPTIMIZADO CON PARALELO) ---
 
 function instalar-departamento {
     Clear-Host
@@ -34,8 +56,6 @@ function instalar-departamento {
 
     $op = Read-Host "`nOpcion"
 
-    #Determinamos dentro de la funcion que la opcion que ellos eligen sea 1-0 sea a su vez una variable que varia de entre todos los archivos txt que tenemos, estos, se usaran posteriormente como array
-
     switch ($op) {
         "1" { $archivo = "basico.txt" }
         "2" { $archivo = "ofimatica.txt" }
@@ -48,38 +68,86 @@ function instalar-departamento {
         default { Write-Host "Opcion no valida." -ForegroundColor Red; Pause; return }
     }
 
-    #Determinamos que $ruta, es la union del path de donde tenemos los arrays en .txt y el nombre del archivo, por ello es importante que existan estas dos variables si o si
-
     $ruta = "$listaPath$archivo"
 
     if (!(Test-Path $ruta)) {
         Write-Host "ERROR: No se encontro la lista $archivo" -ForegroundColor Red
-        
         return
     }
 
-    #Aqui es donde se determina que cada una de las lineas es un programa y lo utilizamos con los id oficiales de las app que tiene el repositorio oficial de windows
-
-    $programas = Get-Content $ruta
-
-    foreach ($p in $programas) {
-        Write-Host "`nInstalando: $p" -ForegroundColor Yellow
-
-        #comando de powershell predeterminado para instalar algo y aceptar automaticamente
-
-        winget install $p --silent --accept-source-agreements --accept-package-agreements | Tee-Object -Append -FilePath $logPath
+    $programas = @(Get-Content $ruta | Where-Object { $_.Trim() -ne "" })
+    
+    if ($programas.Count -eq 0) {
+        Write-Host "ERROR: La lista de programas esta vacia." -ForegroundColor Red
+        return
     }
 
-    Write-Host "`nInstalacion completada para el departamento seleccionado." -ForegroundColor Green
+    Clear-Host
+    Write-Host "=== INSTALACION EN PARALELO ===" -ForegroundColor Green
+    Write-Host "Total de aplicaciones: $($programas.Count)" -ForegroundColor Yellow
+    Write-Host "Instalaciones simultáneas: $numJobsMaximos`n" -ForegroundColor Yellow
+    
+    $fechaInicio = Get-Date
+    
+    # Array para almacenar jobs
+    $jobs = @()
+    $indicePrograma = 0
+    $completados = 0
+    
+    # Lanzar trabajo inicial
+    while ($jobs.Count -lt $numJobsMaximos -and $indicePrograma -lt $programas.Count) {
+        $app = $programas[$indicePrograma]
+        Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ INICIANDO: $app" -ForegroundColor Cyan
+        
+        $job = Start-Job -ScriptBlock ${function:Instalar-Aplicacion} -ArgumentList $app, $logPath -Name "Install-$app"
+        $jobs += $job
+        $indicePrograma++
+    }
+    
+    # Procesar trabajos conforme terminen
+    while ($jobs.Count -gt 0) {
+        $jobsCompletados = $jobs | Where-Object { $_.State -eq "Completed" }
+        
+        foreach ($job in $jobsCompletados) {
+            $resultado = Receive-Job -Job $job -ErrorAction SilentlyContinue
+            $completados++
+            
+            Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ✓ FINALIZADA: $($job.Name)" -ForegroundColor Green
+            
+            # Lanzar siguiente trabajo si hay más
+            if ($indicePrograma -lt $programas.Count) {
+                $app = $programas[$indicePrograma]
+                Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ INICIANDO: $app" -ForegroundColor Cyan
+                
+                $newJob = Start-Job -ScriptBlock ${function:Instalar-Aplicacion} -ArgumentList $app, $logPath -Name "Install-$app"
+                $jobs += $newJob
+                $indicePrograma++
+            }
+            
+            # Eliminar el job completado
+            Remove-Job -Job $job -Force
+            $jobs = $jobs | Where-Object { $_.Id -ne $job.Id }
+        }
+        
+        # Mostrar progreso
+        $pendientes = $programas.Count - $completados
+        Write-Host "`r[PROGRESO] $completados/$($programas.Count) completadas | Pendientes: $pendientes" -ForegroundColor Yellow -NoNewline
+        
+        Start-Sleep -Milliseconds 500
+    }
+    
+    $fechaFin = Get-Date
+    $duracion = $fechaFin - $fechaInicio
+    
+    Write-Host "`n"
+    Write-Host "✓ INSTALACION COMPLETADA DEL DEPARTAMENTO SELECCIONADO" -ForegroundColor Green
+    Write-Host "Duracion total: $($duracion.Minutes)m $($duracion.Seconds)s" -ForegroundColor Green
     Pause
 }
 
 #=====================================================================================
 
-# --- Instalacion personalizada ---
-
-#Se permite instalar cualquier app dentro de las que tiene windows en su repositorio oficial, pero presentamos los mas comunes
-
+# --- Instalacion personalizada (MEJORADA CON FEEDBACK) ---
 
 function instalar-personalizado {
     Clear-Host
@@ -99,69 +167,172 @@ function instalar-personalizado {
 
     Write-Host ""
     $id = Read-Host "Introduce el ID de Winget del programa a instalar (pueden ser distintos a los presentados)"
-
-    winget install $id --silent --accept-source-agreements --accept-package-agreements | `
-        Tee-Object -Append -FilePath $logPath
-
-    Write-Host "`nInstalacion completada." -ForegroundColor Green
+    
+    if ([string]::IsNullOrWhiteSpace($id)) {
+        Write-Host "ERROR: No se proporcion√≥ ningun ID." -ForegroundColor Red
+        Pause
+        return
+    }
+    
+    Clear-Host
+    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ INICIANDO INSTALACION: $id" -ForegroundColor Cyan
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $timestamp | Out-File -Append -FilePath $logPath -Encoding UTF8
+    "[INICIO] Instalando: $id" | Out-File -Append -FilePath $logPath -Encoding UTF8
+    
+    $job = Start-Job -ScriptBlock {
+        param($AppId, $LogPath)
+        winget install $AppId --silent --accept-source-agreements --accept-package-agreements 2>&1 | Tee-Object -Append -FilePath $LogPath
+    } -ArgumentList $id, $logPath
+    
+    # Esperar con feedback visual
+    $contador = 0
+    while ((Get-Job -Id $job.Id).State -eq "Running") {
+        $contador++
+        $puntos = "." * ($contador % 4)
+        Write-Host "`r[Instalando] $id$puntos                 " -ForegroundColor Yellow -NoNewline
+        Start-Sleep -Milliseconds 300
+    }
+    
+    Receive-Job -Job $job -ErrorAction SilentlyContinue | Out-File -Append -FilePath $logPath -Encoding UTF8
+    "[FIN] $id" | Out-File -Append -FilePath $logPath -Encoding UTF8
+    Remove-Job -Job $job -Force
+    
+    Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ INSTALACION COMPLETADA: $id" -ForegroundColor Green
+    Pause
 }
 
 #====================================================================================================
 
-# --- Actualizar software ---
+# --- Actualizar software (MEJORADO CON FEEDBACK) ---
 
 function actualizar-software {
     Clear-Host
     Write-Host "=== ACTUALIZANDO SOFTWARE ===" -ForegroundColor Cyan
-
-    winget upgrade --all --silent --accept-source-agreements --accept-package-agreements | Tee-Object -Append -FilePath $logPath
-
-    Write-Host "Actualizacion completada." -ForegroundColor Green
-
+    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ INICIANDO ACTUALIZACION DE TODAS LAS APLICACIONES..." -ForegroundColor Yellow
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $timestamp | Out-File -Append -FilePath $logPath -Encoding UTF8
+    "[INICIO] Actualizacion de software" | Out-File -Append -FilePath $logPath -Encoding UTF8
+    
+    $job = Start-Job -ScriptBlock {
+        param($LogPath)
+        winget upgrade --all --silent --accept-source-agreements --accept-package-agreements 2>&1 | Tee-Object -Append -FilePath $LogPath
+    } -ArgumentList $logPath
+    
+    # Mostrar progreso animado
+    $contador = 0
+    while ((Get-Job -Id $job.Id).State -eq "Running") {
+        $contador++
+        $animated = @("|", "/", "-", "\")
+        $char = $animated[$contador % 4]
+        Write-Host "`r$char Procesando actualizaciones..." -ForegroundColor Yellow -NoNewline
+        Start-Sleep -Milliseconds 300
+    }
+    
+    Receive-Job -Job $job -ErrorAction SilentlyContinue | Out-File -Append -FilePath $logPath -Encoding UTF8
+    "[FIN] Actualizacion completada" | Out-File -Append -FilePath $logPath -Encoding UTF8
+    Remove-Job -Job $job -Force
+    
+    Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ ACTUALIZACION COMPLETADA" -ForegroundColor Green
+    Pause
 }
 
 #=============================================================================================
 
-# --- Desinstalar software ---
+# --- Desinstalar software (MEJORADO) ---
 
 function desinstalar-software {
     Clear-Host
     Write-Host "=== DESINSTALAR SOFTWARE ===" -ForegroundColor Cyan
 
     $id = Read-Host "Introduce el ID de Winget del programa a desinstalar"
-
-    winget uninstall $id | Tee-Object -Append -FilePath $logPath
-
-    Write-Host "Desinstalacion completada." -ForegroundColor Green
     
+    if ([string]::IsNullOrWhiteSpace($id)) {
+        Write-Host "ERROR: No se proporcion√≥ ningun ID." -ForegroundColor Red
+        Pause
+        return
+    }
+    
+    Clear-Host
+    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ INICIANDO DESINSTALACION: $id" -ForegroundColor Yellow
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $timestamp | Out-File -Append -FilePath $logPath -Encoding UTF8
+    "[INICIO] Desinstalando: $id" | Out-File -Append -FilePath $logPath -Encoding UTF8
+    
+    $job = Start-Job -ScriptBlock {
+        param($AppId, $LogPath)
+        winget uninstall $AppId 2>&1 | Tee-Object -Append -FilePath $LogPath
+    } -ArgumentList $id, $logPath
+    
+    # Esperar con feedback
+    $contador = 0
+    while ((Get-Job -Id $job.Id).State -eq "Running") {
+        $contador++
+        $puntos = "." * ($contador % 4)
+        Write-Host "`r[Desinstalando] $id$puntos                 " -ForegroundColor Yellow -NoNewline
+        Start-Sleep -Milliseconds 300
+    }
+    
+    Receive-Job -Job $job -ErrorAction SilentlyContinue | Out-File -Append -FilePath $logPath -Encoding UTF8
+    "[FIN] $id" | Out-File -Append -FilePath $logPath -Encoding UTF8
+    Remove-Job -Job $job -Force
+    
+    Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ DESINSTALACION COMPLETADA: $id" -ForegroundColor Green
+    Pause
 }
 
 #=============================================================================
 
-# --- Listar software instalado ---
+# --- Listar software instalado (MEJORADO) ---
 
 function listar-software {
     Clear-Host
     Write-Host "=== SOFTWARE INSTALADO ===" -ForegroundColor Cyan
-
-    winget list
+    Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ Obteniendo lista de aplicaciones instaladas..." -ForegroundColor Yellow
     
+    $job = Start-Job -ScriptBlock {
+        winget list 2>&1
+    }
+    
+    # Mostrar progreso
+    $contador = 0
+    while ((Get-Job -Id $job.Id).State -eq "Running") {
+        $contador++
+        $animated = @("|", "/", "-", "\")
+        $char = $animated[$contador % 4]
+        Write-Host "`r$char Leyendo aplicaciones..." -ForegroundColor Yellow -NoNewline
+        Start-Sleep -Milliseconds 300
+    }
+    
+    Write-Host "`n" -ForegroundColor Yellow
+    Receive-Job -Job $job -ErrorAction SilentlyContinue
+    Remove-Job -Job $job -Force
+    
+    Pause
 }
 
 
 #===================================================================
 
-# --- Ver logs ---
+# --- Ver logs (MEJORADO) ---
 
 function ver-logs {
     Clear-Host
     Write-Host "=== LOGS DE SOFTWARE ===" -ForegroundColor Cyan
 
     if (Test-Path $logPath) {
+        Write-Host "[$(Get-Date -Format 'HH:mm:ss')] Leyendo logs..." -ForegroundColor Yellow
+        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
         Get-Content $logPath
+        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
     } else {
         Write-Host "No hay logs disponibles." -ForegroundColor Yellow
     }
+    
+    Pause
 }
 
 
