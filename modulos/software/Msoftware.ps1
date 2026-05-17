@@ -169,7 +169,7 @@ function instalar-personalizado {
     $id = Read-Host "Introduce el ID de Winget del programa a instalar (pueden ser distintos a los presentados)"
     
     if ([string]::IsNullOrWhiteSpace($id)) {
-        Write-Host "ERROR: No se proporcion√≥ ningun ID." -ForegroundColor Red
+        Write-Host "ERROR: No se proporcionó ningun ID." -ForegroundColor Red
         Pause
         return
     }
@@ -225,7 +225,7 @@ function actualizar-software {
     $contador = 0
     while ((Get-Job -Id $job.Id).State -eq "Running") {
         $contador++
-        $animated = @("|", "/", "-", "\")
+        $animated = @("|", "/", "-", "\\")
         $char = $animated[$contador % 4]
         Write-Host "`r$char Procesando actualizaciones..." -ForegroundColor Yellow -NoNewline
         Start-Sleep -Milliseconds 300
@@ -250,7 +250,7 @@ function desinstalar-software {
     $id = Read-Host "Introduce el ID de Winget del programa a desinstalar"
     
     if ([string]::IsNullOrWhiteSpace($id)) {
-        Write-Host "ERROR: No se proporcion√≥ ningun ID." -ForegroundColor Red
+        Write-Host "ERROR: No se proporcionó ningun ID." -ForegroundColor Red
         Pause
         return
     }
@@ -301,7 +301,7 @@ function listar-software {
     $contador = 0
     while ((Get-Job -Id $job.Id).State -eq "Running") {
         $contador++
-        $animated = @("|", "/", "-", "\")
+        $animated = @("|", "/", "-", "\\")
         $char = $animated[$contador % 4]
         Write-Host "`r$char Leyendo aplicaciones..." -ForegroundColor Yellow -NoNewline
         Start-Sleep -Milliseconds 300
