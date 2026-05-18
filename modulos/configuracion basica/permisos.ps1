@@ -5,8 +5,6 @@
 . ".\modulos\logging-basico.ps1"
 . ".\modulos\logging-detallado.ps1"
 
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-
 Write-Host "============ CONFIGURACION DE PERMISOS DEL SISTEMA ============"
 
 #=====================================================
