@@ -1,5 +1,12 @@
 #Crearemos las carpetas necesarias para una empresa promedio, y asi despues dar permisos a los usuarios pertinentes
 
+# ============================
+#   IMPORTAR MODULOS DE LOGGING
+# ============================
+
+. ".\modulos\logging-basico.ps1"
+. ".\modulos\logging-detallado.ps1"
+
 
 Write-Host "========= CREACION DE ESTRUCTURA DE CARPETAS ========="
 
