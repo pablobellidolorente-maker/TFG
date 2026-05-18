@@ -16,6 +16,13 @@
 6.sistema.ps1x 
 #>
 
+# ============================
+#   IMPORTAR MODULOS DE LOGGING
+# ============================
+
+. ".\modulos\logging-basico.ps1"
+. ".\modulos\logging-detallado.ps1"
+
 
 Write-Host "--------------INICIANDO CONFIGURACION BASICA--------------"
 
