@@ -1,5 +1,11 @@
-##Aqui lo mismo, las politicas de seguridad de cada equipo dependiendo de sus necesidades
+# ============================
+#   IMPORTAR MODULOS DE LOGGING
+# ============================
 
+. ".\modulos\logging-basico.ps1"
+. ".\modulos\logging-detallado.ps1
+
+##Aqui lo mismo, las politicas de seguridad de cada equipo dependiendo de sus necesidades
 
 <#ORDEN OPTIMO DE EJECUCION
 
