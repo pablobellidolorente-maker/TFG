@@ -20,44 +20,37 @@ do {
     Write-Host ""
     Write-Host "Bienvenido al menu de configuracion, por favor, seleccione la opcion para configurar su equipo:"
     Write-Host ""
-    Write-Host "1) Configuracion completa del equipo" -ForegroundColor Magenta
+    Write-Host "1) Configuracion basica del sistema" -ForegroundColor Red
     Write-Host ""
-    Write-Host "2) Configuracion basica del sistema" -ForegroundColor Red
+    Write-Host "2) Configuracion de instalacion de software" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "3) Configuracion de instalacion de software" -ForegroundColor Cyan
+    Write-Host "3) Configuracion de seguridad del sistema" -ForegroundColor Green
     Write-Host ""
-    Write-Host "4) Configuracion de seguridad del sistema" -ForegroundColor Green
-    Write-Host ""
-    Write-Host "5) Salir" -ForegroundColor Cyan
+    Write-Host "4) Salir" -ForegroundColor Cyan
     
     $respuesta = Read-Host
     
     switch ($respuesta) {
-        "1" { 
-            Write-BasicLog -Message "Usuario selecciono: Configuracion completa del equipo" -Type "INICIO" -ConsoleOutput
-            & ".\modulos\opciones_dpt.ps1"
-            Write-BasicLog -Message "Finalizo: Configuracion completa del equipo" -Type "EXITO" -ConsoleOutput
-        }
         
-        "2" { 
+        "1" { 
             Write-BasicLog -Message "Usuario selecciono: Configuracion basica del sistema" -Type "INICIO" -ConsoleOutput
             & ".\modulos\configuracion basica\Mconf_basica.ps1"
             Write-BasicLog -Message "Finalizo: Configuracion basica del sistema" -Type "EXITO" -ConsoleOutput
         }
         
-        "3" { 
+        "2" { 
             Write-BasicLog -Message "Usuario selecciono: Configuracion de instalacion de software" -Type "INICIO" -ConsoleOutput
             & ".\modulos\software\Msoftware.ps1"
             Write-BasicLog -Message "Finalizo: Configuracion de instalacion de software" -Type "EXITO" -ConsoleOutput
         }
         
-        "4" { 
+        "3" { 
             Write-BasicLog -Message "Usuario selecciono: Configuracion de seguridad del sistema" -Type "INICIO" -ConsoleOutput
             & ".\modulos\seguridad\Mseguridad.ps1"
             Write-BasicLog -Message "Finalizo: Configuracion de seguridad del sistema" -Type "EXITO" -ConsoleOutput
         }
         
-        "5" {
+        "4" {
             Write-BasicLog -Message "Usuario selecciono: Salir del programa" -Type "EXITO" -ConsoleOutput
             Write-Host "Saliendo, gracias..."
         }
