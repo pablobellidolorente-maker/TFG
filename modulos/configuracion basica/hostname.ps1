@@ -1,3 +1,11 @@
+# ============================
+#   IMPORTAR MODULOS DE LOGGING
+# ============================
+
+. ".\modulos\logging-basico.ps1"
+. ".\modulos\logging-detallado.ps1"
+
+
 Write-Host "=========HOSTNAME========="
 
 # A continuacion se muestra el nombre actual del equipo
