@@ -10,6 +10,8 @@ llamaran a los demas scripts para ejecutar la configuracion elegida#>
 . ".\modulos\logging-basico.ps1"
 . ".\modulos\logging-detallado.ps1"
 
+Write-DetailedLog -Message "Iniciando menu principal"
+
 # ============================
 #   MENU PRINCIPAL
 # ============================
@@ -34,29 +36,37 @@ do {
         
         "1" { 
             Write-BasicLog -Message "Usuario selecciono: Configuracion basica del sistema" -Type "INICIO" -ConsoleOutput
+            Write-DetailedLog -Message "Usuario selecciono: Configuracion basica del sistema" -ConsoleOutput
             & ".\modulos\configuracion basica\Mconf_basica.ps1"
             Write-BasicLog -Message "Finalizo: Configuracion basica del sistema" -Type "EXITO" -ConsoleOutput
+            Write-DetailedLog -Message "Finalizo: Configuracion basica del sistema" -ConsoleOutput
         }
         
         "2" { 
             Write-BasicLog -Message "Usuario selecciono: Configuracion de instalacion de software" -Type "INICIO" -ConsoleOutput
+            Write-DetailedLog -Message "Usuario selecciono: Configuracion de instalacion de software" -ConsoleOutput
             & ".\modulos\software\Msoftware.ps1"
             Write-BasicLog -Message "Finalizo: Configuracion de instalacion de software" -Type "EXITO" -ConsoleOutput
+            Write-DetailedLog -Message "Finalizo: Configuracion de instalacion de software" -ConsoleOutput
         }
         
         "3" { 
             Write-BasicLog -Message "Usuario selecciono: Configuracion de seguridad del sistema" -Type "INICIO" -ConsoleOutput
+            Write-DetailedLog -Message "Usuario selecciono: Configuracion de seguridad del sistema" -ConsoleOutput
             & ".\modulos\seguridad\Mseguridad.ps1"
             Write-BasicLog -Message "Finalizo: Configuracion de seguridad del sistema" -Type "EXITO" -ConsoleOutput
+            Write-DetailedLog -Message "Finalizo: Configuracion de seguridad del sistema" -ConsoleOutput
         }
         
         "4" {
             Write-BasicLog -Message "Usuario selecciono: Salir del programa" -Type "EXIT" -ConsoleOutput
+            Write-DetailedLog -Message "Usuario selecciono: Salir del programa" -ConsoleOutput
             Write-Host "Saliendo, gracias..."
         }
         
         default {
             Write-BasicLog -Message "Usuario ingreso opcion no valida: $respuesta" -Type "ERROR" -ConsoleOutput
+            Write-DetailedLog -Message "Usuario ingreso opcion no valida: $respuesta" -ConsoleOutput
             Write-Host "ERROR: Opcion no valida, introduzca los parametros: 1 , 2 , 3 , 4 o 5" -ForegroundColor Red 
         }
     

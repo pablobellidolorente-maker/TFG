@@ -23,6 +23,12 @@ if (-not (Test-Path $Global:LogBasePath)) {
     New-Item -Path $Global:LogBasePath -ItemType Directory | Out-Null
 }
 
+# Asegurar que exista el archivo de log detallado del dia actual
+$Global:DetailedLogFilePath = Join-Path $Global:LogBasePath ("detallado_$(Get-Date -Format 'yyyy-MM-dd').log")
+if (-not (Test-Path $Global:DetailedLogFilePath)) {
+    New-Item -Path $Global:DetailedLogFilePath -ItemType File | Out-Null
+}
+
 # ============================
 #   FUNCION: Write-DetailedLog
 # ============================
