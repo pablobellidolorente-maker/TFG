@@ -51,7 +51,7 @@ do {
         }
         
         "4" {
-            Write-BasicLog -Message "Usuario selecciono: Salir del programa" -Type "EXITO" -ConsoleOutput
+            Write-BasicLog -Message "Usuario selecciono: Salir del programa" -Type "EXIT" -ConsoleOutput
             Write-Host "Saliendo, gracias..."
         }
         
@@ -62,4 +62,4 @@ do {
     
     }
     
-}while ($respuesta -ne "5")
+}while ($respuesta -ne "4")
