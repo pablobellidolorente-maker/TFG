@@ -3,7 +3,7 @@
 # ============================
 
 . ".\modulos\logging-basico.ps1"
-. ".\modulos\logging-detallado.ps1
+. ".\modulos\logging-detallado.ps1"
 
 
 # ==================================================

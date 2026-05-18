@@ -3,7 +3,7 @@
 # ============================
 
 . ".\modulos\logging-basico.ps1"
-. ".\modulos\logging-detallado.ps1
+. ".\modulos\logging-detallado.ps1"
 
 ##Aqui lo mismo, las politicas de seguridad de cada equipo dependiendo de sus necesidades
 
