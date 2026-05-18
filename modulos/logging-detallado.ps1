@@ -225,18 +225,3 @@ function Import-ConfigFile {
     return Get-Content -Path $Path -Encoding UTF8
 }
 
-# ============================
-#   EXPORTAR FUNCIONES
-# ============================
-
-Export-ModuleMember -Function @(
-    'Write-DetailedLog',
-    'Invoke-DetailedAction',
-    'Get-LogSummary',
-    'Test-IsAdmin',
-    'Require-Admin',
-    'Import-ConfigFile'
-) -Variable @(
-    'ProjectRoot',
-    'LogBasePath'
-)
