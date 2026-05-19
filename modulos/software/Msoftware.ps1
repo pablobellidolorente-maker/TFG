@@ -151,9 +151,10 @@ function instalar-departamento {
     Write-Host "`n"
     Write-Host "✓ INSTALACION COMPLETADA DEL DEPARTAMENTO SELECCIONADO" -ForegroundColor Green
     Write-Host "Duracion total: $($duracion.Minutes)m $($duracion.Seconds)s" -ForegroundColor Green
+    
     Pause
-}
-
+    }
+    
 #=====================================================================================
 
 # --- Instalacion personalizada (MEJORADA CON FEEDBACK) ---
@@ -210,7 +211,7 @@ function instalar-personalizado {
     
     Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ INSTALACION COMPLETADA: $id" -ForegroundColor Green
     Pause
-}
+    }
 
 #====================================================================================================
 
@@ -244,6 +245,7 @@ function actualizar-software {
 
         Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ ACTUALIZACION COMPLETADA" -ForegroundColor Green
     Pause
+    }
 
 #=============================================================================================
 
@@ -288,7 +290,7 @@ function desinstalar-software {
     
     Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ DESINSTALACION COMPLETADA: $id" -ForegroundColor Green
     Pause
-}
+    }
 
 #=============================================================================
 
