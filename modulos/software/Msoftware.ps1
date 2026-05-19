@@ -112,30 +112,29 @@ function instalar-departamento {
     }
     
     # Procesar trabajos conforme terminen
-    while ($jobs.Count -gt 0) {
-        $jobsCompletados = $jobs | Where-Object { $_.State -eq "Completed" }
+    while ($jobs.Count -gt 0 -or $indicePrograma -lt $programas.Count) {
+        $jobsCompletados = @($jobs | Where-Object { $_.State -eq "Completed" })
         
-        foreach ($job in $jobsCompletados) {
-            $resultado = Receive-Job -Job $job -ErrorAction SilentlyContinue
+        # Procesar todos los jobs completados
+        foreach ($jobCompleted in $jobsCompletados) {
+            $resultado = Receive-Job -Job $jobCompleted -ErrorAction SilentlyContinue
             $completados++
             
-            Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ✓ FINALIZADA: $($job.Name)" -ForegroundColor Green
-            }
-        }
-            
-            # Lanzar siguiente trabajo si hay más
-            if ($indicePrograma -lt $programas.Count) {
-                $app = $programas[$indicePrograma]
-                Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ INICIANDO: $app" -ForegroundColor Cyan
-                
-                $newJob = Start-Job -ScriptBlock ${function:Instalar-Aplicacion} -ArgumentList $app, $logPath -Name "Install-$app"
-                $jobs += $newJob
-                $indicePrograma++
-            }
+            Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ✓ FINALIZADA: $($jobCompleted.Name)" -ForegroundColor Green
             
             # Eliminar el job completado
-            Remove-Job -Job $job -Force
-            $jobs = $jobs | Where-Object { $_.Id -ne $job.Id }
+            Remove-Job -Job $jobCompleted -Force
+            $jobs = @($jobs | Where-Object { $_.Id -ne $jobCompleted.Id })
+        }
+        
+        # Lanzar siguiente trabajo si hay más disponibilidad
+        while ($jobs.Count -lt $numJobsMaximos -and $indicePrograma -lt $programas.Count) {
+            $app = $programas[$indicePrograma]
+            Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ▶ INICIANDO: $app" -ForegroundColor Cyan
+            
+            $newJob = Start-Job -ScriptBlock ${function:Instalar-Aplicacion} -ArgumentList $app, $logPath -Name "Install-$app"
+            $jobs += $newJob
+            $indicePrograma++
         }
         
         # Mostrar progreso
@@ -153,7 +152,7 @@ function instalar-departamento {
     Write-Host "Duracion total: $($duracion.Minutes)m $($duracion.Seconds)s" -ForegroundColor Green
     
     Pause
-    }
+}
     
 #=====================================================================================
 
@@ -211,7 +210,7 @@ function instalar-personalizado {
     
     Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ INSTALACION COMPLETADA: $id" -ForegroundColor Green
     Pause
-    }
+}
 
 #====================================================================================================
 
@@ -231,21 +230,21 @@ function actualizar-software {
         winget upgrade --all --silent --accept-source-agreements --accept-package-agreements 2>&1 | Tee-Object -Append -FilePath $LogPath
     } -ArgumentList $logPath
     
- # Mostrar progreso animado
+    # Mostrar progreso animado
     $contador = 0
-        while ((Get-Job -Id $job.Id).State -eq "Running") {
+    while ((Get-Job -Id $job.Id).State -eq "Running") {
         $contador++
         Write-Host "`rProcesando actualizaciones..." -ForegroundColor Yellow -NoNewline
         Start-Sleep -Milliseconds 300
     }
 
-        Receive-Job -Job $job -ErrorAction SilentlyContinue | Out-File -Append -FilePath $logPath -Encoding UTF8
-        "[FIN] Actualizacion completada" | Out-File -Append -FilePath $logPath -Encoding UTF8
-        Remove-Job -Job $job -Force
+    Receive-Job -Job $job -ErrorAction SilentlyContinue | Out-File -Append -FilePath $logPath -Encoding UTF8
+    "[FIN] Actualizacion completada" | Out-File -Append -FilePath $logPath -Encoding UTF8
+    Remove-Job -Job $job -Force
 
-        Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ ACTUALIZACION COMPLETADA" -ForegroundColor Green
+    Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ ACTUALIZACION COMPLETADA" -ForegroundColor Green
     Pause
-    }
+}
 
 #=============================================================================================
 
@@ -290,7 +289,7 @@ function desinstalar-software {
     
     Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ DESINSTALACION COMPLETADA: $id" -ForegroundColor Green
     Pause
-    }
+}
 
 #=============================================================================
 
@@ -318,7 +317,7 @@ function listar-software {
     Remove-Job -Job $job -Force
     
     Pause
-    }
+}
 
 
 
