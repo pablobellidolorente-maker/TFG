@@ -230,23 +230,20 @@ function actualizar-software {
         winget upgrade --all --silent --accept-source-agreements --accept-package-agreements 2>&1 | Tee-Object -Append -FilePath $LogPath
     } -ArgumentList $logPath
     
-    # Mostrar progreso animado
+ # Mostrar progreso animado
     $contador = 0
-    while ((Get-Job -Id $job.Id).State -eq "Running") {
+        while ((Get-Job -Id $job.Id).State -eq "Running") {
         $contador++
-        $animated = @("|", "/", "-", "\\")
-        $char = $animated[$contador % 4]
-        Write-Host "`r$char Procesando actualizaciones..." -ForegroundColor Yellow -NoNewline
+        Write-Host "`rProcesando actualizaciones..." -ForegroundColor Yellow -NoNewline
         Start-Sleep -Milliseconds 300
     }
-    
-    Receive-Job -Job $job -ErrorAction SilentlyContinue | Out-File -Append -FilePath $logPath -Encoding UTF8
-    "[FIN] Actualizacion completada" | Out-File -Append -FilePath $logPath -Encoding UTF8
-    Remove-Job -Job $job -Force
-    
-    Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ ACTUALIZACION COMPLETADA" -ForegroundColor Green
+
+        Receive-Job -Job $job -ErrorAction SilentlyContinue | Out-File -Append -FilePath $logPath -Encoding UTF8
+        "[FIN] Actualizacion completada" | Out-File -Append -FilePath $logPath -Encoding UTF8
+        Remove-Job -Job $job -Force
+
+        Write-Host "`n[$(Get-Date -Format 'HH:mm:ss')] ✓ ACTUALIZACION COMPLETADA" -ForegroundColor Green
     Pause
-}
 
 #=============================================================================================
 
@@ -310,9 +307,7 @@ function listar-software {
     $contador = 0
     while ((Get-Job -Id $job.Id).State -eq "Running") {
         $contador++
-        $animated = @("|", "/", "-", "\\")
-        $char = $animated[$contador % 4]
-        Write-Host "`r$char Leyendo aplicaciones..." -ForegroundColor Yellow -NoNewline
+        Write-Host "`rLeyendo aplicaciones..." -ForegroundColor Yellow -NoNewline
         Start-Sleep -Milliseconds 300
     }
     
@@ -321,7 +316,8 @@ function listar-software {
     Remove-Job -Job $job -Force
     
     Pause
-}
+    }
+
 
 
 #===================================================================
