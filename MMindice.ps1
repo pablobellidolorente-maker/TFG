@@ -4,10 +4,9 @@ llamaran a los demas scripts para ejecutar la configuracion elegida#>
 # powershell -ExecutionPolicy Bypass -File .\MMindice.ps1
 
 
-Write-Host ""
-Write-Host "============================"
-Write-Host "      MENU PRINCIPAL"
-Write-Host "============================"
+#============================"
+#      MENU PRINCIPAL"
+#============================"
 
 do {
     Write-Host ""
