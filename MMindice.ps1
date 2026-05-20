@@ -3,7 +3,6 @@ llamaran a los demas scripts para ejecutar la configuracion elegida#>
 
 # powershell -ExecutionPolicy Bypass -File .\MMindice.ps1
 
-Write-DetailedLog -Message "Iniciando menu principal"
 
 # ============================
 #   MENU PRINCIPAL
