@@ -331,9 +331,9 @@ function ver-logs {
 
     if (Test-Path $logPath) {
         Write-Host "[$(Get-Date -Format 'HH:mm:ss')] Leyendo logs..." -ForegroundColor Yellow
-        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
+        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Yellow
         Get-Content $logPath
-        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
+        Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Yellow
     } else {
         Write-Host "No hay logs disponibles." -ForegroundColor Yellow
     }
