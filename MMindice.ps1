@@ -3,13 +3,6 @@ llamaran a los demas scripts para ejecutar la configuracion elegida#>
 
 # powershell -ExecutionPolicy Bypass -File .\MMindice.ps1
 
-# ============================
-#   IMPORTAR MODULOS DE LOGGING
-# ============================
-
-. ".\modulos\logging-basico.ps1"
-. ".\modulos\logging-detallado.ps1"
-
 Write-DetailedLog -Message "Iniciando menu principal"
 
 # ============================
