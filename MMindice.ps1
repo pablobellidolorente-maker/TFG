@@ -31,7 +31,7 @@ do {
         }
 
         "2" {
-            & ".\modulos\software\Msoftware.ps1"
+            & ".\modulos\software\Msoftware_P.ps1"
         }
 
         "3" {
