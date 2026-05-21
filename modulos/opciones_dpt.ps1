@@ -13,7 +13,7 @@ Write-Host "3) Departamento de redes" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "4) Departamento comercial" -ForegroundColor Green
 Write-Host ""
-Write-Host "5) Salir"
+Write-Host "5) Salir" -ForegroundColor Cyan
 
 $respuesta = Read-Host
 

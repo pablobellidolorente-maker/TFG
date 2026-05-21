@@ -224,7 +224,7 @@ do {
     Write-Host "3) Configurar Teclado"
     Write-Host "4) Actualizar Sistema"
     Write-Host "5) Ver Informacion del Sistema"
-    Write-Host "6) Salir"
+    Write-Host "6) Salir" -ForegroundColor Cyan
 
     $op = Read-Host "Opcion"
 

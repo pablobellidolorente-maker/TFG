@@ -137,7 +137,7 @@ do {
     Write-Host "3. Deshabilitar protocolos inseguros"
     Write-Host "4. Configurar RDP"
     Write-Host "5. Deshabilitar AutoRun"
-    Write-Host "0. Salir"
+    Write-Host "0. Salir" -ForegroundColor Cyan
 
     $opcion = Read-Host "Selecciona una opcion"
 

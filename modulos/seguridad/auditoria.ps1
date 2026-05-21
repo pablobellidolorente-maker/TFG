@@ -82,7 +82,7 @@ do {
     Write-Host "2. Activar auditorias recomendadas"
     Write-Host "3. Desactivar auditorias"
     Write-Host "4. Exportar auditorias a archivo"
-    Write-Host "0. Salir"
+    Write-Host "0. Salir" -ForegroundColor Cyan
     $opcion = Read-Host "Selecciona una opcion"
 
     switch ($opcion) {

@@ -207,7 +207,7 @@ function bloquear-apps {
             
             
         New-NetFirewallRule -DisplayName "$nombreregla" -Direction Inbound,Outbound -Program "$programa" -Action Block 
-        Write-Host "Aplicacion bloqueada correctamente: $app"
+        Write-Host "Aplicacion bloqueada correctamente: $app" -ForegroundColor Green
 
 }
 
@@ -231,7 +231,7 @@ function permitir-apps {
             
             
         New-NetFirewallRule -DisplayName "$nombreregla" -Direction Inbound,Outbound -Program "$programa" -Action Allow 
-        Write-Host "Aplicacion permitida correctamente: $app"
+        Write-Host "Aplicacion permitida correctamente: $app" -ForegroundColor Green
 
 }
 
@@ -247,7 +247,7 @@ function default-firewall {
     switch ($opcion) {
 
         "s" { netsh advfirewall reset 
-            Write-Host "`nFirewall reseteado correctamente"
+            Write-Host "`nFirewall reseteado correctamente" -ForegroundColor Green
             break
         }
 
