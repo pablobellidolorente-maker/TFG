@@ -18,7 +18,7 @@
 
 #Activa las distintas capas de proteccion de Microsoft Defender para reforzar la deteccion de amenazas
 
-# ========================= DETECCIÓN DE TAMPER PROTECTION =========================
+# ========================= DETECCIoN DE TAMPER PROTECTION =========================
 function tamper-activo {
     $estado = Get-MpComputerStatus
     return $estado.IsTamperProtected
@@ -81,18 +81,18 @@ function activar-defender {
 
 function desactivar-defender { 
 
-    # *** CORRECCIÓN IMPORTANTE ***
-    # Si Tamper Protection está activado, Windows NO permite desactivar protecciones críticas.
-    # Solo permite modificar el envío automático de muestras.
+    # *** CORRECCIoN IMPORTANTE ***
+    # Si Tamper Protection esta activado, Windows NO permite desactivar protecciones criticas.
+    # Solo permite modificar el envio automatico de muestras.
     if (tamper-activo) {
-        Write-Host "`nERROR: Tamper Protection está ACTIVADO." -ForegroundColor Red
+        Write-Host "`nERROR: Tamper Protection esta ACTIVADO." -ForegroundColor Red
         Write-Host "Windows bloquea la desactivacion de:" -ForegroundColor Yellow
         Write-Host " - Proteccion en tiempo real"
         Write-Host " - Proteccion basada en la nube"
         Write-Host " - Otras protecciones criticas"
         Write-Host "`nSOLO se puede modificar el envio automatico de muestras." -ForegroundColor Yellow
-        Write-Host "Para desactivar el resto, hágalo manualmente en:" -ForegroundColor Cyan
-        Write-Host "Configuración → Seguridad de Windows → Protección contra virus y amenazas → Protección contra alteraciones"
+        Write-Host "Para desactivar el resto, hagalo manualmente en:" -ForegroundColor Cyan
+        Write-Host "Configuracion → Seguridad de Windows → Proteccion contra virus y amenazas → Proteccion contra alteraciones"
         return
     }
 

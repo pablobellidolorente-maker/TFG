@@ -1,17 +1,17 @@
 <#
 .SYNOPSIS
-    Sistema de Logging Básico para TFG-AutoDeploy.
+    Sistema de Logging Basico para TFG-AutoDeploy.
 
 .DESCRIPTION
-    Módulo para registrar solo los eventos principales:
+    Modulo para registrar solo los eventos principales:
     - Inicio de procesos
-    - Finalización exitosa
-    - Errores con número de línea
+    - Finalizacion exitosa
+    - Errores con numero de linea
 
 .EXAMPLE
     Write-BasicLog -Message "Configurando equipo" -Type "INICIO"
     Write-BasicLog -Message "Equipo configurado correctamente" -Type "EXITO"
-    Write-BasicLog -Message "Fallo en la configuración" -Type "ERROR" -LineNumber 45
+    Write-BasicLog -Message "Fallo en la configuracion" -Type "ERROR" -LineNumber 45
 #>
 
 # ============================
@@ -31,7 +31,7 @@ if (-not (Test-Path $Global:LogBasePath)) {
 # ============================
 <#
 .SYNOPSIS
-    Escribe mensajes en el archivo de log básico.
+    Escribe mensajes en el archivo de log basico.
 
 .PARAMETER Message
     El mensaje a registrar.
@@ -40,10 +40,10 @@ if (-not (Test-Path $Global:LogBasePath)) {
     Tipo de mensaje: INICIO, EXITO, ERROR
     
 .PARAMETER LineNumber
-    Número de línea donde ocurrió el evento (especialmente para errores).
+    Numero de linea donde ocurrio el evento (especialmente para errores).
     
 .PARAMETER ConsoleOutput
-    Si se activa, también muestra el log en consola.
+    Si se activa, tambien muestra el log en consola.
 #>
 function Write-BasicLog {
     param(
@@ -61,11 +61,11 @@ function Write-BasicLog {
     $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
     $logDate = Get-Date -Format "yyyy-MM-dd"
     
-    # Construir el mensaje con línea si existe
+    # Construir el mensaje con linea si existe
     $lineInfo = if ($LineNumber) { " [Linea: $LineNumber]" } else { "" }
     $logEntry = "[$timestamp] [$Type]$lineInfo $Message"
     
-    # Archivo de log básico
+    # Archivo de log basico
     $logFileName = "basico_$logDate.log"
     $logFilePath = Join-Path $Global:LogBasePath $logFileName
     
@@ -87,13 +87,13 @@ function Write-BasicLog {
 # ============================
 <#
 .SYNOPSIS
-    Ejecuta una acción con logging básico automático.
+    Ejecuta una accion con logging basico automatico.
 
 .PARAMETER Action
     El scriptblock a ejecutar.
     
 .PARAMETER Description
-    Descripción de lo que hace la acción.
+    Descripcion de lo que hace la accion.
     
 .EXAMPLE
     Invoke-BasicAction -Action { Rename-Computer -NewName "EQUIPO-NUEVO" } `
@@ -112,16 +112,16 @@ function Invoke-BasicAction {
         # Registrar inicio
         Write-BasicLog -Message "Empieza: $Description" -Type "INICIO" -ConsoleOutput
         
-        # Ejecutar acción
+        # Ejecutar accion
         $result = & $Action
         
-        # Registrar éxito
+        # Registrar exito
         Write-BasicLog -Message "Se ejecuto correctamente: $Description" -Type "EXITO" -ConsoleOutput
         
         return $result
         
     } catch {
-        # Obtener información del error
+        # Obtener informacion del error
         $errorLine = $_.InvocationInfo.ScriptLineNumber
         $errorMsg = $_.Exception.Message
         
@@ -140,7 +140,7 @@ function Invoke-BasicAction {
 # ============================
 <#
 .SYNOPSIS
-    Verifica si el script se está ejecutando con permisos de administrador.
+    Verifica si el script se esta ejecutando con permisos de administrador.
 #>
 function Test-IsAdmin {
     $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -168,10 +168,10 @@ function Require-Admin {
 # ============================
 <#
 .SYNOPSIS
-    Importa un archivo de configuración con verificación.
+    Importa un archivo de configuracion con verificacion.
 
 .PARAMETER Path
-    Ruta del archivo de configuración.
+    Ruta del archivo de configuracion.
     
 .EXAMPLE
     $config = Import-ConfigFile -Path ".\config\settings.conf"

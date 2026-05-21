@@ -60,7 +60,7 @@ function exportar-auditorias {
 
     $ruta = Read-Host "Introduce la ruta donde guardar el archivo (ej: C:\auditoria.txt)"
 
-    # Si el archivo NO existe, lo crea automáticamente
+    # Si el archivo NO existe, lo crea automaticamente
     if (-not (Test-Path $ruta)) {
         New-Item -ItemType File -Path $ruta -Force | Out-Null
         Write-Host "Archivo creado: $ruta" -ForegroundColor Yellow

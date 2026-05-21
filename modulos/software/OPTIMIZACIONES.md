@@ -1,19 +1,19 @@
-# � Aprende las Optimizaciones del Módulo de Software
+# � Aprende las Optimizaciones del Modulo de Software
 
-## 🎯 ¿QUÉ HEMOS HECHO? - Resumen de Cambios
+## 🎯 ¿QUe HEMOS HECHO? - Resumen de Cambios
 
-Se han implementado **4 grandes optimizaciones** al módulo `Msoftware.ps1`:
+Se han implementado **4 grandes optimizaciones** al modulo `Msoftware.ps1`:
 
-1. ⚡ **Instalación Paralela** → Las apps se instalan al mismo tiempo
-2. 📢 **Mensajes de Inicio/Fin** → Sabes exactamente qué está pasando
+1. ⚡ **Instalacion Paralela** → Las apps se instalan al mismo tiempo
+2. 📢 **Mensajes de Inicio/Fin** → Sabes exactamente que esta pasando
 3. 👁️ **Indicador Visual** → Ves el progreso en tiempo real
 4. 📝 **Logs Mejorados** → Registro detallado de todo
 
 ---
 
-# 🚀 OPTIMIZACIÓN 1: Instalación Paralela
+# 🚀 OPTIMIZACIoN 1: Instalacion Paralela
 
-## ¿POR QUÉ es importante?
+## ¿POR QUe es importante?
 
 Imagina que necesitas instalar 5 aplicaciones:
 - **Google Chrome** tarda 30 segundos
@@ -33,34 +33,34 @@ Tiempo 111-125s:[PowerShell          ▓▓▓▓] 15s
 ⏱️ TIEMPO TOTAL: 125 SEGUNDOS (2 minutos 5 segundos)
 ```
 
-### ✅ DESPUÉS (Paralelo - simultáneamente):
+### ✅ DESPUeS (Paralelo - simultaneamente):
 ```
 Tiempo 0-35s:
    [Google Chrome       ▓▓▓▓▓▓▓▓▓▓] 30s
    [7Zip                ▓▓▓▓▓▓▓] 20s
    [Notepad++           ▓▓▓▓▓▓▓▓▓] 25s
-   [Adobe Reader        ▓▓▓▓▓▓▓▓▓▓▓] 35s (termina último)
+   [Adobe Reader        ▓▓▓▓▓▓▓▓▓▓▓] 35s (termina ultimo)
    [PowerShell          ▓▓▓▓] 15s
 
 ⏱️ TIEMPO TOTAL: 35 SEGUNDOS
-💨 ¡3 veces más RÁPIDO! (71% más rápido)
+💨 ¡3 veces mas RaPIDO! (71% mas rapido)
 ```
 
-## 🔧 CÓMO FUNCIONA TÉCNICAMENTE
+## 🔧 CoMO FUNCIONA TeCNICAMENTE
 
-### Paso 1: Definir cuántos jobs simultáneos queremos
+### Paso 1: Definir cuantos jobs simultaneos queremos
 
 ```powershell
 $numJobsMaximos = [Math]::Min([Environment]::ProcessorCount, 4)
 ```
 
-**¿Qué hace esto?**
-- `[Environment]::ProcessorCount` → Cuenta cuántos CPU tienes
+**¿Que hace esto?**
+- `[Environment]::ProcessorCount` → Cuenta cuantos CPU tienes
 - `[Math]::Min(..., 4)` → Elige el menor entre CPU y 4
   - Si tienes 2 CPU → usa 2 jobs
-  - Si tienes 8 CPU → usa 4 jobs (máximo, para no saturar)
+  - Si tienes 8 CPU → usa 4 jobs (maximo, para no saturar)
 
-### Paso 2: Crear una función que instale UNA aplicación en background
+### Paso 2: Crear una funcion que instale UNA aplicacion en background
 
 ```powershell
 function Instalar-Aplicacion {
@@ -84,13 +84,13 @@ function Instalar-Aplicacion {
 }
 ```
 
-**¿Qué hace?**
+**¿Que hace?**
 1. Recibe el nombre de la app y la ruta del log
-2. Escribe en el log que INICIA la instalación
+2. Escribe en el log que INICIA la instalacion
 3. Ejecuta winget silenciosamente
 4. Escribe en el log que TERMINA
 
-### Paso 3: Lanzar múltiples instalaciones a la vez
+### Paso 3: Lanzar multiples instalaciones a la vez
 
 ```powershell
 # Primero, crear 4 jobs iniciales
@@ -106,9 +106,9 @@ while ($jobs.Count -lt $numJobsMaximos -and $indicePrograma -lt $programas.Count
 }
 ```
 
-**¿Qué es un "job"?**
+**¿Que es un "job"?**
 - Es como abrir una nueva ventana de PowerShell que ejecuta algo
-- Cada job es **independiente** de los demás
+- Cada job es **independiente** de los demas
 - Pueden ejecutarse **al mismo tiempo**
 
 ### Paso 4: Esperar y reemplazar jobs conforme terminen
@@ -122,9 +122,9 @@ while ($jobs.Count -gt 0) {
         # Obtener el resultado y mostrarlo
         $resultado = Receive-Job -Job $job
         
-        # SI HAY MÁS APPS, LANZAR LA SIGUIENTE
+        # SI HAY MaS APPS, LANZAR LA SIGUIENTE
         if ($indicePrograma -lt $programas.Count) {
-            $newJob = Start-Job -ScriptBlock ... # Nueva instalación
+            $newJob = Start-Job -ScriptBlock ... # Nueva instalacion
             $jobs += $newJob
             $indicePrograma++
         }
@@ -139,24 +139,24 @@ while ($jobs.Count -gt 0) {
 }
 ```
 
-**¿Cómo funciona el flujo?**
+**¿Como funciona el flujo?**
 
 ```
 1️⃣ INSTANCIA 1: Chrome   ✓ Listo en 30s
 2️⃣ INSTANCIA 2: 7Zip     ✓ Listo en 20s
 3️⃣ INSTANCIA 3: Notepad  ✓ Listo en 25s
-4️⃣ INSTANCIA 4: Adobe    (ejecutándose...)
+4️⃣ INSTANCIA 4: Adobe    (ejecutandose...)
 
-👆 Se ejecutan los 4 simultáneamente 👆
+👆 Se ejecutan los 4 simultaneamente 👆
 
 Cuando termina Chrome (inst 1):
    ➜ Reemplazarlo con PowerShell (inst 5)
    
 Cuando termina 7Zip (inst 2):
-   ➜ No hay más apps, solo esperar
+   ➜ No hay mas apps, solo esperar
    
 Cuando termina Notepad (inst 3):
-   ➜ No hay más apps, solo esperar
+   ➜ No hay mas apps, solo esperar
    
 Cuando termina Adobe (inst 4):
    ➜ FIN DEL PROCESO
@@ -166,7 +166,7 @@ Cuando termina Adobe (inst 4):
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│         INSTALACION CON 4 JOBS SIMULTÁNEOS          │
+│         INSTALACION CON 4 JOBS SIMULTaNEOS          │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │  Job1: Chrome           ████████████░░░░░░░░░░░░░  │
@@ -176,45 +176,45 @@ Cuando termina Adobe (inst 4):
 │                                                     │
 │  Tiempo: 0────10───20───30───40───50───60─ segundos│
 │                                                     │
-│  ✓ Adobe Reader (40s) termina último              │
+│  ✓ Adobe Reader (40s) termina ultimo              │
 │  ✓ TIEMPO TOTAL: 40 segundos                      │
-│  ✓ En secuencial sería: 115+ segundos              │
+│  ✓ En secuencial seria: 115+ segundos              │
 │                                                     │
 └─────────────────────────────────────────────────────┘
 ```
 
 ---
 
-# 📢 OPTIMIZACIÓN 2: Mensajes de Inicio y Fin
+# 📢 OPTIMIZACIoN 2: Mensajes de Inicio y Fin
 
-## ¿POR QUÉ es importante?
+## ¿POR QUe es importante?
 
-Con **10 aplicaciones instalándose en paralelo**, ¿cómo sabes qué está pasando?
-- ¿Se está instalando algo?
-- ¿Cuál es la siguiente?
+Con **10 aplicaciones instalandose en paralelo**, ¿como sabes que esta pasando?
+- ¿Se esta instalando algo?
+- ¿Cual es la siguiente?
 - ¿Se ha quedado bloqueado?
 
-**SOLUCIÓN:** Mostrar mensajes claros en cada paso
+**SOLUCIoN:** Mostrar mensajes claros en cada paso
 
-## ¿CÓMO FUNCIONA?
+## ¿CoMO FUNCIONA?
 
 ### Antes (SIN mensajes):
 ```
 [El script corre sin decir nada]
 [Esperas... esperas... esperas...]
-[¿Está haciendo algo?]
+[¿Esta haciendo algo?]
 [¿Se ha bloqueado?]
 [Incertidumbre total...]
 ```
 
-### Después (CON mensajes):
+### Despues (CON mensajes):
 ```
 [14:23:45] ▶ INICIANDO: Google.Chrome
 [14:23:46] ▶ INICIANDO: 7zip.7zip
 [14:23:47] ▶ INICIANDO: Notepad++.Notepad++
 [14:23:48] ▶ INICIANDO: Adobe.Acrobat.Reader.64-bit
 
-[Aquí se instalan en paralelo...]
+[Aqui se instalan en paralelo...]
 
 [14:24:12] ✓ FINALIZADA: Google.Chrome
 [14:24:12] ▶ INICIANDO: Microsoft.PowerShell
@@ -227,9 +227,9 @@ Con **10 aplicaciones instalándose en paralelo**, ¿cómo sabes qué está pasa
 ⏱️ Duracion total: 2m 5s
 ```
 
-## 🔧 CÓMO SE IMPLEMENTA
+## 🔧 CoMO SE IMPLEMENTA
 
-### En la sección de lanzar trabajos:
+### En la seccion de lanzar trabajos:
 ```powershell
 $app = $programas[$indicePrograma]
 
@@ -244,7 +244,7 @@ $jobs += $job
 $indicePrograma++
 ```
 
-**Explicación:**
+**Explicacion:**
 - `Get-Date -Format 'HH:mm:ss'` → Obtiene la hora actual en formato 14:23:45
 - `Write-Host` → Escribe en la pantalla
 - `-ForegroundColor Cyan` → Lo escribe en azul/cian
@@ -265,15 +265,15 @@ foreach ($job in $jobsCompletados) {
 
 ---
 
-# 👁️ OPTIMIZACIÓN 3: Indicador Visual de Progreso
+# 👁️ OPTIMIZACIoN 3: Indicador Visual de Progreso
 
-## ¿POR QUÉ es importante?
+## ¿POR QUe es importante?
 
-Imagina 20 aplicaciones instalándose. ¿Cuántas van? ¿Cuántas faltan?
+Imagina 20 aplicaciones instalandose. ¿Cuantas van? ¿Cuantas faltan?
 
-## ¿CÓMO FUNCIONA?
+## ¿CoMO FUNCIONA?
 
-### Animación de Carga:
+### Animacion de Carga:
 ```
 Metodo 1 - Puntos crecientes:
 [Instalando] app.exe
@@ -285,16 +285,16 @@ Metodo 1 - Puntos crecientes:
 (Y vuelve a empezar...)
 ```
 
-### Código de Animación:
+### Codigo de Animacion:
 ```powershell
 $contador = 0
 while ((Get-Job -Id $job.Id).State -eq "Running") {
     $contador++
     
-    # Crear patrón de puntos (0, 1, 2, 3, vuelve a 0)
+    # Crear patron de puntos (0, 1, 2, 3, vuelve a 0)
     $puntos = "." * ($contador % 4)
     
-    # Escribir sin saltar de línea
+    # Escribir sin saltar de linea
     Write-Host "`r[Instalando] $app$puntos" -NoNewline
     
     # Esperar antes de actualizar
@@ -302,8 +302,8 @@ while ((Get-Job -Id $job.Id).State -eq "Running") {
 }
 ```
 
-**¿Qué hace `$contador % 4`?**
-- `%` es "módulo" (resto de la división)
+**¿Que hace `$contador % 4`?**
+- `%` es "modulo" (resto de la division)
 - Cuando contador = 1 → 1 % 4 = 1 punto
 - Cuando contador = 2 → 2 % 4 = 2 puntos  
 - Cuando contador = 3 → 3 % 4 = 3 puntos
@@ -328,7 +328,7 @@ Write-Host "`r[PROGRESO] $completados/$($programas.Count) completadas | Pendient
 ✓ INSTALACION COMPLETADA
 ```
 
-## 📊 Visualización Completa
+## 📊 Visualizacion Completa
 
 ```
 ╔════════════════════════════════════════════════════════════╗
@@ -355,21 +355,21 @@ Write-Host "`r[PROGRESO] $completados/$($programas.Count) completadas | Pendient
 
 ---
 
-# 📝 OPTIMIZACIÓN 4: Logs Mejorados
+# 📝 OPTIMIZACIoN 4: Logs Mejorados
 
-## ¿CÓMO FUNCIONA?
+## ¿CoMO FUNCIONA?
 
-Los logs son el **historial completo** de todo lo que pasó. Útil para:
-- ✓ Auditoría (quién instaló qué y cuándo)
-- ✓ Debugging (si algo falló, ver por qué)
-- ✓ Reportes (demostrar que se instaló correctamente)
+Los logs son el **historial completo** de todo lo que paso. util para:
+- ✓ Auditoria (quien instalo que y cuando)
+- ✓ Debugging (si algo fallo, ver por que)
+- ✓ Reportes (demostrar que se instalo correctamente)
 
 ## ESTRUCTURA DEL LOG
 
 ```
 2026-05-13 14:23:45
 [INICIO] Instalando: Google.Chrome
-<aquí va toda la salida de winget>
+<aqui va toda la salida de winget>
 [FIN] Google.Chrome
 
 2026-05-13 14:23:46
@@ -383,9 +383,9 @@ Los logs son el **historial completo** de todo lo que pasó. Útil para:
 [FIN] Notepad++.Notepad++
 ```
 
-## CÓMO SE ESCRIBE EN EL LOG
+## CoMO SE ESCRIBE EN EL LOG
 
-### Dentro de la función `Instalar-Aplicacion`:
+### Dentro de la funcion `Instalar-Aplicacion`:
 
 ```powershell
 # Obtener timestamp actual
@@ -411,9 +411,9 @@ $resultado | Out-File -Append -FilePath $LogPath
 "[FIN] $AppId" | Out-File -Append -FilePath $LogPath
 ```
 
-**¿Qué significa cada parte?**
-- `Out-File -Append` → Añadir al final del archivo (no sobrescribir)
-- `-FilePath` → Dónde escribir
+**¿Que significa cada parte?**
+- `Out-File -Append` → Anadir al final del archivo (no sobrescribir)
+- `-FilePath` → Donde escribir
 - `-Encoding UTF8` → Usar caracteres Unicode (por si hay acentos)
 
 ---
@@ -421,8 +421,8 @@ $resultado | Out-File -Append -FilePath $LogPath
 # 🎓 CONCEPTOS QUE HAS APRENDIDO
 
 ## 1. **Paralelismo (Concurrency)**
-- ✓ Ejecutar múltiples tareas **al mismo tiempo**
-- ✓ Mucho más rápido que secuencial
+- ✓ Ejecutar multiples tareas **al mismo tiempo**
+- ✓ Mucho mas rapido que secuencial
 - ✓ Requiere control (no saturar el sistema)
 
 ## 2. **Background Jobs**
@@ -434,18 +434,18 @@ $resultado | Out-File -Append -FilePath $LogPath
 ## 3. **Feedback Visual**
 - ✓ Mostrar estados (inicio, progreso, fin)
 - ✓ Animaciones para mantener al usuario informado
-- ✓ Timestamps para saber cuándo sucedió cada cosa
+- ✓ Timestamps para saber cuando sucedio cada cosa
 
-## 4. **Logging y Auditoría**
+## 4. **Logging y Auditoria**
 - ✓ Registrar todo lo que ocurre
 - ✓ Out-File para escribir en archivos
 - ✓ Timestamps para rastrabilidad
 
 ---
 
-# 🚀 COMPARATIVA: ANTES vs DESPUÉS
+# 🚀 COMPARATIVA: ANTES vs DESPUeS
 
-## ❌ FUNCIÓN ORIGINAL (Sin optimizaciones)
+## ❌ FUNCIoN ORIGINAL (Sin optimizaciones)
 
 ```powershell
 foreach ($p in $programas) {
@@ -461,22 +461,22 @@ Write-Host "`nInstalacion completada." -ForegroundColor Green
 
 **Problemas:**
 - ❌ Las instalaciones son **secuenciales** (una por una)
-- ❌ **SIN feedback** durante la instalación (se congela)
-- ❌ No sabes cuándo empieza/termina cada app
+- ❌ **SIN feedback** durante la instalacion (se congela)
+- ❌ No sabes cuando empieza/termina cada app
 - ❌ Tiempo total = SUMA de todos los tiempos
 
 ---
 
-## ✅ FUNCIÓN OPTIMIZADA (Con todas las mejoras)
+## ✅ FUNCIoN OPTIMIZADA (Con todas las mejoras)
 
 ```powershell
-# 1. DECLARAR LÍMITE DE JOBS
+# 1. DECLARAR LiMITE DE JOBS
 $numJobsMaximos = [Math]::Min([Environment]::ProcessorCount, 4)
 
 # 2. MOSTRAR ENCABEZADO
 Write-Host "=== INSTALACION EN PARALELO ===" -ForegroundColor Green
 Write-Host "Total de aplicaciones: $($programas.Count)"
-Write-Host "Instalaciones simultáneas: $numJobsMaximos"
+Write-Host "Instalaciones simultaneas: $numJobsMaximos"
 
 # 3. LANZAR JOBS INICIALES
 while ($jobs.Count -lt $numJobsMaximos -and $indicePrograma -lt $programas.Count) {
@@ -497,7 +497,7 @@ while ($jobs.Count -gt 0) {
         $resultado = Receive-Job -Job $job
         $completados++
         
-        # MOSTRAR FINALIZACIÓN
+        # MOSTRAR FINALIZACIoN
         Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ✓ FINALIZADA: $($job.Name)" `
                    -ForegroundColor Green
         
@@ -531,33 +531,33 @@ Write-Host "Duracion total: $($duracion.Minutes)m $($duracion.Seconds)s" -Foregr
 ```
 
 **Ventajas:**
-- ✅ **Paralelismo**: 4 apps simultáneamente
+- ✅ **Paralelismo**: 4 apps simultaneamente
 - ✅ **Feedback claro**: Ves cada inicio/fin
 - ✅ **Progreso visible**: Contador en tiempo real
-- ✅ **Logs detallados**: Auditoría completa
-- ✅ **70% más rápido**: Paralelismo
+- ✅ **Logs detallados**: Auditoria completa
+- ✅ **70% mas rapido**: Paralelismo
 
 ---
 
-# 📊 MÉTRICAS DE MEJORA
+# 📊 MeTRICAS DE MEJORA
 
 ## VELOCIDAD
 
 | Caso | Secuencial | Paralelo | Mejora |
 |------|-----------|----------|--------|
-| 5 apps de 30s c/u | 150s | 30s | **80% más rápido** |
-| 10 apps de 25s c/u | 250s | 62s | **75% más rápido** |
-| 20 apps de 20s c/u | 400s | 100s | **75% más rápido** |
-| Caso Real (mix) | 180s | 55s | **69% más rápido** |
+| 5 apps de 30s c/u | 150s | 30s | **80% mas rapido** |
+| 10 apps de 25s c/u | 250s | 62s | **75% mas rapido** |
+| 20 apps de 20s c/u | 400s | 100s | **75% mas rapido** |
+| Caso Real (mix) | 180s | 55s | **69% mas rapido** |
 
 ## EXPERIENCIA DE USUARIO
 
-| Aspecto | Antes | Después |
+| Aspecto | Antes | Despues |
 |--------|-------|---------|
 | **Visibilidad** | ❌ Ninguna | ✅ Completa |
-| **Confianza** | ❌ ¿Está funcionando? | ✅ Sí, aquí están los detalles |
-| **Velocidad** | ❌ Lenta | ✅ Rápida |
-| **Aprendizaje** | ❌ No sabes qué pasa | ✅ Ves todo |
+| **Confianza** | ❌ ¿Esta funcionando? | ✅ Si, aqui estan los detalles |
+| **Velocidad** | ❌ Lenta | ✅ Rapida |
+| **Aprendizaje** | ❌ No sabes que pasa | ✅ Ves todo |
 
 ---
 
@@ -565,56 +565,56 @@ Write-Host "Duracion total: $($duracion.Minutes)m $($duracion.Seconds)s" -Foregr
 
 Has aprendido a:
 
-1. **Paralelizar procesos** → Usar `Start-Job` para ejecutar cosas simultáneamente
+1. **Paralelizar procesos** → Usar `Start-Job` para ejecutar cosas simultaneamente
 2. **Controlar concurrencia** → Limitar jobs para no saturar el sistema
-3. **Proporcionar feedback** → Mostrar lo que está pasando en tiempo real
-4. **Mantener auditoría** → Registrar todo en los logs
+3. **Proporcionar feedback** → Mostrar lo que esta pasando en tiempo real
+4. **Mantener auditoria** → Registrar todo en los logs
 5. **Mejorar UX** → Hacer los scripts agradables de usar
 
-Todo esto hizo que tu script de instalación sea **mucho más rápido y profesional**.
+Todo esto hizo que tu script de instalacion sea **mucho mas rapido y profesional**.
 
 ---
 
-**Última actualización:** 13 de Mayo de 2026
+**ultima actualizacion:** 13 de Mayo de 2026
 
 ---
 
-### 2. **Mensajes de Inicio y Fin para Cada Aplicación**
+### 2. **Mensajes de Inicio y Fin para Cada Aplicacion**
 
-Ahora cada aplicación muestra dos mensajes con timestamp:
+Ahora cada aplicacion muestra dos mensajes con timestamp:
 
 ```
 [14:23:45] ▶ INICIANDO: Google.Chrome
 [14:24:12] ✓ FINALIZADA: Google.Chrome
 ```
 
-**Características:**
+**Caracteristicas:**
 - ✓ Timestamp exacto `[HH:mm:ss]`
 - ✓ Emoji visual (`▶` para inicio, `✓` para fin)
-- ✓ Nombre de la aplicación
+- ✓ Nombre de la aplicacion
 - ✓ Colores diferenciados (Cyan para inicio, Green para fin)
 
 ---
 
 ### 3. **Indicador Visual de Progreso en Tiempo Real**
 
-**Animación continua:**
+**Animacion continua:**
 ```
 [PROGRESO] 3/8 completadas | Pendientes: 5
 ```
 
-**Características:**
-- ✓ Animación de carga (`|/▐\`) mientras se procesa
+**Caracteristicas:**
+- ✓ Animacion de carga (`|/▐\`) mientras se procesa
 - ✓ Contador actualizado: `X/Total completadas`
-- ✓ Muestra cuántas faltan: `Pendientes: Y`
+- ✓ Muestra cuantas faltan: `Pendientes: Y`
 - ✓ Se actualiza cada 500ms sin bloquear
-- ✓ No congelará la pantalla mientras se instala
+- ✓ No congelara la pantalla mientras se instala
 
 ---
 
-### 4. **Ejecución Asíncrona (No Bloqueante)**
+### 4. **Ejecucion Asincrona (No Bloqueante)**
 
-**Implementación:**
+**Implementacion:**
 ```powershell
 $job = Start-Job -ScriptBlock { winget install ... } -ArgumentList ...
 
@@ -628,13 +628,13 @@ while ((Get-Job -Id $job.Id).State -eq "Running") {
 - ✓ Las operaciones se ejecutan en background
 - ✓ El script no se congela esperando a winget
 - ✓ Feedback visual continuo
-- ✓ Puedes ver exactamente qué está sucediendo
+- ✓ Puedes ver exactamente que esta sucediendo
 
 ---
 
 ### 5. **Logs Mejorados y Estructurados**
 
-Cada operación registra:
+Cada operacion registra:
 - Timestamp: `2026-05-13 14:23:45`
 - Inicio: `[INICIO] Instalando: Google.Chrome`
 - Resultado completo de winget
@@ -650,9 +650,9 @@ Cada operación registra:
 
 ---
 
-### 6. **Duración Total Visible**
+### 6. **Duracion Total Visible**
 
-Al finalizar cada operación muestra:
+Al finalizar cada operacion muestra:
 ```
 Duracion total: 15m 32s
 ✓ INSTALACION COMPLETADA DEL DEPARTAMENTO SELECCIONADO
@@ -662,23 +662,23 @@ Duracion total: 15m 32s
 
 ## 📋 Funciones Optimizadas
 
-| Función | Mejoras |
+| Funcion | Mejoras |
 |---------|---------|
-| `instalar-departamento` | ✓ Paralelismo completo<br>✓ Contador de progreso<br>✓ Duración total |
-| `instalar-personalizado` | ✓ Feedback visual animado<br>✓ Validación de input |
-| `actualizar-software` | ✓ Animación de progreso<br>✓ Ejecución asíncrona |
-| `desinstalar-software` | ✓ Indicador visual<br>✓ Validación de input |
-| `listar-software` | ✓ Obtención asíncrona<br>✓ Feedback en tiempo real |
-| `ver-logs` | ✓ Presentación mejorada<br>✓ Delimitadores visuales |
+| `instalar-departamento` | ✓ Paralelismo completo<br>✓ Contador de progreso<br>✓ Duracion total |
+| `instalar-personalizado` | ✓ Feedback visual animado<br>✓ Validacion de input |
+| `actualizar-software` | ✓ Animacion de progreso<br>✓ Ejecucion asincrona |
+| `desinstalar-software` | ✓ Indicador visual<br>✓ Validacion de input |
+| `listar-software` | ✓ Obtencion asincrona<br>✓ Feedback en tiempo real |
+| `ver-logs` | ✓ Presentacion mejorada<br>✓ Delimitadores visuales |
 
 ---
 
-## 🎨 Ejemplo de Ejecución Completa
+## 🎨 Ejemplo de Ejecucion Completa
 
 ```
 === INSTALACION EN PARALELO ===
 Total de aplicaciones: 5
-Instalaciones simultáneas: 4
+Instalaciones simultaneas: 4
 
 [14:23:45] ▶ INICIANDO: Google.Chrome
 [14:23:46] ▶ INICIANDO: 7zip.7zip
@@ -706,30 +706,30 @@ Duracion total: 2m 35s
 ## 📁 Archivo Modificado
 
 - **Ruta:** `modulos/software/Msoftware.ps1`
-- **Cambios:** Refactorización completa de todas las funciones
-- **Líneas añadidas:** ~200
+- **Cambios:** Refactorizacion completa de todas las funciones
+- **Lineas anadidas:** ~200
 - **Mantiene:** Compatibilidad total con la estructura existente
 
 ---
 
-## 🔧 Características Técnicas
+## 🔧 Caracteristicas Tecnicas
 
 ### Control de Concurrencia
 ```powershell
 $numJobsMaximos = [Math]::Min([Environment]::ProcessorCount, 4)
 ```
-- Adapta automáticamente al número de CPU
-- Máximo 4 jobs para evitar saturación
+- Adapta automaticamente al numero de CPU
+- Maximo 4 jobs para evitar saturacion
 
 ### Manejo de Errores
 - Cada job se ejecuta de forma independiente
-- Si una instalación falla, las demás continúan
+- Si una instalacion falla, las demas continuan
 - Los errores se registran en los logs
 
-### Validación de Entrada
+### Validacion de Entrada
 ```powershell
 if ([string]::IsNullOrWhiteSpace($id)) {
-    Write-Host "ERROR: No se proporcionó ningún ID." -ForegroundColor Red
+    Write-Host "ERROR: No se proporciono ningun ID." -ForegroundColor Red
 }
 ```
 
@@ -739,26 +739,26 @@ if ([string]::IsNullOrWhiteSpace($id)) {
 
 | Aspecto | Ventaja |
 |--------|---------|
-| **Velocidad** | ⚡ 50-70% más rápido |
+| **Velocidad** | ⚡ 50-70% mas rapido |
 | **Transparencia** | 👁️ Ves cada paso en tiempo real |
 | **No bloqueante** | 🔄 Puedes ver progreso continuamente |
-| **Robusto** | 🛡️ Falla una, continúan las demás |
-| **Logs detallados** | 📝 Auditoría completa |
+| **Robusto** | 🛡️ Falla una, continuan las demas |
+| **Logs detallados** | 📝 Auditoria completa |
 | **Experiencia** | 😊 Interfaz clara y professional |
 
 ---
 
-## 📌 Cómo Usar
+## 📌 Como Usar
 
-El módulo funciona igual que antes, pero **mucho más rápido**:
+El modulo funciona igual que antes, pero **mucho mas rapido**:
 
 1. Ejecuta `Msoftware.ps1`
-2. Selecciona la opción deseada
+2. Selecciona la opcion deseada
 3. Observa el progreso en tiempo real
-4. Espera a la confirmación de finalización
+4. Espera a la confirmacion de finalizacion
 
 **¡No hay cambios en la interfaz o flujo de usuario, solo mejoras internas!**
 
 ---
 
-**Última actualización:** 13 de Mayo de 2026
+**ultima actualizacion:** 13 de Mayo de 2026

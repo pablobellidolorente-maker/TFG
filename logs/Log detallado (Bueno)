@@ -3,8 +3,8 @@
     Sistema de Logging Detallado para TFG-AutoDeploy.
 
 .DESCRIPTION
-    Módulo para registrar todos los pasos de la ejecución.
-    El archivo de log detallado SIEMPRE se guarda automáticamente.
+    Modulo para registrar todos los pasos de la ejecucion.
+    El archivo de log detallado SIEMPRE se guarda automaticamente.
 
 .EXAMPLE
     Write-DetailedLog "Verificando permisos de administrador..."
@@ -35,10 +35,10 @@ if (-not (Test-Path $Global:LogBasePath)) {
     El mensaje a registrar.
 
 .PARAMETER LineNumber
-    Número de línea si es necesario.
+    Numero de linea si es necesario.
     
 .PARAMETER ConsoleOutput
-    Si se activa, también muestra el log en consola.
+    Si se activa, tambien muestra el log en consola.
 #>
 function Write-DetailedLog {
     param(
@@ -53,7 +53,7 @@ function Write-DetailedLog {
     $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
     $logDate = Get-Date -Format "yyyy-MM-dd"
     
-    # Construir el mensaje con línea si existe
+    # Construir el mensaje con linea si existe
     $lineInfo = if ($LineNumber) { " [Linea: $LineNumber]" } else { "" }
     $logEntry = "[$timestamp] [DETALLE]$lineInfo $Message"
     
@@ -79,13 +79,13 @@ function Write-DetailedLog {
 # ============================
 <#
 .SYNOPSIS
-    Ejecuta una acción y registra todos los pasos en el archivo detallado.
+    Ejecuta una accion y registra todos los pasos en el archivo detallado.
 
 .PARAMETER Action
     El scriptblock a ejecutar.
     
 .PARAMETER Description
-    Descripción de lo que hace la acción.
+    Descripcion de lo que hace la accion.
     
 .EXAMPLE
     Invoke-DetailedAction -Action { Rename-Computer -NewName "EQUIPO" } `
@@ -104,16 +104,16 @@ function Invoke-DetailedAction {
         # Registrar inicio
         Write-DetailedLog -Message "Iniciando proceso: $Description"
         
-        # Ejecutar acción
+        # Ejecutar accion
         $result = & $Action
         
-        # Registrar éxito
+        # Registrar exito
         Write-DetailedLog -Message "Proceso finalizado exitosamente: $Description"
         
         return $result
         
     } catch {
-        # Obtener información del error
+        # Obtener informacion del error
         $errorLine = $_.InvocationInfo.ScriptLineNumber
         $errorMsg = $_.Exception.Message
         $errorType = $_.Exception.GetType().Name
@@ -156,7 +156,7 @@ function Get-LogSummary {
     $basicLog = Join-Path $Global:LogBasePath "basico_$Date.log"
     $detailedLog = Join-Path $Global:LogBasePath "detallado_$Date.log"
     
-    # Contar líneas en cada archivo
+    # Contar lineas en cada archivo
     $basicCount = if (Test-Path $basicLog) { (Get-Content $basicLog | Measure-Object -Line).Lines } else { 0 }
     $detailedCount = if (Test-Path $detailedLog) { (Get-Content $detailedLog | Measure-Object -Line).Lines } else { 0 }
     
@@ -173,7 +173,7 @@ function Get-LogSummary {
 # ============================
 <#
 .SYNOPSIS
-    Verifica si el script se está ejecutando con permisos de administrador.
+    Verifica si el script se esta ejecutando con permisos de administrador.
 #>
 function Test-IsAdmin {
     $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -201,10 +201,10 @@ function Require-Admin {
 # ============================
 <#
 .SYNOPSIS
-    Importa un archivo de configuración con verificación.
+    Importa un archivo de configuracion con verificacion.
 
 .PARAMETER Path
-    Ruta del archivo de configuración.
+    Ruta del archivo de configuracion.
     
 .EXAMPLE
     $config = Import-ConfigFile -Path ".\config\settings.conf"

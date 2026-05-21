@@ -12,13 +12,13 @@ do {
     Write-Host ""
     Write-Host "========BIENVENIDO========"
     Write-Host ""
-    Write-Host "Bienvenido al menú de configuración, seleccione una opción:"
+    Write-Host "Bienvenido al menu de configuracion, seleccione una opcion:"
     Write-Host ""
-    Write-Host "1) Configuración básica del sistema" -ForegroundColor Red
+    Write-Host "1) Configuracion basica del sistema" -ForegroundColor Red
     Write-Host ""
-    Write-Host "2) Configuración de instalación de software" -ForegroundColor Cyan
+    Write-Host "2) Configuracion de instalacion de software" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "3) Configuración de seguridad del sistema" -ForegroundColor Green
+    Write-Host "3) Configuracion de seguridad del sistema" -ForegroundColor Green
     Write-Host ""
     Write-Host "4) Salir" -ForegroundColor Cyan
 
@@ -43,7 +43,7 @@ do {
         }
 
         default {
-            Write-Host "ERROR: Opción no válida, introduzca 1, 2, 3 o 4" -ForegroundColor Red
+            Write-Host "ERROR: Opcion no valida, introduzca 1, 2, 3 o 4" -ForegroundColor Red
         }
     }
 

@@ -1,6 +1,6 @@
-# Guía para la memoria del TFG
+# Guia para la memoria del TFG
 
-Este archivo es una plantilla de guía para redactar la memoria final del Trabajo Fin de Grado (TFG). Está pensada para el proyecto de automatización de configuración, seguridad y software por departamentos, adaptada al ecosistema desarrollado en el repo.
+Este archivo es una plantilla de guia para redactar la memoria final del Trabajo Fin de Grado (TFG). Esta pensada para el proyecto de automatizacion de configuracion, seguridad y software por departamentos, adaptada al ecosistema desarrollado en el repo.
 
 ---
 
@@ -8,69 +8,69 @@ Este archivo es una plantilla de guía para redactar la memoria final del Trabaj
 
 Incluye:
 
-- Título del proyecto.
+- Titulo del proyecto.
 - Autor/es.
 - Tutores.
-- Titulación: ASIR.
-- Curso académico.
+- Titulacion: ASIR.
+- Curso academico.
 - Centro educativo.
 
 ---
 
-## 2. Índice
+## 2. indice
 
-Lista de secciones con números de página. Incluye:
+Lista de secciones con numeros de pagina. Incluye:
 
 - Resumen
-- Introducción
+- Introduccion
 - Objetivos
 - Estado del arte
-- Metodología
+- Metodologia
 - Desarrollo del proyecto
-- Pruebas y validación
+- Pruebas y validacion
 - Resultados
 - Conclusiones
-- Bibliografía
+- Bibliografia
 - Anexos
 
 ---
 
 ## 3. Resumen (abstract)
 
-- Breve descripción del proyecto.
+- Breve descripcion del proyecto.
 - Objetivos principales.
-- Método de trabajo.
-- Resultados más relevantes.
-- Conclusión o aporte principal.
+- Metodo de trabajo.
+- Resultados mas relevantes.
+- Conclusion o aporte principal.
 
 El resumen debe ser conciso y comprenderse sin leer el resto del documento.
 
 ---
 
-## 4. Introducción
+## 4. Introduccion
 
 Explica:
 
 - Contexto del proyecto.
-- Motivación para elegirlo.
+- Motivacion para elegirlo.
 - Importancia de automatizar configuraciones y seguridad.
-- Relación con el mundo profesional y académico.
+- Relacion con el mundo profesional y academico.
 - Alcance general del TFG.
 
 ---
 
 ## 5. Objetivos
 
-Detalla los objetivos generales y específicos:
+Detalla los objetivos generales y especificos:
 
-- Objetivo general: crear un sistema automatizado de configuración y despliegue por departamentos.
-- Objetivos específicos:
-  - modularizar scripts por función y departamento
-  - diseñar un menú de selección intuitivo
-  - garantizar seguridad básica y estandarización
-  - documentar el proceso y presentar la solución
+- Objetivo general: crear un sistema automatizado de configuracion y despliegue por departamentos.
+- Objetivos especificos:
+  - modularizar scripts por funcion y departamento
+  - disenar un menu de seleccion intuitivo
+  - garantizar seguridad basica y estandarizacion
+  - documentar el proceso y presentar la solucion
 
-Incluye criterios de éxito y alcance real del proyecto.
+Incluye criterios de exito y alcance real del proyecto.
 
 ---
 
@@ -79,27 +79,27 @@ Incluye criterios de éxito y alcance real del proyecto.
 Describe:
 
 - referencias y proyectos similares.
-- herramientas existentes para automatización en entornos empresariales.
-- buenas prácticas en gestión de configuración y hardening.
-- comparación breve con la solución del TFG.
+- herramientas existentes para automatizacion en entornos empresariales.
+- buenas practicas en gestion de configuracion y hardening.
+- comparacion breve con la solucion del TFG.
 
 Puede incluir:
 
 - PowerShell para Windows
-- scripts de despliegue y configuración
+- scripts de despliegue y configuracion
 - estructura modular de proyectos
 
 ---
 
-## 7. Metodología
+## 7. Metodologia
 
 Explica el proceso de trabajo:
 
-- planificación y organización del proyecto.
+- planificacion y organizacion del proyecto.
 - fases del desarrollo.
 - herramientas usadas: GitHub, VS Code, PowerShell, etc.
-- trabajo en equipo y coordinación.
-- criterios para tomar decisiones de diseño.
+- trabajo en equipo y coordinacion.
+- criterios para tomar decisiones de diseno.
 
 Incluye un diagrama de fases si quieres.
 
@@ -107,31 +107,31 @@ Incluye un diagrama de fases si quieres.
 
 ## 8. Desarrollo del proyecto
 
-Presenta la implementación en detalle:
+Presenta la implementacion en detalle:
 
-- estructura del repositorio y razones de diseño.
-- descripción de los módulos principales:
+- estructura del repositorio y razones de diseno.
+- descripcion de los modulos principales:
   - `modulos/configuracion basica/`
   - `modulos/seguridad/`
   - `modulos/software/`
   - `modulos/opciones_dpt.ps1`
-- lógica por departamentos y cómo se aplica.
-- explicación del flujo de ejecución.
-- decisiones de organización y nombres.
+- logica por departamentos y como se aplica.
+- explicacion del flujo de ejecucion.
+- decisiones de organizacion y nombres.
 
 Es importante justificar la arquitectura y mostrar ejemplos concretos.
 
 ---
 
-## 9. Pruebas y validación
+## 9. Pruebas y validacion
 
 Incluye:
 
-- cómo se probó cada módulo.
+- como se probo cada modulo.
 - escenarios de uso por departamento.
-- verificación de cambios de configuración.
-- pruebas de seguridad básicas.
-- resultados de ejecución y logs generados.
+- verificacion de cambios de configuracion.
+- pruebas de seguridad basicas.
+- resultados de ejecucion y logs generados.
 
 Si no se pudo ejecutar en un entorno real, explica las limitaciones y las pruebas realizadas en entorno de desarrollo.
 
@@ -141,12 +141,12 @@ Si no se pudo ejecutar en un entorno real, explica las limitaciones y las prueba
 
 Resume los resultados obtenidos:
 
-- qué se ha conseguido automatizar.
+- que se ha conseguido automatizar.
 - mejoras esperadas en tiempos de despliegue.
-- la organización amplia del proyecto.
-- qué queda pendiente o qué se puede ampliar.
+- la organizacion amplia del proyecto.
+- que queda pendiente o que se puede ampliar.
 
-Incluye una valoración objetiva sobre el cumplimiento de los objetivos.
+Incluye una valoracion objetiva sobre el cumplimiento de los objetivos.
 
 ---
 
@@ -158,18 +158,18 @@ Reflexiona sobre:
 - fortalezas del proyecto.
 - debilidades o aspectos a mejorar.
 - utilidad real del proyecto para el entorno objetivo.
-- dirección futura (mejoras, ampliaciones, integración con más departamentos o herramientas).
+- direccion futura (mejoras, ampliaciones, integracion con mas departamentos o herramientas).
 
 ---
 
-## 12. Bibliografía
+## 12. Bibliografia
 
 Lista las fuentes consultadas:
 
-- documentación técnica de PowerShell.
-- guías de hardening.
-- ejemplos de automatización.
-- artículos y repositorios usados como referencia.
+- documentacion tecnica de PowerShell.
+- guias de hardening.
+- ejemplos de automatizacion.
+- articulos y repositorios usados como referencia.
 
 Usa un estilo de cita claro (APA breve, IEEE, etc.).
 
@@ -177,46 +177,46 @@ Usa un estilo de cita claro (APA breve, IEEE, etc.).
 
 ## 13. Anexos
 
-Añade material adicional útil:
+Anade material adicional util:
 
-- capturas de pantalla del proyecto o de menús si es necesario.
+- capturas de pantalla del proyecto o de menus si es necesario.
 - listas de software o configuraciones de ejemplo.
 - ejemplos de uso de scripts.
-- fragmentos de código explicativo.
-- apéndice de términos y siglas.
+- fragmentos de codigo explicativo.
+- apendice de terminos y siglas.
 
 ---
 
-## 14. Recomendaciones específicas para la memoria
+## 14. Recomendaciones especificas para la memoria
 
-Sugerencias para la redacción final:
+Sugerencias para la redaccion final:
 
 - usa un lenguaje formal y claro.
-- organiza cada sección con encabezados claros.
+- organiza cada seccion con encabezados claros.
 - evita jergas informales.
-- añade referencias a la estructura del repositorio y al enfoque modular.
-- destaca el valor añadido del trabajo en equipo y la presentación.
-- incluye un apartado de metodología y planificación si quieres reforzar la parte académica.
+- anade referencias a la estructura del repositorio y al enfoque modular.
+- destaca el valor anadido del trabajo en equipo y la presentacion.
+- incluye un apartado de metodologia y planificacion si quieres reforzar la parte academica.
 
 ---
 
 ## 15. Checklist para la memoria final
 
-- [ ] Título y datos de portada completos.
-- [ ] Índice claro y completo.
+- [ ] Titulo y datos de portada completos.
+- [ ] indice claro y completo.
 - [ ] Resumen conciso.
-- [ ] Introducción con contexto y motivación.
+- [ ] Introduccion con contexto y motivacion.
 - [ ] Objetivos definidos.
 - [ ] Estado del arte referenciado.
-- [ ] Metodología documentada.
-- [ ] Desarrollo técnico explicado.
-- [ ] Pruebas y validación registradas.
+- [ ] Metodologia documentada.
+- [ ] Desarrollo tecnico explicado.
+- [ ] Pruebas y validacion registradas.
 - [ ] Resultados y conclusiones presentes.
-- [ ] Bibliografía incluida.
-- [ ] Anexos útiles.
+- [ ] Bibliografia incluida.
+- [ ] Anexos utiles.
 
 ---
 
 ## Notas finales
 
-Esta guía es orientativa: adapta cada sección al contenido real del proyecto y a la documentación que tengáis preparada. Usa la estructura para que la memoria sea legible, coherente y refleje tanto el trabajo técnico como el trabajo organizativo del TFG.
+Esta guia es orientativa: adapta cada seccion al contenido real del proyecto y a la documentacion que tengais preparada. Usa la estructura para que la memoria sea legible, coherente y refleje tanto el trabajo tecnico como el trabajo organizativo del TFG.
