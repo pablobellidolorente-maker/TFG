@@ -5,19 +5,6 @@
 . ".\modulos\logging-basico.ps1"
 . ".\modulos\logging-detallado.ps1"
 
-
-#=============================== ANADIR COMPROBACION DE ADMIN
-
-
-
-
-#===================================================================
-
-
-#================================= FUNCION ACTIVAR DEFENDER =============================
-
-#Activa las distintas capas de proteccion de Microsoft Defender para reforzar la deteccion de amenazas
-
 # ========================= DETECCIoN DE TAMPER PROTECTION =========================
 function tamper-activo {
     $estado = Get-MpComputerStatus
@@ -72,10 +59,6 @@ function activar-defender {
     } while ( $opcion -ne "5" )
 
 }
-
-
-
-#================================= FUNCION DESACTIVAR DEFENDER =============================
 
 #Desactiva temporalmente las protecciones de Defender cuando sea necesario realizar
 
@@ -141,11 +124,6 @@ function desactivar-defender {
     } while ( $opcion -ne "5" )
 
 }
-#========================================================================================
-
-
-
-#========================== FUNCION VER ESTADO DE DEFENDER ==========================
 
 #Muestra el estado actual de las protecciones, firmas y componentes de seguridad de Microsoft Defender 
 
@@ -164,9 +142,6 @@ function ver-estado-defender {
     Write-Host "`n================================"
 }
 
-
-#================================================ ESCANEO RAPIDO
-
 #Realiza un analisis rapido de las areas mas vulnerables del sistema para detectar amenazas activas de forma inmediata
 
 function escaneo-rapido {
@@ -177,11 +152,6 @@ function escaneo-rapido {
     
     Write-Host "Escaneo rapido completado" -ForegroundColor Green
 }
-
-
-
-
-#================================================ ESCANEO COMPLETO
 
 #analisis exhaustivo de todos los archivos y unidades del sistema para identificar malware oculto o persistente
 
@@ -211,11 +181,6 @@ function escaneo-completo {
     } until ($opcion -in @("s","n"))
 
 }
-#=====================================
-
-
-
-#========================== ESCANEO PERSONALIZADO ==========================
 
 #Permite analizar una carpeta o ruta especifica elegida por el usuario para revisar ubicaciones concretas 
 
@@ -237,11 +202,6 @@ function escaneo-personalizado {
     Write-Host "Escaneo completado" -ForegroundColor Green
 }
 
-
-
-
-#================================================ ACTUALIZAR DEFINICIONES
-
 #Actualiza Microsoft Defender para garantizar la deteccion de las amenazas mas recientes.
 
 function actualizar-definiciones {
@@ -252,11 +212,6 @@ function actualizar-definiciones {
     
     Write-Host "Definiciones actualizadas correctamente" -ForegroundColor Green
 }
-
-
-
-
-#================================================ AGREGAR EXCLUSION
 
 #Anade archivos o extensiones a la lista de exclusiones para evitar que Defender analice elementos que puedan generar falsos positivos.
 
@@ -320,13 +275,7 @@ function agregar-exclusion {
     } while ( $opcion -ne "4" )
 }
 
-
-
-
-#================================================ LISTAR EXCLUSIONES
-
-
-
+#Lista las exclusiones
 
 function listar-exclusiones {
 
@@ -359,11 +308,7 @@ function listar-exclusiones {
     Write-Host "`n================================"
 }
 
-
-
-
-#================================================ ELIMINAR EXCLUSION
-
+#Elimina las exclsiones
 
 function eliminar-exclusion {
 
@@ -408,11 +353,6 @@ function eliminar-exclusion {
 
     } while ( $opcion -ne "4" )
 }
-
-
-
-
-#================================================ VER AMENAZAS DETECTADAS
 
 #Muestra las amenazas detectadas por Defender, incluyendo nombre, gravedad y fecha de deteccion
 

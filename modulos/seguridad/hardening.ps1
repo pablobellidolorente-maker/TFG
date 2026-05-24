@@ -6,12 +6,6 @@
 . ".\modulos\logging-detallado.ps1"
 
 
-# ==================================================
-
-#   FUNCIONES
-
-# ==================================================================
-
 # --- Deshabilitar servicios inseguros ---
 
 #deshabilita servicios antiguos o inseguros para reducir la superficie de riesgo de atauqe del sistema
@@ -34,7 +28,6 @@ function deshabilitar-servicios {
 
 }
 
-#=======================================================================================
 
 # --- Configurar politicas de contrasenas --- (politicas basicas basadas en los estandares recomendados por micrososft)
 
@@ -60,7 +53,6 @@ function politicas-contrasena {
     Write-Host "Politicas de contrasena aplicadas." -ForegroundColor Green
 }
 
-#=======================================================================================
 
 # --- Deshabilitar protocolos inseguros ---
 
@@ -83,8 +75,6 @@ function deshabilitar-protocolos {
 
     Write-Host "TLS 1.0 y 1.1 deshabilitados." -ForegroundColor Green
 }
-
-#=======================================================================================
 
 # --- Configurar RDP ---
 #permite deshabilitar RDP o habilitarlo con autenticacion a nivel de red para proteger el acceso remoto frente a ataques de fuerza bruta
@@ -112,8 +102,6 @@ function configurar-rdp {
         default { Write-Host "Volviendo..." }
     }
 }
-
-#===========================================================================================
 
 # --- Deshabilitar AutoRun --- (Hace que se ejecute un USB o disco sin interaccion del usuario)
 

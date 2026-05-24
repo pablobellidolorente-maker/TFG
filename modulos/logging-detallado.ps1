@@ -1,16 +1,3 @@
-<#
-.SYNOPSIS
-    Sistema de Logging Detallado para TFG-AutoDeploy.
-
-.DESCRIPTION
-    Modulo para registrar todos los pasos de la ejecucion.
-    El archivo de log detallado SIEMPRE se guarda automaticamente.
-
-.EXAMPLE
-    Write-DetailedLog "Verificando permisos de administrador..."
-    Invoke-DetailedAction -Action $scriptblock -Description "Cambiar nombre"
-#>
-
 # ============================
 #   CONFIGURACION GLOBAL
 # ============================
@@ -32,20 +19,7 @@ if (-not (Test-Path $Global:DetailedLogFilePath)) {
 # ============================
 #   FUNCION: Write-DetailedLog
 # ============================
-<#
-.SYNOPSIS
-    Escribe mensajes detallados en el archivo de log.
-    SIEMPRE guarda en el archivo.
 
-.PARAMETER Message
-    El mensaje a registrar.
-
-.PARAMETER LineNumber
-    Numero de linea si es necesario.
-    
-.PARAMETER ConsoleOutput
-    Si se activa, tambien muestra el log en consola.
-#>
 function Write-DetailedLog {
     param(
         [Parameter(Mandatory=$true)]
@@ -83,20 +57,7 @@ function Write-DetailedLog {
 # ============================
 #   FUNCION: Invoke-DetailedAction
 # ============================
-<#
-.SYNOPSIS
-    Ejecuta una accion y registra todos los pasos en el archivo detallado.
 
-.PARAMETER Action
-    El scriptblock a ejecutar.
-    
-.PARAMETER Description
-    Descripcion de lo que hace la accion.
-    
-.EXAMPLE
-    Invoke-DetailedAction -Action { Rename-Computer -NewName "EQUIPO" } `
-                          -Description "Cambiar nombre"
-#>
 function Invoke-DetailedAction {
     param(
         [Parameter(Mandatory=$true)]
@@ -138,17 +99,7 @@ function Invoke-DetailedAction {
 # ============================
 #   FUNCION: Get-LogSummary
 # ============================
-<#
-.SYNOPSIS
-    Muestra un resumen de los logs generados.
 
-.PARAMETER Date
-    Fecha para la que mostrar los logs (por defecto, hoy).
-    
-.EXAMPLE
-    Get-LogSummary
-    Get-LogSummary -Date "2026-05-16"
-#>
 function Get-LogSummary {
     param(
         [string]$Date = (Get-Date -Format "yyyy-MM-dd")
@@ -177,10 +128,7 @@ function Get-LogSummary {
 # ============================
 #   FUNCION: Test-IsAdmin
 # ============================
-<#
-.SYNOPSIS
-    Verifica si el script se esta ejecutando con permisos de administrador.
-#>
+
 function Test-IsAdmin {
     $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
@@ -190,10 +138,7 @@ function Test-IsAdmin {
 # ============================
 #   FUNCION: Require-Admin
 # ============================
-<#
-.SYNOPSIS
-    Verifica permisos de admin y sale si no los tiene.
-#>
+
 function Require-Admin {
     if (-not (Test-IsAdmin)) {
         Write-DetailedLog -Message "El script requiere privilegios de administrador."
@@ -205,16 +150,7 @@ function Require-Admin {
 # ============================
 #   FUNCION: Import-ConfigFile
 # ============================
-<#
-.SYNOPSIS
-    Importa un archivo de configuracion con verificacion.
 
-.PARAMETER Path
-    Ruta del archivo de configuracion.
-    
-.EXAMPLE
-    $config = Import-ConfigFile -Path ".\config\settings.conf"
-#>
 function Import-ConfigFile {
     param(
         [Parameter(Mandatory=$true)]

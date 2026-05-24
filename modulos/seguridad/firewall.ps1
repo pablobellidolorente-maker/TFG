@@ -6,15 +6,6 @@
 . ".\modulos\logging-detallado.ps1"
 
 
-#=============================== ANADIR COMPROBACION DE ADMIN
-
-
-
-
-
-#===================================================================
-
-
 #================================= FUNCION ACTIVAR FIREWALL =============================
 
 function activar-firewall { 
@@ -62,8 +53,6 @@ function activar-firewall {
     } while ( $opcion -ne "5" )
 
 }
-
-
 
 #================================= FUNCION DESACTIVAR FIREWALL =============================
 
@@ -113,9 +102,6 @@ function desactivar-firewall {
     } while ( $opcion -ne "5" )
 
 }
-#========================================================================================
-
-
 
 #========================== FUNCION APERTURA DE PUERTOS ==========================
 
@@ -145,12 +131,7 @@ function abrir-puertos {
     Write-Host "Puerto $puerto/$protocolo abierto correctamente" -ForegroundColor Green
 }
 
-
-
-
-
-#================================================ Bloquear puertos
-
+#Bloequeo de puertos
 
 function bloquear-puertos {
 
@@ -180,10 +161,6 @@ function bloquear-puertos {
 
     Write-Host "Puerto $puerto/$protocolo bloqueado correctamente" -ForegroundColor Green
 }
-
-
-
-
 
 
 #============================================== FUNCION BLOQUEAR DESBLOQUEAR APLICACIONES =================================
@@ -235,10 +212,6 @@ function permitir-apps {
 
 }
 
-
-#===============================================
-
-
 #=========================== FUNCION RESTAURAR EL FIREWALL ===============================
 
 function default-firewall {
@@ -265,9 +238,6 @@ function default-firewall {
 
      
 }
-#=====================================
-
-
 
 #======================= FUNCION DE LISTAR REGLAS (CON FILTRO PARA LAS NUESTRAS)
 

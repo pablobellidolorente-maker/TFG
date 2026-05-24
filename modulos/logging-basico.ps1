@@ -1,19 +1,3 @@
-<#
-.SYNOPSIS
-    Sistema de Logging Basico para TFG-AutoDeploy.
-
-.DESCRIPTION
-    Modulo para registrar solo los eventos principales:
-    - Inicio de procesos
-    - Finalizacion exitosa
-    - Errores con numero de linea
-
-.EXAMPLE
-    Write-BasicLog -Message "Configurando equipo" -Type "INICIO"
-    Write-BasicLog -Message "Equipo configurado correctamente" -Type "EXITO"
-    Write-BasicLog -Message "Fallo en la configuracion" -Type "ERROR" -LineNumber 45
-#>
-
 # ============================
 #   CONFIGURACION GLOBAL
 # ============================
@@ -29,22 +13,7 @@ if (-not (Test-Path $Global:LogBasePath)) {
 # ============================
 #   FUNCION: Write-BasicLog
 # ============================
-<#
-.SYNOPSIS
-    Escribe mensajes en el archivo de log basico.
 
-.PARAMETER Message
-    El mensaje a registrar.
-
-.PARAMETER Type
-    Tipo de mensaje: INICIO, EXITO, ERROR
-    
-.PARAMETER LineNumber
-    Numero de linea donde ocurrio el evento (especialmente para errores).
-    
-.PARAMETER ConsoleOutput
-    Si se activa, tambien muestra el log en consola.
-#>
 function Write-BasicLog {
     param(
         [Parameter(Mandatory=$true)]
@@ -85,20 +54,7 @@ function Write-BasicLog {
 # ============================
 #   FUNCION: Invoke-BasicAction
 # ============================
-<#
-.SYNOPSIS
-    Ejecuta una accion con logging basico automatico.
 
-.PARAMETER Action
-    El scriptblock a ejecutar.
-    
-.PARAMETER Description
-    Descripcion de lo que hace la accion.
-    
-.EXAMPLE
-    Invoke-BasicAction -Action { Rename-Computer -NewName "EQUIPO-NUEVO" } `
-                       -Description "Cambiar nombre del equipo"
-#>
 function Invoke-BasicAction {
     param(
         [Parameter(Mandatory=$true)]
@@ -138,10 +94,7 @@ function Invoke-BasicAction {
 # ============================
 #   FUNCION: Test-IsAdmin
 # ============================
-<#
-.SYNOPSIS
-    Verifica si el script se esta ejecutando con permisos de administrador.
-#>
+
 function Test-IsAdmin {
     $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
@@ -151,10 +104,7 @@ function Test-IsAdmin {
 # ============================
 #   FUNCION: Require-Admin
 # ============================
-<#
-.SYNOPSIS
-    Verifica permisos de admin y sale si no los tiene.
-#>
+
 function Require-Admin {
     if (-not (Test-IsAdmin)) {
         Write-BasicLog -Message "El script requiere privilegios de administrador." -Type "ERROR" -ConsoleOutput
@@ -166,16 +116,7 @@ function Require-Admin {
 # ============================
 #   FUNCION: Import-ConfigFile
 # ============================
-<#
-.SYNOPSIS
-    Importa un archivo de configuracion con verificacion.
 
-.PARAMETER Path
-    Ruta del archivo de configuracion.
-    
-.EXAMPLE
-    $config = Import-ConfigFile -Path ".\config\settings.conf"
-#>
 function Import-ConfigFile {
     param(
         [Parameter(Mandatory=$true)]

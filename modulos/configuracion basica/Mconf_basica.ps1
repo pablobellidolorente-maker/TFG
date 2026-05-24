@@ -1,7 +1,7 @@
 ##Aqui pondria yo todo lo de ajustar la hora, idioma, teclado etc
 
 
-<#ORDEN DE EJECUCION OPTIMA DE LOS SCRIPTS
+#ORDEN DE EJECUCION OPTIMA DE LOS SCRIPTS
 
 1.estructura.ps1
 
