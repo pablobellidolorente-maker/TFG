@@ -179,38 +179,38 @@ function bloquear-apps {
         
 } until ( Test-Path $programa)
 
-        $app = Split-Path $programa -Leaf #Lo que hace esto es reducir el nombre al (x.exe)
+        $app = Split-Path $programa -Leaf
         $nombreregla = "$app Block"
-            
-            
-        New-NetFirewallRule -DisplayName "$nombreregla" -Direction Inbound,Outbound -Program "$programa" -Action Block 
-        Write-Host "Aplicacion bloqueada correctamente: $app" -ForegroundColor Green
+
+        New-NetFirewallRule -DisplayName "$nombreregla Inbound" -Direction Inbound -Program $programa -Action Block
+        New-NetFirewallRule -DisplayName "$nombreregla Outbound" -Direction Outbound -Program $programa -Action Block
+
+        Write-Host "Aplicación bloqueada correctamente: $app" -ForegroundColor Green
 
 }
 
 
 function permitir-apps {
 
- do {   $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere permitir ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)"
+    do {
+        $programa = Read-Host "Escriba la ruta completa de la aplicacion que quiere permitir ej.(C:\Program Files\Google\Chrome\Application\chrome.exe)"
 
-
-    # SE COMPRUEBA QUE LA RUTA EXISTE
-
-        if ( -not (Test-Path $programa) ) {
-
-            Write-Host "ERROR: La ruta no existe"  -ForegroundColor Red
+        if (-not (Test-Path $programa)) {
+            Write-Host "ERROR: La ruta no existe" -ForegroundColor Red
         }
-        
-} until ( Test-Path $programa)
 
-        $app = Split-Path $programa -Leaf #Lo que hace esto es reducir el nombre al (x.exe)
-        $nombreregla = "$app Allow"
-            
-            
-        New-NetFirewallRule -DisplayName "$nombreregla" -Direction Inbound,Outbound -Program "$programa" -Action Allow 
-        Write-Host "Aplicacion permitida correctamente: $app" -ForegroundColor Green
+    } until (Test-Path $programa)
 
+    $app = Split-Path $programa -Leaf
+    $nombreregla = "$app Allow"
+
+    
+    New-NetFirewallRule -DisplayName "$nombreregla Inbound" -Direction Inbound -Program $programa -Action Allow
+    New-NetFirewallRule -DisplayName "$nombreregla Outbound" -Direction Outbound -Program $programa -Action Allow
+
+    Write-Host "Aplicación permitida correctamente: $app" -ForegroundColor Green
 }
+
 
 #=========================== FUNCION RESTAURAR EL FIREWALL ===============================
 
