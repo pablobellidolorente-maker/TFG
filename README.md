@@ -1,63 +1,141 @@
-# TFG
-TFG ASIR 2º Alvaro y Pablo
-
-He pensado que los scripts que vamos a hacer si te paras a pensar, creo que son muy basicos, podemos tocar y complicarlos un poco pero quiza, debido a esto, es mas importante como lo compartamentemos , la organizacion y la presentacion.
-
-Por lo que, habia pensado crear un script segun el dpto para el cual se vaya a usar cada equipo, me refiero a: Crear funciones que varien segun el departamento y un menu como el de (opciones_dpt.ps1) y crear algo al usuario intuitivo y que quede bonito con la presentacion, ya que, la seguridad, abrir puertos, instalar apps y demas si te pones a pensarlo, son 1 linea o 2 de codigo cada una.
-
-Por cierto, puedes ejecutar copiando y pegando en powershell lo que he hecho para verlo en el ordenador de la empresa, y te deja porque realmente no hace nada, si no para que veas la presentacion, ya que creo que la ejecucion de scripts en lo que es el equipo de kyndril no deja.
-
-:)
-
-Esta es la estructura sugerida por COPI y me parece bien
-
-Metete al VS del github para verlo Bien
-
-
-
+# 🛡️ AutoDeploy & Hardening de Windows  
+Automatización completa de configuración, seguridad, uditoría e instalación de software en equipos Windows.
+Este proyecto contiene un conjunto modular de scripts PowerShell diseñados para:
+- Configurar políticas de seguridad  
+- Activar/desactivar protecciones de Microsoft Defender  
+- Gestionar auditorías del sistema  
+- Instalar software automáticamente mediante Winget  
+- Aplicar hardening básico  
+- Facilitar despliegues en entornos educativos o mpresariales  
+---
+## 📂 Estructura del repositorio
+```
 /TFG-AutoDeploy/
 │
-├── launcher.sh
-├── README.md
+├── MMindice.ps1                # Script principal que carga el menú general
+├── README.md                   # Este archivo
 │
 ├── modulos/
-│   ├── config_basica/
-│   │   ├── hostname.sh
-│   │   ├── red.sh
-│   │   ├── usuarios.sh
-│   │   └── permisos.sh
+│   ├── config_basica/          # Configuración inicial el sistema
+│   │   ├── hostname.ps1
+│   │   ├── red.ps1
+│   │   ├── usuarios.ps1
+│   │   └── permisos.ps1
 │   │
-│   ├── seguridad/
-│   │   ├── firewall.sh
-│   │   ├── hardening.sh
-│   │   ├── auditoria.sh
-│   │   └── antivirus.sh
+│   ├── seguridad/              # Hardening y Defender
+│   │   ├── defender.ps1
+│   │   ├── firewall.ps1
+│   │   ├── hardening.ps1
+│   │   └── auditoria.ps1
 │   │
-│   ├── software/
-│   │   ├── instalar_chrome.sh
-│   │   ├── instalar_vscode.sh
-│   │   ├── instalar_7zip.sh
-│   │   ├── instalar_ofimatica.sh
-│   │   └── instalar_paquetes.sh
-│   │
-│   └── departamentos/
-│       ├── dpto_informatica.sh
-│       ├── dpto_administracion.sh
-│       ├── dpto_rrhh.sh
-│       └── dpto_marketing.sh
+│   ├── software/               # Instalación automática e 
+│   │   ├── Msoftware.ps1
+│   │   ├── listas_software/
+│   │       ├── basico.txt
+│   │       ├── drivers.txt
+│   │       ├── informatica.txt
+│   │       ├── marketing.txt
+│   │       ├── ofimatica.txt
+│   │       ├── utilidades.txt
+│   │       ├── ventas.txt
+│   │ 
 │
-├── data/
-│   ├── paquetes_informatica.txt
-│   ├── paquetes_admin.txt
-│   ├── firewall_rules.conf
-│   └── hardening.conf
 │
 └── logs/
-    └── (se generan automaticamente)
-
-
-Perfecto bro, lo de compartimentarlo por departamentos me parece de puta madre, entiendo que te refieres a lo de dentro de un menu general nada mas entres, puedas tu eleguir que departamento es y segun el que elija, tengo unos procesos automatizados u otros (me refiero a permisos, aplicaciones, puertos...) (bueno me acabo de fijar en el arbol y es asi jajajajjaja). Vale pues este finde me pongo a tope con algo de prueba para que luego lo veamos juntos y vayamos avanzando a la par y que cada paso este censado por lo dos, lo cual que me parce de puta madre.
-
-Y si bro, me parece que este trabajo la presentacion y la manera en lo que hayamos hecho detras (organizacion, forma de trabajo y calendarios...) va a importar incluso un poco mas que la automatizacion en si. 
-
-Asique cojonudo bro, por ahora vamos mirando hacia la misma direccion. Y tio entre semana estoy yendo muy pillado de tiempo porque en las practicas ya estoy "trabajando" royo que ya me dejan tareas y todo el royo asique cuando este activo realmente para el TFG va a ser los findes, que no queiro que tengas la sensacion de que estoy sudando ni nada que queiro hacer algo que este chulo. <3
+│   │       
+│   ├── logging-basico.ps1
+│   ├──logging-detallado.ps1                     # Logs generados utomáticamente
+```
+---
+## 🚀 Cómo ejecutar el proyecto
+### 1️⃣ Abrir PowerShell como Administrador  
+Es obligatorio para:
+- Defender  
+- Firewall  
+- Auditorías  
+- Instalación de software  
+- Hardening  
+### 2️⃣ Permitir ejecución de scripts (solo la primera ez)
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force
+```
+### 3️⃣ Ejecutar el lanzador principal
+```powershell
+.\launcher.ps1
+```
+Esto abrirá el menú general del proyecto.
+---
+## 🛡️ Módulo de Microsoft Defender
+Incluye:
+- Activar protecciones  
+- Desactivar protecciones (respetando Tamper Protection)  
+- Ver estado de Defender  
+- Escaneos rápidos, completos y personalizados  
+- Exclusiones  
+- Amenazas detectadas  
+### ⚠️ Nota importante sobre Tamper Protection
+Si **Tamper Protection está activado**, Windows **NO ermite desactivar**:
+- Protección en tiempo real  
+- Protección basada en la nube  
+- Otras protecciones críticas  
+El script detecta automáticamente esta condición y uestra un mensaje claro.
+---
+## 📊 Módulo de Auditoría del Sistema
+Incluye:
+- Ver auditorías configuradas  
+- Activar auditorías recomendadas  
+- Desactivar auditorías  
+- Exportar auditorías a archivo (si no existe, se crea utomáticamente)  
+Ejemplo de exportación:
+```powershell
+Introduce la ruta donde guardar el archivo (ej: :\auditoria.txt)
+```
+Si escribes solo:
+```
+auditoria.txt
+```
+Se guardará en la carpeta actual.
+---
+## 📦 Instalación automática de software
+Los scripts usan **Winget** para instalar aplicaciones omo:
+- Google Chrome  
+- Visual Studio Code  
+- 7zip  
+- LibreOffice / Office  
+- Paquetes personalizados por departamento  
+Cada módulo lee un archivo `.txt` con la lista de aquetes a instalar.
+Ejemplo:
+```
+Google.Chrome
+Microsoft.VisualStudioCode
+7zip.7zip
+```
+---
+## 🧱 Hardening básico
+Incluye:
+- Configuración de firewall  
+- Reglas de seguridad  
+- Restricciones de permisos  
+- Configuración de políticas recomendadas  
+---
+## 📝 Logs
+Todos los módulos pueden generar logs automáticos en:
+```
+/logs/
+```
+Esto permite documentar la ejecución para auditorías o nformes.
+---
+## 🧪 Requisitos
+- Windows 10 / 11  
+- PowerShell 5.1 o superior  
+- Winget instalado  
+- Ejecución como Administrador  
+---
+## 📚 Licencia
+Proyecto académico para TFG.  
+Uso permitido para entornos educativos y pruebas.
+---
+## 👨‍💻 Autor
+Pablo Bellido  
+TFG — Automatización y Hardening de Sistemas Windows  
+2026
