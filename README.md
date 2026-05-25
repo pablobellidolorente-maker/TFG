@@ -135,7 +135,7 @@ Esto permite documentar la ejecución para auditorías o nformes.
 Proyecto académico para TFG.  
 Uso permitido para entornos educativos y pruebas.
 ---
-## 👨‍💻 Autor
-Pablo Bellido  
+## 👨‍💻 Autores
+Pablo Bellido y Álvaro Santos  
 TFG — Automatización y Hardening de Sistemas Windows  
 2026
